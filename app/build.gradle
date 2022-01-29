@@ -54,7 +54,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "org.tensorflow.lite.examples.poseestimation"
+        applicationId "com.example.test222"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

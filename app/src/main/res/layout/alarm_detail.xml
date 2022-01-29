@@ -25,8 +25,8 @@
             />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <Button
-        android:id="@+id/alarm_set_btn"
+    <ImageButton
+        android:id="@+id/time_set_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
