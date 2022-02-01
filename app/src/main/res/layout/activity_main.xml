@@ -31,23 +31,26 @@
         android:orientation="horizontal"
         >
 
-        <ImageButton
-            android:layout_width="250dp"
+        <Button
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_marginStart="40dp"
             android:id="@+id/alarm_set_btn"
+            android:text="alarm_time"
             >
 
-        </ImageButton>
+        </Button>
 
-        <ImageButton
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:id="@+id/exercise_set_btn"
+        <Switch
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/alarm_switch"
             >
 
-        </ImageButton>
+        </Switch>
+
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
