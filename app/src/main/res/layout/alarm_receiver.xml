@@ -16,7 +16,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Emergency quit"
+        android:text="탈출 버튼"
         android:id="@+id/quit_button"
 
         >

@@ -5,14 +5,17 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(){
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity(){
         const val ALARM_REQUEST_CODE = 222
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,6 +42,7 @@ class MainActivity : AppCompatActivity(){
         changeAlarmOnOff(alarmData)
 
     }
+
 
     // 버튼 누르면 AlarmSetting 변경 Layout으로 이동
     private fun changeAlarmSetting(alarmData : AlarmData )
@@ -61,7 +66,6 @@ class MainActivity : AppCompatActivity(){
     private fun changeAlarmOnOff(alarmData : AlarmData)
     {
         val alarm_switch : Switch = findViewById(R.id.alarm_switch)
-
         if (alarmData.getOnOff) {
             alarm_switch.isChecked = true
         }
@@ -132,28 +136,45 @@ class MainActivity : AppCompatActivity(){
         sharedPreference.edit().putBoolean(ONOFF_KEY,true).apply()
         val newAlarmData = fetchSharedPreferences()
 
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY,newAlarmData.getHour.toInt())
-            set(Calendar.MINUTE,newAlarmData.getMinute.toInt())
-            if (before(Calendar.getInstance()))
-                add(Calendar.DATE,1)
+        Log.i("Hour test","Hour :" + newAlarmData.getHour)
+        Log.i("Minute test","Minute :" + newAlarmData.getMinute)
+        Log.i("Onoff test","Onoff :" + newAlarmData.getOnOff)
 
+        if (newAlarmData.getOnOff) {
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, newAlarmData.getHour.toInt())
+                set(Calendar.MINUTE, newAlarmData.getMinute.toInt())
+                if (before(Calendar.getInstance()))
+                    add(Calendar.DATE, 1)
+            }
+
+            Log.i("MONTH ", "MONTH :" + calendar.get(Calendar.MONTH))
+            Log.i("DATE ", "DATE :" + calendar.get(Calendar.DATE))
+
+
+            val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+            val receiverIntent = Intent(this, AlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                this,
+                ALARM_REQUEST_CODE,
+                receiverIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+
+            alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
+        }
+        else
+        {
+            cancelAlarm()
         }
 
-        val alarmManager : AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        val receiverIntent : Intent = Intent(this@MainActivity,AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this@MainActivity,
-            ALARM_REQUEST_CODE,
-            receiverIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
     }
 
     private fun cancelAlarm()
