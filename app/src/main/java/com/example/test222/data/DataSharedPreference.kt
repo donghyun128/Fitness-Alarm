@@ -1,4 +1,4 @@
-package com.example.test222
+package com.example.test222.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.test222.MainActivity.Companion.HOUR_KEY

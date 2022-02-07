@@ -11,6 +11,7 @@ import com.example.test222.MainActivity.Companion.HOUR_KEY
 import com.example.test222.MainActivity.Companion.MINUTE_KEY
 import com.example.test222.MainActivity.Companion.SHARED_PREFERENCE_NAME
 import com.example.test222.MainActivity.Companion.WORKOUT_KEY
+import com.example.test222.data.AlarmData
 
 class AlarmSetting : AppCompatActivity() {
 
@@ -77,7 +78,7 @@ class AlarmSetting : AppCompatActivity() {
 
         workout_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener
         {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position){
 
                     0 -> {

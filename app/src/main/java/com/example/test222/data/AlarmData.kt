@@ -1,4 +1,4 @@
-package com.example.test222
+package com.example.test222.data
 
 data class AlarmData(
     var hour: String,

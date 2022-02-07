@@ -5,9 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +13,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
-import java.util.*
+import com.example.test222.data.AlarmData
 
 
 class MainActivity : AppCompatActivity(){
@@ -36,18 +34,32 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var alarmData : AlarmData  = fetchSharedPreferences()
 
-        changeAlarmSetting(alarmData)
-        changeAlarmOnOff(alarmData)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val set_btn : Button = findViewById(R.id.alarm_set_btn)
+        val alarm_switch : Switch = findViewById(R.id.alarm_switch)
+
+        var alarmData : AlarmData = fetchSharedPreferences()
+
+        settingAlarm()
+
+        changeAlarmSetting(alarmData,set_btn)
+        changeAlarmOnOff(alarmData,alarm_switch)
+    }
+
+    override fun onPause() {
+        super.onPause()
     }
 
 
     // 버튼 누르면 AlarmSetting 변경 Layout으로 이동
-    private fun changeAlarmSetting(alarmData : AlarmData )
+    private fun changeAlarmSetting(alarmData : AlarmData, set_btn : Button )
     {
-        val set_btn : Button = findViewById(R.id.alarm_set_btn)
         set_btn.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, AlarmSetting::class.java)
             startActivity(intent)
@@ -63,9 +75,8 @@ class MainActivity : AppCompatActivity(){
     }
 
     // Switch 누르면 AlarmOnOff 설정
-    private fun changeAlarmOnOff(alarmData : AlarmData)
+    private fun changeAlarmOnOff(alarmData : AlarmData, alarm_switch: Switch)
     {
-        val alarm_switch : Switch = findViewById(R.id.alarm_switch)
         if (alarmData.getOnOff) {
             alarm_switch.isChecked = true
         }
@@ -162,13 +173,21 @@ class MainActivity : AppCompatActivity(){
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
 
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
 
+            /*
             alarmManager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
                 AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
+            */
+
         }
         else
         {

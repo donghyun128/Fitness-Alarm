@@ -33,8 +33,8 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
 import kotlinx.coroutines.suspendCancellableCoroutine
-import com.example.test222.VisualizationUtils
-import com.example.test222.YuvToRgbConverter
+import com.example.test222.Visualization.VisualizationUtils
+import com.example.test222.Visualization.YuvToRgbConverter
 import com.example.test222.movenet.PoseClassifier
 import com.example.test222.movenet.PoseDetector
 import com.example.test222.data.Person

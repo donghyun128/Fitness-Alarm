@@ -14,7 +14,7 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222
+package com.example.test222.Visualization
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
