@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import com.example.test222.MainActivity.Companion
 import com.example.test222.MainActivity.Companion.HOUR_KEY
@@ -53,6 +54,7 @@ class AlarmSetting : AppCompatActivity() {
         changeAlarmTime()
         changeAlarmWorkout(this)
         changeWorkOutRepetition(this)
+        changeAlarmMusic()
 
     }
 
@@ -189,7 +191,37 @@ class AlarmSetting : AppCompatActivity() {
         val bellLayout : ViewGroup = findViewById(R.id.bell_layout)
         bellLayout.setOnClickListener()
         {
+            /*
             val contentResolver : ContentResolver = getContentResolver()
+            val mProjection = arrayOf(
+                MediaStore.Audio.Media.IS_MUSIC,
+                MediaStore.Audio.Media.IS_ALARM,
+                MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media._ID
+                )
+
+            val mCursor : Cursor? = contentResolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                mProjection,
+                null,null,
+                MediaStore.Audio.Media.TITLE + "ASC"
+            )
+             */
+
+            // 파일탐색기로 음악 불러오기
+
+            val musicIntent : Intent = Intent(Intent.ACTION_GET_CONTENT)
+
+            val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                
+
+            }
+
+            musicIntent.setType("audio/*")
+            startActivity(Intent.createChooser(musicIntent,"Open"))
+
         }
     }
 
