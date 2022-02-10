@@ -1,17 +1,30 @@
 
 package com.example.test222
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
 import com.example.test222.MainActivity.Companion
 import com.example.test222.MainActivity.Companion.HOUR_KEY
 import com.example.test222.MainActivity.Companion.MINUTE_KEY
+import com.example.test222.MainActivity.Companion.REPETITION_KEY
 import com.example.test222.MainActivity.Companion.SHARED_PREFERENCE_NAME
 import com.example.test222.MainActivity.Companion.WORKOUT_KEY
 import com.example.test222.data.AlarmData
+import org.w3c.dom.Text
 
 class AlarmSetting : AppCompatActivity() {
 
@@ -21,18 +34,45 @@ class AlarmSetting : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.alarm_setting)
+        // 타이틀바 제거
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }*/
 
-
-        changeAlarmTime()
-        changeAlarmWorkout()
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        changeAlarmTime()
+        changeAlarmWorkout(this)
+        changeWorkOutRepetition(this)
+
+    }
+
+    // 레이아웃 내 위젯 관련 설정
+    private fun layoutInitialyze()
+    {
+
+    }
     // TimePicker를 통해 Alarm 시간 변경
     private fun changeAlarmTime()
     {
         val timepicker : TimePicker = findViewById(R.id.picker)
         val sharedPreference = getSharedPreferences(SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
+
+        // Alarm Setting 화면 실행 시, 기존의 알람 시간을 timepicker에 표시
+        timepicker.setHour(sharedPreference.getString(HOUR_KEY,"8")!!.toInt())
+        timepicker.setMinute(sharedPreference.getString(MINUTE_KEY,"0")!!.toInt())
+
+
+        // timepicker 설정 변경 시, 알람 시간 변경
         timepicker.setOnTimeChangedListener(object : TimePicker.OnTimeChangedListener
         {
             override fun onTimeChanged(timepicker: TimePicker,hour : Int, min: Int) {
@@ -54,14 +94,16 @@ class AlarmSetting : AppCompatActivity() {
     }
 
     // Alarm Workout 종류를 변경
-    private fun changeAlarmWorkout()
+    private fun changeAlarmWorkout(context : Context)
     {
-        val sharedPreference = getSharedPreferences(SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
+        val sharedPreference = getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
         val workout_item = resources.getStringArray(R.array.workout_array)
+        val current_workout = sharedPreference.getString(WORKOUT_KEY,"squat")
+
         val workout_spinner : Spinner = findViewById(R.id.workout_spinner)
         val workout_adapter = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,workout_item)
-        val time_set_btn : ImageButton = findViewById<ImageButton>(R.id.time_set_btn)
-        val current_workout = sharedPreference.getString(WORKOUT_KEY,"squat")
+        val time_set_btn : Button = findViewById<Button>(R.id.time_set_btn)
+
 
         workout_spinner.adapter = workout_adapter
         when (current_workout)
@@ -70,6 +112,7 @@ class AlarmSetting : AppCompatActivity() {
             "pushup" -> { workout_spinner.setSelection(1) }
             else -> {workout_spinner.setSelection(0)}
         }
+
 
         time_set_btn.setOnClickListener(View.OnClickListener {
             val intent = Intent(this,MainActivity::class.java)
@@ -100,15 +143,65 @@ class AlarmSetting : AppCompatActivity() {
             }
 
         }
+
+
     }
 
-    private fun saveAlarmData(hour : String, min : String, workout : String, onOff : Boolean) : AlarmData
+    private fun changeWorkOutRepetition(context: Context)
+    {
+        val sharedPreference = getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val repetition_text : EditText = findViewById(R.id.repetition_banner)
+        val current_rep = sharedPreference.getInt(REPETITION_KEY,2)
+        Log.i("rep test","sharedPreferenceREP : " + current_rep.toString())
+        repetition_text.setText(current_rep.toString())
+
+        var rep_num : Int = 0
+        repetition_text.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                try {
+                    rep_num = s.toString().toInt()
+                    sharedPreference.edit().putInt(REPETITION_KEY,rep_num).apply()
+
+                } catch (e : NumberFormatException) {
+                    Toast.makeText(context,"숫자만 입력하세요",Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                try{
+
+                } catch (e : java.lang.NumberFormatException){
+                    Toast.makeText(context,"다시 입력해주세요",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        )
+    }
+
+    // 벨소리 레이아웃 부분을 클릭하면 음악 변경 가능
+    private fun changeAlarmMusic()
+    {
+        val bellLayout : ViewGroup = findViewById(R.id.bell_layout)
+        bellLayout.setOnClickListener()
+        {
+            val contentResolver : ContentResolver = getContentResolver()
+        }
+    }
+
+
+    private fun saveAlarmData(hour : String, min : String, workout : String, repCnt : Int , onOff : Boolean) : AlarmData
     {
         val sharedPreferences = getSharedPreferences(Companion.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
         val DataModel = AlarmData(
             hour = hour,
             min = min,
             workout = workout,
+            repCnt = repCnt,
             onOff = onOff
         )
 
@@ -125,6 +218,7 @@ class AlarmSetting : AppCompatActivity() {
         return DataModel
 
     }
+
 
 
 

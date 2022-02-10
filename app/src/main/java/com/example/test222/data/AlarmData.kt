@@ -4,7 +4,9 @@ data class AlarmData(
     var hour: String,
     var min: String,
     var workout: String,
+    var repCnt : Int,
     var onOff: Boolean
+
 ) {
     val timeToText : String
         get()
@@ -40,6 +42,12 @@ data class AlarmData(
         get()
         {
             return workout
+        }
+
+    val getRepCnt : Int
+        get()
+        {
+            return repCnt
         }
 
 }

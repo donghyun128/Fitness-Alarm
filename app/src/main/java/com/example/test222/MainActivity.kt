@@ -6,10 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
@@ -25,6 +29,7 @@ class MainActivity : AppCompatActivity(){
         const val HOUR_KEY = "hour"
         const val MINUTE_KEY = "minute"
         const val WORKOUT_KEY = "workout"
+        const val REPETITION_KEY = "repetition"
         const val ONOFF_KEY = "onOff"
         const val ALARM_REQUEST_CODE = 222
     }
@@ -33,6 +38,16 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }*/
+
 
 
 
@@ -102,6 +117,14 @@ class MainActivity : AppCompatActivity(){
         )
     }
 
+    private fun changeAlarmMusic()
+    {
+        val bellLayout : ViewGroup = findViewById(R.id.bell_layout)
+        // 레이아웃 누를 시 벨소리 변경 화면으로 전환
+        bellLayout.setOnClickListener(){
+
+        }
+    }
     // SharedPrefernces 데이터 불러오기
     private fun fetchSharedPreferences() : AlarmData
     {
@@ -110,20 +133,22 @@ class MainActivity : AppCompatActivity(){
         var fetchHour : String  = sharedPreference!!.getString(HOUR_KEY,"8")!!
         var fetchMinute : String = sharedPreference!!.getString(MINUTE_KEY,"00")!!
         var fetchWorkout : String = sharedPreference!!.getString(WORKOUT_KEY,"squat")!!
+        val fetchRepetition : Int = sharedPreference!!.getInt(REPETITION_KEY,2)!!
         var fetchOnOff : Boolean = sharedPreference.getBoolean(ONOFF_KEY,true)
 
-        val alarmInfo : AlarmData = AlarmData(fetchHour,fetchMinute,fetchWorkout,fetchOnOff)
+        val alarmInfo : AlarmData = AlarmData(fetchHour,fetchMinute,fetchWorkout,fetchRepetition,fetchOnOff)
 
         return alarmInfo
     }
 
-    private fun saveAlarmData(hour:String,min:String,workout:String,onOff:Boolean) : AlarmData
+    private fun saveAlarmData(hour:String,min:String,workout:String,repCnt : Int,onOff:Boolean) : AlarmData
     {
         val sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
         val DataModel = AlarmData(
             hour = hour,
             min = min,
             workout = workout,
+            repCnt = repCnt,
             onOff = onOff
         )
 

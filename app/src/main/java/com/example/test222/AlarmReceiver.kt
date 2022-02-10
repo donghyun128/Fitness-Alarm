@@ -1,8 +1,6 @@
 package com.example.test222
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -18,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import android.content.SharedPreferences
+import android.media.Ringtone
+import android.media.RingtoneManager
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -37,61 +37,71 @@ class AlarmReceiver : BroadcastReceiver() {
 
         Log.i("test","test activity")
 
-        createNotificationChannel(context)
-        notifyNotification(context)
+        //
+
+        val ringtone = createRingtone(context)
+
+        ringtone.play()
+
+        executeNotification(context)
+
+        ringtone.stop()
 
 
-        //val alarmIntent = Intent(context,Counter::class.java)
-        //context.startActivity(alarmIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
     }
 
-    // 채널 생성
-    private fun createNotificationChannel(context : Context) {
+    // pendingIntent 생성
+    private fun createPendingIntent(context : Context) : PendingIntent?
+    {
+        val counterIntent = Intent(context,Counter::class.java)
 
+        val counterPendingIntent : PendingIntent? = TaskStackBuilder.create(context).run {
+            addNextIntentWithParentStack(counterIntent)
+            getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        return counterPendingIntent
+    }
+
+
+    // Head up notification 채널, 빌더 생성 및 notification 실행
+    private fun executeNotification(context : Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationchannel = NotificationChannel(
+
+            // notification channel 생성
+            val channel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 "알람",
-                NotificationManager.IMPORTANCE_HIGH
-            )
+                NotificationManager.IMPORTANCE_HIGH)
 
-            val notificationIntent : Intent = Intent(context,Counter::class.java)
-            val notificationPendingIntent : PendingIntent = PendingIntent.getActivity(context,NOTIFICATION_ID,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+            // 커스텀 레이아웃 불러오기
+            val remoteViews : RemoteViews = RemoteViews(context.packageName, R.layout.notification)
 
-            NotificationManagerCompat.from(context)
-                .createNotificationChannel(notificationchannel)
 
-            val notifyLayout : RemoteViews = RemoteViews(context.packageName,R.layout.notification)
+
+            // notification builder 생성 및 설정
             val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-
-            // 커스텀 레이아웃 적용
-            builder.setSmallIcon(R.drawable.ic_launcher_foreground)
-            builder.setCustomContentView(notifyLayout)
-            // notification 누를 시 Intent 이동
-            builder.setContentIntent(notificationPendingIntent)
-            builder.setAutoCancel(true)
-
-            val notificationManagerCompat : NotificationManagerCompat = NotificationManagerCompat.from(context)
-            notificationManagerCompat.notify(NOTIFICATION_ID,builder.build())
-
-        }
-
-    }
-    // 알림
-    private fun notifyNotification(context : Context)
-    {
-        val pref : SharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
-        with(NotificationManagerCompat.from(context)) {
-            val build = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("알람")
-                .setContentText(pref.getString(MainActivity.WORKOUT_KEY,"운동"))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setStyle(NotificationCompat.BigPictureStyle())
+                .setOngoing(true) // notification을 슬라이드해서 종료할 수 없음.
+                .setAutoCancel(true)
+                .setCustomHeadsUpContentView(remoteViews) // notification에 커스텀 레이아웃, pendingIntent 장착
+                .setFullScreenIntent(createPendingIntent(context),true) // Head up Notification
 
-            notify(NOTIFICATION_ID, build.build())
+            // notification 실행
+            val notificationManager : NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(NOTIFICATION_ID,builder.build())
+
+
         }
     }
 
-
-
+    private fun createRingtone(context :Context) : Ringtone
+    {
+        val ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        val ringtone = RingtoneManager.getRingtone(context,ringtoneUri)
+        return ringtone
+    }
 }
+

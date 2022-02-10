@@ -14,7 +14,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@color/purple_500"
+        android:background="#99CCFF"
         >
         <ImageView
             android:layout_width="match_parent"
@@ -29,12 +29,14 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         >
 
         <Button
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_marginStart="40dp"
+            android:background="#99CCFF"
             android:id="@+id/alarm_set_btn"
             android:text="alarm_time"
             >

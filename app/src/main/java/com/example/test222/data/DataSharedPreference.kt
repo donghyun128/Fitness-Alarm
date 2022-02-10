@@ -14,12 +14,13 @@ class dataSharedPreference(context: Context) {
 
 
     val sharedpreferences : SharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
-    private fun saveAlarmData(hour:String,min:String,workout:String,onOff:Boolean) : AlarmData
+    private fun saveAlarmData(hour:String,min:String,workout:String,repCnt : Int,onOff:Boolean) : AlarmData
     {
         val DataModel = AlarmData(
             hour = hour,
             min = min,
             workout = workout,
+            repCnt = repCnt,
             onOff = onOff
         )
 

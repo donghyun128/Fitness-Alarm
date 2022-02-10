@@ -5,10 +5,19 @@
     android:orientation="vertical"
     >
 
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/clock_image"
+        >
+    </ImageView>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text = "알람"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         style = "@style/TextAppearance.Compat.Notification.Title"
     ></TextView>
 
@@ -17,21 +26,11 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:text="운동 횟수"></TextView>
+        android:text="운동 횟수"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        >
+    </TextView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="364dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp">
-
-        </Button>
-
-    </LinearLayout>
 
 </LinearLayout>
