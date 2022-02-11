@@ -4,6 +4,8 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +18,8 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import com.example.test222.MainActivity.Companion
@@ -191,6 +195,7 @@ class AlarmSetting : AppCompatActivity() {
         val bellLayout : ViewGroup = findViewById(R.id.bell_layout)
         bellLayout.setOnClickListener()
         {
+
             /*
             val contentResolver : ContentResolver = getContentResolver()
             val mProjection = arrayOf(
@@ -208,21 +213,26 @@ class AlarmSetting : AppCompatActivity() {
                 null,null,
                 MediaStore.Audio.Media.TITLE + "ASC"
             )
-             */
+            */
 
             // 파일탐색기로 음악 불러오기
 
-            val musicIntent : Intent = Intent(Intent.ACTION_GET_CONTENT)
-
-            val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                
-
-            }
-
+            val musicIntent: Intent = Intent(Intent.ACTION_GET_CONTENT)
             musicIntent.setType("audio/*")
+            /*
+            val resultLauncher = registerForActivityResult(ActivityResultContracts.GetContent())
+            {
+                uri : Uri ->
+                //val mediaPlayer : MediaPlayer
+            }
+            */
+            //resultLauncher.launch("audio/*")
+
             startActivity(Intent.createChooser(musicIntent,"Open"))
 
         }
+
+
     }
 
 

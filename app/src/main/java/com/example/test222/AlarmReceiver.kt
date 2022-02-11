@@ -39,13 +39,13 @@ class AlarmReceiver : BroadcastReceiver() {
 
         //
 
-        val ringtone = createRingtone(context)
+        //val ringtone = createRingtone(context)
 
-        ringtone.play()
+        //ringtone.play()
 
         executeNotification(context)
 
-        ringtone.stop()
+        //ringtone.stop()
 
 
     }
@@ -77,8 +77,6 @@ class AlarmReceiver : BroadcastReceiver() {
             // 커스텀 레이아웃 불러오기
             val remoteViews : RemoteViews = RemoteViews(context.packageName, R.layout.notification)
 
-
-
             // notification builder 생성 및 설정
             val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -91,7 +89,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
             // notification 실행
             val notificationManager : NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             notificationManager.notify(NOTIFICATION_ID,builder.build())
+            Log.i("Notify","Notifiy!")
 
 
         }
