@@ -13,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
+import com.example.FitnessAlarm.CountAlgorithm.WorkoutInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.FitnessAlarm.camera.CameraSource
@@ -26,6 +28,7 @@ class Counter : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
         var personForCount : MutableList<Person> = mutableListOf()
+        var workoutCounter : WorkoutInterface = SquatCounter()
     }
 
     private var cameraSource: CameraSource? = null

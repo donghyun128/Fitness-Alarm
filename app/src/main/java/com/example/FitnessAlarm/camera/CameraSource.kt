@@ -265,6 +265,10 @@ class CameraSource(
                 }
             }
         }
+        Counter.personForCount = persons
+        Log.d("nose coordinate_x",Counter.personForCount[0].keyPoints[0].coordinate.x.toString())
+        //Counter.workoutCounter.countAlgorithm(Counter.personForCount[0])
+        Log.d("rep : ",Counter.workoutCounter.countAlgorithm(Counter.personForCount[0]).toString())
         frameProcessedInOneSecondInterval++
         if (frameProcessedInOneSecondInterval == 1) {
             // send fps to view
@@ -276,7 +280,7 @@ class CameraSource(
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
         visualize(persons, bitmap)
-        Counter.personForCount = persons
+
     }
 
     private fun visualize(persons: List<Person>, bitmap: Bitmap) {
