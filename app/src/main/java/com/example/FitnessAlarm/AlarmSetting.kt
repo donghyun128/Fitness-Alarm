@@ -1,35 +1,22 @@
 
-package com.example.test222
-import android.content.ContentResolver
+package com.example.FitnessAlarm
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.media.MediaPlayer
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.*
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.widget.addTextChangedListener
-import com.example.test222.MainActivity.Companion
-import com.example.test222.MainActivity.Companion.HOUR_KEY
-import com.example.test222.MainActivity.Companion.MINUTE_KEY
-import com.example.test222.MainActivity.Companion.REPETITION_KEY
-import com.example.test222.MainActivity.Companion.SHARED_PREFERENCE_NAME
-import com.example.test222.MainActivity.Companion.WORKOUT_KEY
-import com.example.test222.data.AlarmData
-import org.w3c.dom.Text
+import com.example.FitnessAlarm.MainActivity.Companion
+import com.example.FitnessAlarm.MainActivity.Companion.HOUR_KEY
+import com.example.FitnessAlarm.MainActivity.Companion.MINUTE_KEY
+import com.example.FitnessAlarm.MainActivity.Companion.REPETITION_KEY
+import com.example.FitnessAlarm.MainActivity.Companion.SHARED_PREFERENCE_NAME
+import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
+import com.example.FitnessAlarm.data.AlarmData
 
 class AlarmSetting : AppCompatActivity() {
 

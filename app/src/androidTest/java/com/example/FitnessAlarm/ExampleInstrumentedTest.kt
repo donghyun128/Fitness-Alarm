@@ -1,4 +1,4 @@
-package com.example.test222
+package com.example.FitnessAlarm
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

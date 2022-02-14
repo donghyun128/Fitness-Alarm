@@ -14,8 +14,14 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222.data
+package com.example.FitnessAlarm.movenet
 
-import android.graphics.PointF
+import android.graphics.Bitmap
+import com.example.FitnessAlarm.data.Person
 
-data class KeyPoint(val bodyPart: BodyPart, var coordinate: PointF, val score: Float)
+interface PoseDetector : AutoCloseable {
+
+    fun estimatePoses(bitmap: Bitmap): List<Person>
+
+    fun lastInferenceTimeNanos(): Long
+}

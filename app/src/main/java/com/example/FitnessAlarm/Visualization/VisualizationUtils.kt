@@ -14,14 +14,14 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222.Visualization
+package com.example.FitnessAlarm.Visualization
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.test222.data.BodyPart
-import com.example.test222.data.Person
+import com.example.FitnessAlarm.data.BodyPart
+import com.example.FitnessAlarm.data.Person
 import kotlin.math.max
 
 object VisualizationUtils {

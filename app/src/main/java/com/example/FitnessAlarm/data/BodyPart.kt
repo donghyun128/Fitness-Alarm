@@ -14,7 +14,7 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222.data
+package com.example.FitnessAlarm.data
 
 enum class BodyPart(val position: Int) {
     NOSE(0),

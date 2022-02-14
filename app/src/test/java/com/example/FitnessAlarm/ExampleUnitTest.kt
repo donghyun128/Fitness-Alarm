@@ -1,4 +1,4 @@
-package com.example.test222
+package com.example.FitnessAlarm
 
 import org.junit.Test
 

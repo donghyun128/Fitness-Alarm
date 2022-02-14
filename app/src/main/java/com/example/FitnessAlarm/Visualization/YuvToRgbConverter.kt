@@ -1,4 +1,4 @@
-package com.example.test222.Visualization
+package com.example.FitnessAlarm.Visualization
 
 import android.content.Context
 import android.graphics.Bitmap

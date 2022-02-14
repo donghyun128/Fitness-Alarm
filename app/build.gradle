@@ -54,7 +54,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.test222"
+        applicationId "com.example.FitnessAlarm"
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1

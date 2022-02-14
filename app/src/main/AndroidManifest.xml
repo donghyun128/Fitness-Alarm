@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.test222">
+    package="com.example.FitnessAlarm">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test222">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.FitnessAlarm.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,16 +28,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmSetting">
+        <activity android:name="com.example.FitnessAlarm.AlarmSetting">
 
         </activity>
 
-        <activity android:name=".Counter">
+        <activity android:name="com.example.FitnessAlarm.Counter">
 
         </activity>
 
 
-        <receiver android:name=".AlarmReceiver"
+        <receiver android:name="com.example.FitnessAlarm.AlarmReceiver"
             android:exported="false"
             >
             <intent-filter>

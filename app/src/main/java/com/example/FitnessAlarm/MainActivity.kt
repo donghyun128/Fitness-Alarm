@@ -1,4 +1,4 @@
-package com.example.test222
+package com.example.FitnessAlarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,18 +6,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
-import com.example.test222.data.AlarmData
+import com.example.FitnessAlarm.data.AlarmData
 
 
 class MainActivity : AppCompatActivity(){

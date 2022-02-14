@@ -14,10 +14,11 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222.data
+package com.example.FitnessAlarm.data
 
-enum class Device {
-    CPU,
-    NNAPI,
-    GPU
-}
+data class TorsoAndBodyDistance(
+    val maxTorsoYDistance: Float,
+    val maxTorsoXDistance: Float,
+    val maxBodyYDistance: Float,
+    val maxBodyXDistance: Float
+)

@@ -1,35 +1,30 @@
 
-package com.example.test222
+package com.example.FitnessAlarm
 
 import android.Manifest
-import android.app.AlertDialog
-import android.app.Dialog
-import android.app.Service
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.IBinder
-import android.os.PersistableBundle
 import android.os.Process
 import android.util.Log
 import android.view.SurfaceView
 import android.view.View
-import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.example.test222.camera.CameraSource
-import com.example.test222.data.Device
-import com.example.test222.movenet.*
+import com.example.FitnessAlarm.camera.CameraSource
+import com.example.FitnessAlarm.data.Device
+import com.example.FitnessAlarm.movenet.*
 
 class Counter : AppCompatActivity() {
-/*
+
+    companion object {
+        private const val FRAGMENT_DIALOG = "dialog"
+    }
+
     private var cameraSource: CameraSource? = null
     private lateinit var surfaceView: SurfaceView
     private var device = Device.GPU
@@ -98,7 +93,8 @@ class Counter : AppCompatActivity() {
                     cameraSource?.initCamera()
                 }
             }
-            //createPoseEstimator()
+            createPoseEstimator()
+
         }
     }
 
@@ -130,7 +126,7 @@ class Counter : AppCompatActivity() {
         }
     }
 
-    /*
+
     // Show/hide the pose classification option.
     private fun showPoseClassifier(isVisible: Boolean) {
        //vClassificationOption.visibility = if (isVisible) View.VISIBLE else View.GONE
@@ -147,7 +143,6 @@ class Counter : AppCompatActivity() {
         // For MoveNet MultiPose, hide score and disable pose classifier as the model returns
         // multiple Person instances.
         val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
-
         /*
         val poseDetector = when (modelPos) {
             0 -> {
@@ -201,9 +196,10 @@ class Counter : AppCompatActivity() {
         poseDetector?.let { detector ->
             cameraSource?.setDetector(detector)
         }
+        //poseDetector?.estimatePoses()
     }
 
-    /*
+
     // Show/hide the tracking options.
     private fun showTracker(isVisible: Boolean) {
         if (isVisible) {
@@ -216,36 +212,36 @@ class Counter : AppCompatActivity() {
             spnTracker.setSelection(0)
         }
     }
-    */
 
-    */
-*/
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i("alarm confirm", "alarm confirm")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.counter)
 
-        /*
+
         surfaceView = findViewById(R.id.surfaceView)
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
-         */
+
     }
 
     override fun onStart() {
         super.onStart()
-        //openCamera()
+        openCamera()
     }
 
     override fun onResume() {
-        //cameraSource?.resume()
+        cameraSource?.resume()
         super.onResume()
     }
 
     override fun onPause() {
-       // cameraSource?.close()
-       //cameraSource = null
+       cameraSource?.close()
+       cameraSource = null
         super.onPause()
     }
 

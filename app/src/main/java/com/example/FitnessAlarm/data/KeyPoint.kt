@@ -14,13 +14,8 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222.data
+package com.example.FitnessAlarm.data
 
-import android.graphics.RectF
+import android.graphics.PointF
 
-data class Person(
-    var id: Int = -1, // default id is -1
-    val keyPoints: List<KeyPoint>,
-    val boundingBox: RectF? = null, // Only MoveNet MultiPose return bounding box.
-    val score: Float
-)
+data class KeyPoint(val bodyPart: BodyPart, var coordinate: PointF, val score: Float)

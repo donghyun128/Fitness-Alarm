@@ -14,14 +14,13 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.test222.movenet
+package com.example.FitnessAlarm.data
 
-import android.graphics.Bitmap
-import com.example.test222.data.Person
+import android.graphics.RectF
 
-interface PoseDetector : AutoCloseable {
-
-    fun estimatePoses(bitmap: Bitmap): List<Person>
-
-    fun lastInferenceTimeNanos(): Long
-}
+data class Person(
+    var id: Int = -1, // default id is -1
+    val keyPoints: List<KeyPoint>,
+    val boundingBox: RectF? = null, // Only MoveNet MultiPose return bounding box.
+    val score: Float
+)
