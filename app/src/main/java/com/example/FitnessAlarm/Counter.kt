@@ -17,12 +17,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.FitnessAlarm.camera.CameraSource
 import com.example.FitnessAlarm.data.Device
+import com.example.FitnessAlarm.data.Person
 import com.example.FitnessAlarm.movenet.*
+
 
 class Counter : AppCompatActivity() {
 
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
+        var personForCount : MutableList<Person> = mutableListOf()
     }
 
     private var cameraSource: CameraSource? = null
@@ -90,12 +93,14 @@ class Counter : AppCompatActivity() {
                     }
                 //isPoseClassifier()
                 lifecycleScope.launch(Dispatchers.Main) {
+                    Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
                     cameraSource?.initCamera()
                 }
             }
             createPoseEstimator()
 
         }
+        Log.i("test_log","open_camera")
     }
 
     // check if permission is granted or not.
@@ -105,6 +110,8 @@ class Counter : AppCompatActivity() {
             Process.myPid(),
             Process.myUid()
         ) == PackageManager.PERMISSION_GRANTED
+        Log.i("test_log","isCameraPermissonGranted")
+
     }
 
     private fun requestPermission() {
@@ -124,6 +131,8 @@ class Counter : AppCompatActivity() {
                 )
             }
         }
+        Log.i("test_log","requestPermission")
+
     }
 
 
@@ -195,8 +204,11 @@ class Counter : AppCompatActivity() {
 
         poseDetector?.let { detector ->
             cameraSource?.setDetector(detector)
+            Log.i("test_log","setDetector")
+
         }
-        //poseDetector?.estimatePoses()
+        Log.i("test_log","createPoseEstimator")
+
     }
 
 
@@ -226,23 +238,30 @@ class Counter : AppCompatActivity() {
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
+        Log.i("test_log","onCreate")
 
     }
 
     override fun onStart() {
         super.onStart()
         openCamera()
+        Log.i("test_log","openCamera in onStart")
+
     }
 
     override fun onResume() {
         cameraSource?.resume()
         super.onResume()
+        Log.i("test_log","onResume")
+
     }
 
     override fun onPause() {
        cameraSource?.close()
        cameraSource = null
         super.onPause()
+        Log.i("test_log","onPause")
+
     }
 
 

@@ -19,6 +19,7 @@ package com.example.FitnessAlarm.movenet
 import android.content.Context
 import android.graphics.*
 import android.os.SystemClock
+import android.util.Log
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import com.example.FitnessAlarm.data.*
@@ -166,6 +167,8 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
         }
         lastInferenceTimeNanos =
             SystemClock.elapsedRealtimeNanos() - inferenceStartTimeNanos
+        Log.i("test_log","estimatePoses in MoveNet.kt")
+
         return listOf(Person(keyPoints = keyPoints, score = totalScore / numKeyPoints))
     }
 

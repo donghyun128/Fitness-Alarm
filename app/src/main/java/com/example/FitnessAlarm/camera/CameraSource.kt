@@ -18,6 +18,7 @@ limitations under the License.
 package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageFormat
 import android.graphics.Matrix
@@ -32,6 +33,7 @@ import android.os.HandlerThread
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
+import com.example.FitnessAlarm.Counter
 import kotlinx.coroutines.suspendCancellableCoroutine
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
 import com.example.FitnessAlarm.Visualization.YuvToRgbConverter
@@ -90,6 +92,7 @@ class CameraSource(
     private var imageReaderHandler: Handler? = null
     private var cameraId: String = ""
 
+
     suspend fun initCamera() {
         camera = openCamera(cameraManager, cameraId)
         imageReader =
@@ -114,6 +117,7 @@ class CameraSource(
                     imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
                     rotateMatrix, false
                 )
+                Log.i("test_log","initCamera in CameraSource")
                 processImage(rotatedBitmap)
                 image.close()
             }
@@ -180,6 +184,7 @@ class CameraSource(
             if (this.detector != null) {
                 this.detector?.close()
                 this.detector = null
+                Log.i("aa",Counter.personForCount[1].keyPoints[0].coordinate.x.toString())
             }
             this.detector = detector
         }
@@ -239,11 +244,17 @@ class CameraSource(
 
     // process image
     private fun processImage(bitmap: Bitmap) {
+
+        Counter.personForCount = mutableListOf<Person>()
+
         val persons = mutableListOf<Person>()
         var classificationResult: List<Pair<String, Float>>? = null
+        Log.i("test_log","processImage in CameraSource")
 
         synchronized(lock) {
             detector?.estimatePoses(bitmap)?.let {
+                Log.i("test_log","estimatePoses in CamearSource.processImage")
+
                 persons.addAll(it)
 
                 // if the model only returns one item, allow running the Pose classifier.
@@ -265,6 +276,7 @@ class CameraSource(
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
         visualize(persons, bitmap)
+        Counter.personForCount = persons
     }
 
     private fun visualize(persons: List<Person>, bitmap: Bitmap) {
