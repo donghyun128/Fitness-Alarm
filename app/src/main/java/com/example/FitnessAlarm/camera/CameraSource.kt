@@ -18,7 +18,6 @@ limitations under the License.
 package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
@@ -32,7 +31,6 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
-import com.example.FitnessAlarm.CountAlgorithm.WorkoutInterface
 import com.example.FitnessAlarm.Counter
 import kotlinx.coroutines.suspendCancellableCoroutine
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
@@ -184,7 +182,7 @@ class CameraSource(
             if (this.detector != null) {
                 this.detector?.close()
                 this.detector = null
-                Log.i("aa",Counter.personForCount[1].keyPoints[0].coordinate.x.toString())
+                Log.i("aa", Counter.personForCount[1].keyPoints[0].coordinate.x.toString())
             }
             this.detector = detector
         }
@@ -279,7 +277,7 @@ class CameraSource(
         if (persons.isNotEmpty()) {
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
-        visualize(persons, bitmap,Counter.workoutCounter)
+        visualize(persons, bitmap, Counter.workoutCounter as SquatCounter)
 
     }
 
@@ -368,4 +366,6 @@ class CameraSource(
 
         fun onDetectedInfo(personScore: Float?, poseLabels: List<Pair<String, Float>>?)
     }
+
+
 }

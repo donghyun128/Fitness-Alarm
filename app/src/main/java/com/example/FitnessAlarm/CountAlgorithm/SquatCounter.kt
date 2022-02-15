@@ -5,7 +5,7 @@ import android.speech.tts.TextToSpeech
 import com.example.FitnessAlarm.data.BodyPart
 import com.example.FitnessAlarm.data.Person
 
-class SquatCounter(context: Context) : WorkoutCounter(context) {
+class SquatCounter : WorkoutCounter() {
 
     /*
     val MIN_AMPLITUDE = 40
@@ -34,7 +34,7 @@ class SquatCounter(context: Context) : WorkoutCounter(context) {
                         if (top - bottom > MIN_AMPLITUDE) {
                             count++
                             goal = -1
-                            speakRep()
+                            //speakRep()
                         }
                     }
                     else if (goal == -1 && dy < 0 && (top - y) > (top - bottom) * REP_THRESHOLD) {

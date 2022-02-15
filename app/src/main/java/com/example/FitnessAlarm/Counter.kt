@@ -11,11 +11,11 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
-import com.example.FitnessAlarm.CountAlgorithm.WorkoutInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.FitnessAlarm.camera.CameraSource
@@ -29,7 +29,7 @@ class Counter : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
         var personForCount : MutableList<Person> = mutableListOf()
-        var workoutCounter : WorkoutCounter = SquatCounter(this.context)
+        var workoutCounter : WorkoutCounter = SquatCounter()
     }
 
     private var cameraSource: CameraSource? = null
@@ -98,6 +98,7 @@ class Counter : AppCompatActivity() {
                 //isPoseClassifier()
                 lifecycleScope.launch(Dispatchers.Main) {
                     Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
+                    offAlarm()
                     cameraSource?.initCamera()
                 }
             }
@@ -268,6 +269,11 @@ class Counter : AppCompatActivity() {
 
     }
 
+    fun offAlarm()
+    {
+        if (Counter.workoutCounter.count == Counter.workoutCounter.goal)
+            ActivityCompat.finishAffinity(this)
+    }
 
 }
 

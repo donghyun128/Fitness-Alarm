@@ -5,7 +5,7 @@ import android.os.Build
 import android.speech.tts.TextToSpeech
 import com.example.FitnessAlarm.data.Person
 
-abstract class WorkoutCounter(context: Context) {
+abstract class WorkoutCounter() {
 
     val MIN_AMPLITUDE = 40
     val REP_THRESHOLD = 0.8
@@ -19,7 +19,7 @@ abstract class WorkoutCounter(context: Context) {
     var prev_dy = 0
     var top = 0
     var bottom = 0
-
+    /*
     val tts : TextToSpeech
 
     init {
@@ -28,10 +28,10 @@ abstract class WorkoutCounter(context: Context) {
             {}
         })
     }
-
+    */
 
     abstract fun countAlgorithm(person : Person) : Int
-
+    /*
     fun speakRep()
     {
         // QUEUE_ADD : Queue mode where the new entry is added at the end of the playback queue.
@@ -44,9 +44,18 @@ abstract class WorkoutCounter(context: Context) {
             tts.speak(count.toString(), TextToSpeech.QUEUE_FLUSH, null);
         }
     }
-
+    */
     fun reset()
     {
         count = 0
     }
+
+    fun quitApplication()
+    {
+        if (count == goal)
+        {
+
+        }
+    }
+
 }
