@@ -24,7 +24,7 @@ import com.example.FitnessAlarm.data.Person
 import com.example.FitnessAlarm.movenet.*
 
 
-class Counter : AppCompatActivity() {
+public class Counter : AppCompatActivity() {
 
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
@@ -98,8 +98,7 @@ class Counter : AppCompatActivity() {
                 //isPoseClassifier()
                 lifecycleScope.launch(Dispatchers.Main) {
                     Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
-                    offAlarm()
-                    cameraSource?.initCamera()
+                    cameraSource?.initCamera(this)
                 }
             }
             createPoseEstimator()
@@ -269,11 +268,8 @@ class Counter : AppCompatActivity() {
 
     }
 
-    fun offAlarm()
-    {
-        if (Counter.workoutCounter.count == Counter.workoutCounter.goal)
-            ActivityCompat.finishAffinity(this)
-    }
+
 
 }
+
 

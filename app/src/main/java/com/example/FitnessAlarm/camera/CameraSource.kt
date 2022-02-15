@@ -17,7 +17,10 @@ limitations under the License.
 
 package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
@@ -30,15 +33,22 @@ import android.text.TextPaint
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.Counter
+import com.example.FitnessAlarm.MainActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
 import com.example.FitnessAlarm.Visualization.YuvToRgbConverter
 import com.example.FitnessAlarm.movenet.PoseClassifier
 import com.example.FitnessAlarm.movenet.PoseDetector
 import com.example.FitnessAlarm.data.Person
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import java.util.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -91,7 +101,7 @@ class CameraSource(
     private var cameraId: String = ""
 
 
-    suspend fun initCamera() {
+    suspend fun initCamera(coroutine : CoroutineScope) {
         camera = openCamera(cameraManager, cameraId)
         imageReader =
             ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
@@ -118,6 +128,12 @@ class CameraSource(
                 Log.i("test_log","initCamera in CameraSource")
                 processImage(rotatedBitmap)
                 image.close()
+
+                if (Counter.workoutCounter.count == Counter.workoutCounter.complete)
+                {
+                    Log.i("coroutine","coroutine.cancel()")
+
+                }
             }
         }, imageReaderHandler)
 
@@ -251,7 +267,7 @@ class CameraSource(
 
         synchronized(lock) {
             detector?.estimatePoses(bitmap)?.let {
-                Log.i("test_log","estimatePoses in CamearSource.processImage")
+                Log.i("test_log","estimatePoses in CameraSource.processImage")
 
                 persons.addAll(it)
 
@@ -339,7 +355,7 @@ class CameraSource(
             val xPos = (canvas.width / 8).toFloat()
             val yPos = (bottom - canvas.height / 8).toFloat()
             Log.i("draw_text","drawText!" + counter.count.toString())
-            canvas.drawText("Count : " + counter.count.toString() + " / " + counter.goal.toString(),
+            canvas.drawText("Count : " + Counter.workoutCounter.count.toString() + " / " + Counter.workoutCounter.complete.toString(),
                 xPos,
                 yPos,
                 textPaint)
@@ -367,5 +383,8 @@ class CameraSource(
         fun onDetectedInfo(personScore: Float?, poseLabels: List<Pair<String, Float>>?)
     }
 
+    public fun offAlarm()
+    {
 
+    }
 }

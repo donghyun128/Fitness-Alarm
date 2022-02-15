@@ -19,6 +19,7 @@ abstract class WorkoutCounter() {
     var prev_dy = 0
     var top = 0
     var bottom = 0
+    var complete = 0
     /*
     val tts : TextToSpeech
 
