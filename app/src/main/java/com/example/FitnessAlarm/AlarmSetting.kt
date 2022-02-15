@@ -158,6 +158,7 @@ class AlarmSetting : AppCompatActivity() {
                 try {
                     rep_num = s.toString().toInt()
                     sharedPreference.edit().putInt(REPETITION_KEY,rep_num).apply()
+                    Counter.workoutCounter.goal = rep_num
 
                 } catch (e : NumberFormatException) {
                     Toast.makeText(context,"숫자만 입력하세요",Toast.LENGTH_SHORT).show()

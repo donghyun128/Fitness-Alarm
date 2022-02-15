@@ -285,12 +285,16 @@ class CameraSource(
 
     private fun visualize(persons: List<Person>, bitmap: Bitmap,counter : SquatCounter) {
 
+
+        // outputBitmap : camera에서 얻은 bitmap에 BodyKeyPoint를 그린 bitmap
         val outputBitmap = VisualizationUtils.drawBodyKeypoints(
             bitmap,
             persons.filter { it.score > MIN_CONFIDENCE }, isTrackerEnabled
         )
 
         val holder = surfaceView.holder
+
+        // surfaceView 스크린에 그리기 시작
         val surfaceCanvas = holder.lockCanvas()
         surfaceCanvas?.let { canvas ->
             val screenWidth: Int
@@ -320,12 +324,29 @@ class CameraSource(
             )
 
             val textPaint = TextPaint()
-            textPaint.setARGB(100,50,30,20)
-            textPaint.textSize = 30F
+
+            //textPaint.setARGB(100,50,30,20)
+            // text 크기 설정
+            textPaint.textSize = 80F
+            //textPaint.textAlign = Paint.Align.CENTER
+            // text 색 설정
+            textPaint.color = Color.rgb(153,204,255)
+            // text 굵기 설정
+            textPaint.strokeWidth = 20.toFloat()
+
+            textPaint.isAntiAlias = true
+
+
+
+            val xPos = (canvas.width / 8).toFloat()
+            val yPos = (bottom - canvas.height / 8).toFloat()
             Log.i("draw_text","drawText!" + counter.count.toString())
             canvas.drawText("Count : " + counter.count.toString() + " / " + counter.goal.toString(),
-                200.13212F,
-                200.12321F,textPaint)
+                xPos,
+                yPos,
+                textPaint)
+
+            // 수정된 surfaceView를 unlock
             surfaceView.holder.unlockCanvasAndPost(canvas)
         }
     }

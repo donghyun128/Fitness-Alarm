@@ -1,10 +1,13 @@
 package com.example.FitnessAlarm.CountAlgorithm
 
+import android.content.Context
+import android.speech.tts.TextToSpeech
 import com.example.FitnessAlarm.data.BodyPart
 import com.example.FitnessAlarm.data.Person
 
-class SquatCounter : WorkoutInterface {
+class SquatCounter(context: Context) : WorkoutCounter(context) {
 
+    /*
     val MIN_AMPLITUDE = 40
     val REP_THRESHOLD = 0.8
     val MIN_CONFIDENCE = 0.5
@@ -17,6 +20,8 @@ class SquatCounter : WorkoutInterface {
     var prev_dy = 0
     var top = 0
     var bottom = 0
+    */
+
 
     override fun countAlgorithm(person : Person) : Int
     {
@@ -54,12 +59,7 @@ class SquatCounter : WorkoutInterface {
         return count
     }
 
-    override fun speakRep()
-    {
 
-    }
-    override fun reset()
-    {
 
-    }
+
 }
