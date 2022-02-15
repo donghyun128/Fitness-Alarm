@@ -19,10 +19,7 @@ package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageFormat
-import android.graphics.Matrix
-import android.graphics.Rect
+import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
@@ -30,9 +27,12 @@ import android.hardware.camera2.CameraManager
 import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
+import android.text.TextPaint
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
+import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
+import com.example.FitnessAlarm.CountAlgorithm.WorkoutInterface
 import com.example.FitnessAlarm.Counter
 import kotlinx.coroutines.suspendCancellableCoroutine
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
@@ -279,11 +279,11 @@ class CameraSource(
         if (persons.isNotEmpty()) {
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
-        visualize(persons, bitmap)
+        visualize(persons, bitmap,Counter.workoutCounter)
 
     }
 
-    private fun visualize(persons: List<Person>, bitmap: Bitmap) {
+    private fun visualize(persons: List<Person>, bitmap: Bitmap,counter : SquatCounter) {
 
         val outputBitmap = VisualizationUtils.drawBodyKeypoints(
             bitmap,
@@ -318,9 +318,18 @@ class CameraSource(
                 outputBitmap, Rect(0, 0, outputBitmap.width, outputBitmap.height),
                 Rect(left, top, right, bottom), null
             )
+
+            val textPaint = TextPaint()
+            textPaint.setARGB(100,50,30,20)
+            textPaint.textSize = 30F
+            Log.i("draw_text","drawText!" + counter.count.toString())
+            canvas.drawText("Count : " + counter.count.toString() + " / " + counter.goal.toString(),
+                200.13212F,
+                200.12321F,textPaint)
             surfaceView.holder.unlockCanvasAndPost(canvas)
         }
     }
+
 
     private fun stopImageReaderThread() {
         imageReaderThread?.quitSafely()

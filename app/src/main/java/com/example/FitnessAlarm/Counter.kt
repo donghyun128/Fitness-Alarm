@@ -28,7 +28,7 @@ class Counter : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
         var personForCount : MutableList<Person> = mutableListOf()
-        var workoutCounter : WorkoutInterface = SquatCounter()
+        var workoutCounter : SquatCounter = SquatCounter()
     }
 
     private var cameraSource: CameraSource? = null
