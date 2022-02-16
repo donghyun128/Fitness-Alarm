@@ -102,6 +102,7 @@ class CameraSource(
 
 
     suspend fun initCamera(coroutine : CoroutineScope) {
+        Log.i("test_log","initCamera in CameraSource")
         camera = openCamera(cameraManager, cameraId)
         imageReader =
             ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
@@ -125,17 +126,22 @@ class CameraSource(
                     imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
                     rotateMatrix, false
                 )
-                Log.i("test_log","initCamera in CameraSource")
+                Log.i("test_log","processImage in CameraSource")
                 processImage(rotatedBitmap)
                 image.close()
 
                 if (Counter.workoutCounter.count == Counter.workoutCounter.complete)
                 {
-                    Log.i("coroutine","coroutine.cancel()")
+
+                    close()
+                    //coroutine.cancel()
+                    Log.i("close","close()")
 
                 }
             }
         }, imageReaderHandler)
+
+        Log.d("ImageAvailableListener End","ImageAvailableListener End")
 
         imageReader?.surface?.let { surface ->
             session = createSession(listOf(surface))
@@ -148,6 +154,7 @@ class CameraSource(
                 session?.setRepeatingRequest(it, null, null)
             }
         }
+        Log.d("initCamera in CameraSource End","initCamera in CameraSource End")
     }
 
     private suspend fun createSession(targets: List<Surface>): CameraCaptureSession =
@@ -263,7 +270,6 @@ class CameraSource(
 
         val persons = mutableListOf<Person>()
         var classificationResult: List<Pair<String, Float>>? = null
-        Log.i("test_log","processImage in CameraSource")
 
         synchronized(lock) {
             detector?.estimatePoses(bitmap)?.let {

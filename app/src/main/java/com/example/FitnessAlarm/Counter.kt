@@ -96,14 +96,21 @@ public class Counter : AppCompatActivity() {
                         prepareCamera()
                     }
                 //isPoseClassifier()
+
+                // 코루틴 실행
                 lifecycleScope.launch(Dispatchers.Main) {
                     Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
                     cameraSource?.initCamera(this)
+                    Log.d("initCamera 종료","initCamera 종료")
                 }
+                // count와 complete 값이 같아지면 initCamera를 종료
+                Log.d("Out of Launch Block","Out of Launch Block")
             }
             createPoseEstimator()
 
+
         }
+
         Log.i("test_log","open_camera")
     }
 
@@ -229,6 +236,15 @@ public class Counter : AppCompatActivity() {
         }
     }
 
+    private fun checkCompleteness()
+    {
+        if (Counter.workoutCounter.count == Counter.workoutCounter.complete)
+        {
+            Log.d("finish","finish")
+            finish()
+        }
+    }
+
 
 
 
@@ -250,7 +266,8 @@ public class Counter : AppCompatActivity() {
         super.onStart()
         openCamera()
         Log.i("test_log","openCamera in onStart")
-
+        // Counter 액티비티를 종료
+        checkCompleteness()
     }
 
     override fun onResume() {

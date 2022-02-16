@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(){
         var fetchHour : String  = sharedPreference!!.getString(HOUR_KEY,"8")!!
         var fetchMinute : String = sharedPreference!!.getString(MINUTE_KEY,"00")!!
         var fetchWorkout : String = sharedPreference!!.getString(WORKOUT_KEY,"squat")!!
-        val fetchRepetition : Int = sharedPreference!!.getInt(REPETITION_KEY,2)!!
+        var fetchRepetition : Int = sharedPreference!!.getInt(REPETITION_KEY,2)!!
         var fetchOnOff : Boolean = sharedPreference.getBoolean(ONOFF_KEY,true)
 
         val alarmInfo : AlarmData = AlarmData(fetchHour,fetchMinute,fetchWorkout,fetchRepetition,fetchOnOff)
