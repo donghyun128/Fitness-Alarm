@@ -3,6 +3,7 @@ package com.example.FitnessAlarm
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -20,15 +21,14 @@ import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
 import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import com.example.FitnessAlarm.camera.CameraSource
 import com.example.FitnessAlarm.data.Device
 import com.example.FitnessAlarm.data.Person
 import com.example.FitnessAlarm.movenet.*
+import kotlinx.coroutines.*
 
 
-public class Counter : AppCompatActivity() {
+public class CameraActivity : AppCompatActivity() {
 
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
@@ -82,11 +82,28 @@ public class Counter : AppCompatActivity() {
                     }
 
                 // 코루틴 실행
-                lifecycleScope.launch(Dispatchers.Main) {
-                    Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
-                    cameraSource?.initCamera(this)
-                    Log.d("initCamera 종료","initCamera 종료")
+                val globalScope = lifecycleScope.launch {
+                    var isFinished : Int = 0
+                    val visualizeCoroutine = lifecycleScope.async {
+
+                        Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
+                        cameraSource?.initCamera(this)
+                        Log.d("initCamera 종료","initCamera 종료")
+                    }
+
+                    val finishCheckCoroutine = CoroutineScope(Dispatchers.Default).async {
+                        if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
+                            isFinished = 1
+                        }
+
+                    }
+                    if (isFinished == 1)
+                    {
+                        cancel()
+                        Log.d("cancel","cancel")
+                    }
                 }
+
                 // count와 complete 값이 같아지면 initCamera를 종료
                 Log.d("Out of Launch Block","Out of Launch Block")
             }
@@ -170,13 +187,20 @@ public class Counter : AppCompatActivity() {
         }
     }
 
-    private fun checkCompleteness()
+
+
+
+
+
+    private fun finishActivity()
     {
         if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
         {
             Log.d("finish","finish")
             Log.d("completeGoal",MainActivity.workoutCounter.completeGoal.toString())
             finish()
+            val quitIntent : Intent = Intent(this,MainActivity::class.java)
+            startActivity(quitIntent)
         }
     }
 
@@ -202,13 +226,13 @@ public class Counter : AppCompatActivity() {
         openCamera()
         Log.i("test_log","openCamera in onStart")
         // Counter 액티비티를 종료
-        checkCompleteness()
     }
 
     override fun onResume() {
-        cameraSource?.resume()
+        //cameraSource?.resume()
         super.onResume()
         Log.i("test_log","onResume")
+        finishActivity()
 
     }
 

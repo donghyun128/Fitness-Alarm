@@ -34,7 +34,7 @@
 
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.Counter">
+        <activity android:name="com.example.FitnessAlarm.CameraActivity">
 
         </activity>
 

@@ -17,10 +17,8 @@ limitations under the License.
 
 package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
@@ -33,10 +31,9 @@ import android.text.TextPaint
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
-import com.example.FitnessAlarm.Counter
+import com.example.FitnessAlarm.CameraActivity
 import com.example.FitnessAlarm.MainActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
@@ -46,9 +43,8 @@ import com.example.FitnessAlarm.movenet.PoseDetector
 import com.example.FitnessAlarm.data.Person
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import java.util.*
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -100,46 +96,44 @@ class CameraSource(
     private var imageReaderHandler: Handler? = null
     private var cameraId: String = ""
 
-
     suspend fun initCamera(coroutine : CoroutineScope) {
-        Log.i("test_log","initCamera in CameraSource")
+        Log.i("initCamera","initCamera in CameraSource")
         camera = openCamera(cameraManager, cameraId)
         imageReader =
             ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
-        imageReader?.setOnImageAvailableListener({ reader ->
-            val image = reader.acquireLatestImage()
-            if (image != null) {
-                if (!::imageBitmap.isInitialized) {
-                    imageBitmap =
-                        Bitmap.createBitmap(
-                            PREVIEW_WIDTH,
-                            PREVIEW_HEIGHT,
-                            Bitmap.Config.ARGB_8888
-                        )
+
+            imageReader?.setOnImageAvailableListener({ reader ->
+                Log.d("CameraSource","setOnImageAvailableListener")
+                val image = reader.acquireLatestImage()
+                if (image != null) {
+                    if (!::imageBitmap.isInitialized) {
+                        imageBitmap =
+                            Bitmap.createBitmap(
+                                PREVIEW_WIDTH,
+                                PREVIEW_HEIGHT,
+                                Bitmap.Config.ARGB_8888
+                            )
+                    }
+                    yuvConverter.yuvToRgb(image, imageBitmap)
+                    // Create rotated version for portrait display
+                    val rotateMatrix = Matrix()
+                    rotateMatrix.postRotate(90.0f)
+
+                    val rotatedBitmap = Bitmap.createBitmap(
+                        imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
+                        rotateMatrix, false
+                    )
+                    Log.d("CameraSource","Before execute processImage")
+                    processImage(rotatedBitmap)
+                    Log.d("CameraSource","After execute processImage")
+                    image.close()
+                    Log.d("CameraSource","After execute image.close()")
+                    if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
+                        Log.d("CameraSource", "Check completeness")
+                        imageReader = null
+                    }
                 }
-                yuvConverter.yuvToRgb(image, imageBitmap)
-                // Create rotated version for portrait display
-                val rotateMatrix = Matrix()
-                rotateMatrix.postRotate(90.0f)
-
-                val rotatedBitmap = Bitmap.createBitmap(
-                    imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
-                    rotateMatrix, false
-                )
-                Log.i("test_log","processImage in CameraSource")
-                processImage(rotatedBitmap)
-                image.close()
-
-                if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
-                {
-
-                    close()
-                    //coroutine.cancel()
-                    Log.i("close","close()")
-
-                }
-            }
-        }, imageReaderHandler)
+            }, imageReaderHandler)
 
         Log.d("ImageAvailableListener End","ImageAvailableListener End")
 
@@ -205,7 +199,7 @@ class CameraSource(
             if (this.detector != null) {
                 this.detector?.close()
                 this.detector = null
-                Log.i("aa", Counter.personForCount[1].keyPoints[0].coordinate.x.toString())
+                Log.i("aa", CameraActivity.personForCount[1].keyPoints[0].coordinate.x.toString())
             }
             this.detector = detector
         }
@@ -265,30 +259,24 @@ class CameraSource(
 
     // process image
     private fun processImage(bitmap: Bitmap) {
-
-        Counter.personForCount = mutableListOf<Person>()
+        Log.d("CameraSource","processImage")
+        CameraActivity.personForCount = mutableListOf<Person>()
 
         val persons = mutableListOf<Person>()
         var classificationResult: List<Pair<String, Float>>? = null
 
         synchronized(lock) {
+            Log.d("CameraSource : ", "estimatePoses")
             detector?.estimatePoses(bitmap)?.let {
-                Log.i("test_log","estimatePoses in CameraSource.processImage")
 
                 persons.addAll(it)
 
-                // if the model only returns one item, allow running the Pose classifier.
-                if (persons.isNotEmpty()) {
-                    classifier?.run {
-                        classificationResult = classify(persons[0])
-                    }
-                }
             }
         }
-        Counter.personForCount = persons
-        Log.d("nose coordinate_x",Counter.personForCount[0].keyPoints[0].coordinate.x.toString())
+        CameraActivity.personForCount = persons
+        Log.d("nose coordinate_x",CameraActivity.personForCount[0].keyPoints[0].coordinate.x.toString())
         //Counter.workoutCounter.countAlgorithm(Counter.personForCount[0])
-        Log.d("rep : ",MainActivity.workoutCounter.countAlgorithm(Counter.personForCount[0]).toString())
+        Log.d("rep : ",MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0]).toString())
         frameProcessedInOneSecondInterval++
         if (frameProcessedInOneSecondInterval == 1) {
             // send fps to view
@@ -360,7 +348,7 @@ class CameraSource(
 
             val xPos = (canvas.width / 8).toFloat()
             val yPos = (bottom - canvas.height / 8).toFloat()
-            Log.i("draw_text","drawText!" + counter.count.toString())
+            Log.i("draw_text","Count : " + counter.count.toString())
             canvas.drawText("Count : " + MainActivity.workoutCounter.count.toString() + " / " + MainActivity.workoutCounter.completeGoal.toString(),
                 xPos,
                 yPos,

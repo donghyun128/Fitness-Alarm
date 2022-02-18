@@ -20,7 +20,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.FitnessAlarm.Counter
 import com.example.FitnessAlarm.data.BodyPart
 import com.example.FitnessAlarm.data.Person
 import kotlin.math.max

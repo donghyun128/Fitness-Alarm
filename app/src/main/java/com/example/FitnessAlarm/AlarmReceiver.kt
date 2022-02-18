@@ -40,7 +40,7 @@ class AlarmReceiver : BroadcastReceiver() {
     // pendingIntent 생성
     private fun createPendingIntent(context : Context) : PendingIntent?
     {
-        val counterIntent = Intent(context,Counter::class.java)
+        val counterIntent = Intent(context,CameraActivity::class.java)
 
         val counterPendingIntent : PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(counterIntent)
