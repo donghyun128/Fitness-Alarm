@@ -130,7 +130,7 @@ class CameraSource(
                 processImage(rotatedBitmap)
                 image.close()
 
-                if (Counter.workoutCounter.count == Counter.workoutCounter.complete)
+                if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
                 {
 
                     close()
@@ -288,7 +288,7 @@ class CameraSource(
         Counter.personForCount = persons
         Log.d("nose coordinate_x",Counter.personForCount[0].keyPoints[0].coordinate.x.toString())
         //Counter.workoutCounter.countAlgorithm(Counter.personForCount[0])
-        Log.d("rep : ",Counter.workoutCounter.countAlgorithm(Counter.personForCount[0]).toString())
+        Log.d("rep : ",MainActivity.workoutCounter.countAlgorithm(Counter.personForCount[0]).toString())
         frameProcessedInOneSecondInterval++
         if (frameProcessedInOneSecondInterval == 1) {
             // send fps to view
@@ -299,7 +299,7 @@ class CameraSource(
         if (persons.isNotEmpty()) {
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
-        visualize(persons, bitmap, Counter.workoutCounter as SquatCounter)
+        visualize(persons, bitmap, MainActivity.workoutCounter as SquatCounter)
 
     }
 
@@ -361,7 +361,7 @@ class CameraSource(
             val xPos = (canvas.width / 8).toFloat()
             val yPos = (bottom - canvas.height / 8).toFloat()
             Log.i("draw_text","drawText!" + counter.count.toString())
-            canvas.drawText("Count : " + Counter.workoutCounter.count.toString() + " / " + Counter.workoutCounter.complete.toString(),
+            canvas.drawText("Count : " + MainActivity.workoutCounter.count.toString() + " / " + MainActivity.workoutCounter.completeGoal.toString(),
                 xPos,
                 yPos,
                 textPaint)

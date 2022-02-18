@@ -145,7 +145,10 @@ class AlarmSetting : AppCompatActivity() {
         val sharedPreference = getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
         val repetition_text : EditText = findViewById(R.id.repetition_banner)
         val current_rep = sharedPreference.getInt(REPETITION_KEY,2)
+        MainActivity.workoutCounter.completeGoal = current_rep
         Log.i("rep test","sharedPreferenceREP : " + current_rep.toString())
+        Log.i("rep test","workoutCounter.completeGoal : " + MainActivity.workoutCounter.completeGoal.toString())
+
         repetition_text.setText(current_rep.toString())
 
         var rep_num : Int = 0
@@ -158,8 +161,8 @@ class AlarmSetting : AppCompatActivity() {
                 try {
                     rep_num = s.toString().toInt()
                     sharedPreference.edit().putInt(REPETITION_KEY,rep_num).apply()
-                    Counter.workoutCounter.complete = rep_num
-                    Log.i("repetition goal","repetition goal" + Counter.workoutCounter.complete.toString())
+                    MainActivity.workoutCounter.completeGoal = rep_num
+                    Log.i("repetition goal","repetition goal" + MainActivity.workoutCounter.completeGoal.toString())
                 } catch (e : NumberFormatException) {
                     Toast.makeText(context,"숫자만 입력하세요",Toast.LENGTH_SHORT).show()
                 }

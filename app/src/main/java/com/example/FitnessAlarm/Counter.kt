@@ -2,6 +2,8 @@
 package com.example.FitnessAlarm
 
 import android.Manifest
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Process
@@ -14,8 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
+import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.example.FitnessAlarm.camera.CameraSource
@@ -29,8 +33,8 @@ public class Counter : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
         var personForCount : MutableList<Person> = mutableListOf()
-        var workoutCounter : WorkoutCounter = SquatCounter()
     }
+
 
     private var cameraSource: CameraSource? = null
     private lateinit var surfaceView: SurfaceView
@@ -66,36 +70,16 @@ public class Counter : AppCompatActivity() {
                 cameraSource =
                     CameraSource(surfaceView, object : CameraSource.CameraSourceListener {
                         override fun onFPSListener(fps: Int) {
-                            //tvFPS.text = getString(R.string.tfe_pe_tv_fps, fps)
                         }
 
                         override fun onDetectedInfo(
                             personScore: Float?,
                             poseLabels: List<Pair<String, Float>>?
                         ) {
-                            //tvScore.text = getString(R.string.tfe_pe_tv_score, personScore ?: 0f)
-                            /*
-                            poseLabels?.sortedByDescending { it.second }?.let {
-                                tvClassificationValue1.text = getString(
-                                    R.string.tfe_pe_tv_classification_value,
-                                    convertPoseLabels(if (it.isNotEmpty()) it[0] else null)
-                                )
-                                tvClassificationValue2.text = getString(
-                                    R.string.tfe_pe_tv_classification_value,
-                                    convertPoseLabels(if (it.size >= 2) it[1] else null)
-                                )
-                                tvClassificationValue3.text = getString(
-                                    R.string.tfe_pe_tv_classification_value,
-                                    convertPoseLabels(if (it.size >= 3) it[2] else null)
-                                )
-                            }
-                            */
                         }
-
                     }).apply {
                         prepareCamera()
                     }
-                //isPoseClassifier()
 
                 // 코루틴 실행
                 lifecycleScope.launch(Dispatchers.Main) {
@@ -111,7 +95,7 @@ public class Counter : AppCompatActivity() {
 
         }
 
-        Log.i("test_log","open_camera")
+        Log.i("openCamera End","openCamera End")
     }
 
     // check if permission is granted or not.
@@ -143,7 +127,6 @@ public class Counter : AppCompatActivity() {
             }
         }
         Log.i("test_log","requestPermission")
-
     }
 
 
@@ -163,55 +146,6 @@ public class Counter : AppCompatActivity() {
         // For MoveNet MultiPose, hide score and disable pose classifier as the model returns
         // multiple Person instances.
         val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
-        /*
-        val poseDetector = when (modelPos) {
-            0 -> {
-                // MoveNet Lightning (SinglePose)
-                showPoseClassifier(true)
-                //showDetectionScore(true)
-                //showTracker(false)
-                MoveNet.create(this, device, ModelType.Lightning)
-            }
-            1 -> {
-                // MoveNet Thunder (SinglePose)
-                showPoseClassifier(true)
-                //showDetectionScore(true)
-                //showTracker(false)
-                MoveNet.create(this, device, ModelType.Thunder)
-            }
-            2 -> {
-                // MoveNet (Lightning) MultiPose
-                showPoseClassifier(false)
-                //showDetectionScore(false)
-                // Movenet MultiPose Dynamic does not support GPUDelegate
-                /*
-                if (device == Device.GPU) {
-                   // showToast(getString(R.string.tfe_pe_gpu_error))
-                }
-                */
-
-                //showTracker(true)
-                /*
-                MoveNetMultiPose.create(
-                    this,
-                    device,
-                    Type.Dynamic
-                )
-                */
-
-            }
-            3 -> {
-                // PoseNet (SinglePose)
-                showPoseClassifier(true)
-                //showDetectionScore(true)
-                //showTracker(false)
-                //PoseNet.create(this, device)
-            }
-            else -> {
-                null
-            }
-        }
-        */
 
         poseDetector?.let { detector ->
             cameraSource?.setDetector(detector)
@@ -238,12 +172,14 @@ public class Counter : AppCompatActivity() {
 
     private fun checkCompleteness()
     {
-        if (Counter.workoutCounter.count == Counter.workoutCounter.complete)
+        if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
         {
             Log.d("finish","finish")
+            Log.d("completeGoal",MainActivity.workoutCounter.completeGoal.toString())
             finish()
         }
     }
+
 
 
 
@@ -252,7 +188,6 @@ public class Counter : AppCompatActivity() {
         Log.i("alarm confirm", "alarm confirm")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.counter)
-
 
         surfaceView = findViewById(R.id.surfaceView)
         if (!isCameraPermissionGranted()) {

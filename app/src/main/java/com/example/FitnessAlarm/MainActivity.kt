@@ -14,6 +14,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
+import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
+import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
+import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
 import com.example.FitnessAlarm.data.AlarmData
 
 
@@ -29,24 +32,14 @@ class MainActivity : AppCompatActivity(){
         const val REPETITION_KEY = "repetition"
         const val ONOFF_KEY = "onOff"
         const val ALARM_REQUEST_CODE = 222
+
+        var workoutCounter : WorkoutCounter = SquatCounter()
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }*/
-
-
-
 
     }
 
@@ -62,12 +55,29 @@ class MainActivity : AppCompatActivity(){
 
         changeAlarmSetting(alarmData,set_btn)
         changeAlarmOnOff(alarmData,alarm_switch)
+
+
     }
 
     override fun onPause() {
         super.onPause()
     }
 
+    // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
+    private fun setWorkoutCounter(workout : String)
+    {
+
+        if (workout == "squat") {
+            MainActivity.workoutCounter = SquatCounter()
+        }
+
+        else if (workout == "pushup") {
+            MainActivity.workoutCounter = PushupCounter()
+        }
+        // setWorkoutCounter()를 실행할 경우, workOutCounter의 변수값이 default로 초기화되므로 적절히 값을 바꿔주어야 한다.
+        MainActivity.workoutCounter.completeGoal = getSharedPreferences(SHARED_PREFERENCE_NAME,MODE_PRIVATE).getInt(
+            REPETITION_KEY,2)
+    }
 
     // 버튼 누르면 AlarmSetting 변경 Layout으로 이동
     private fun changeAlarmSetting(alarmData : AlarmData, set_btn : Button )
@@ -169,10 +179,13 @@ class MainActivity : AppCompatActivity(){
         sharedPreference.edit().putBoolean(ONOFF_KEY,true).apply()
         val newAlarmData = fetchSharedPreferences()
 
+        MainActivity.workoutCounter.completeGoal = newAlarmData.getRepCnt
+
         Log.i("Hour test","Hour :" + newAlarmData.getHour)
         Log.i("Minute test","Minute :" + newAlarmData.getMinute)
         Log.i("Onoff test","Onoff :" + newAlarmData.getOnOff)
 
+        // Calendar에 알람 설정 시간을 입력
         if (newAlarmData.getOnOff) {
             val calendar = Calendar.getInstance().apply {
                 timeInMillis = System.currentTimeMillis()
@@ -186,6 +199,7 @@ class MainActivity : AppCompatActivity(){
             Log.i("DATE ", "DATE :" + calendar.get(Calendar.DATE))
 
 
+            // 캘린더에 입력된 알람 시간에 실행되는 알람매니저 등록
             val alarmManager: AlarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
             val receiverIntent = Intent(this, AlarmReceiver::class.java)
             val pendingIntent = PendingIntent.getBroadcast(
@@ -201,6 +215,7 @@ class MainActivity : AppCompatActivity(){
                 pendingIntent
             )
 
+            setWorkoutCounter(sharedPreference.getString(WORKOUT_KEY,"squat")!!)
             /*
             alarmManager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,

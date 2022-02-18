@@ -3,6 +3,7 @@ package com.example.FitnessAlarm.CountAlgorithm
 import android.content.Context
 import android.os.Build
 import android.speech.tts.TextToSpeech
+import com.example.FitnessAlarm.data.BodyPart
 import com.example.FitnessAlarm.data.Person
 
 abstract class WorkoutCounter() {
@@ -19,7 +20,7 @@ abstract class WorkoutCounter() {
     var prev_dy = 0
     var top = 0
     var bottom = 0
-    var complete = 0
+    var completeGoal = 0
     /*
     val tts : TextToSpeech
 
@@ -31,7 +32,9 @@ abstract class WorkoutCounter() {
     }
     */
 
+    // default countAlgorithm는 SquatAlgorithm
     abstract fun countAlgorithm(person : Person) : Int
+
     /*
     fun speakRep()
     {
@@ -49,14 +52,6 @@ abstract class WorkoutCounter() {
     fun reset()
     {
         count = 0
-    }
-
-    fun quitApplication()
-    {
-        if (count == goal)
-        {
-
-        }
     }
 
 }
