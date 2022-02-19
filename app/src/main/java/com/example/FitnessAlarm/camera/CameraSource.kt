@@ -97,7 +97,7 @@ class CameraSource(
     private var cameraId: String = ""
 
     suspend fun initCamera(coroutine : CoroutineScope) {
-        Log.i("initCamera","initCamera in CameraSource")
+        Log.i("CameraSource","initCamera")
         camera = openCamera(cameraManager, cameraId)
         imageReader =
             ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
@@ -130,12 +130,12 @@ class CameraSource(
                     Log.d("CameraSource","After execute image.close()")
                     if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
                         Log.d("CameraSource", "Check completeness")
-                        imageReader = null
+                        imageReaderHandler!!.removeCallbacksAndMessages(null)
                     }
                 }
             }, imageReaderHandler)
 
-        Log.d("ImageAvailableListener End","ImageAvailableListener End")
+        Log.d("CameraSource","ImageAvailableListener End")
 
         imageReader?.surface?.let { surface ->
             session = createSession(listOf(surface))
@@ -148,11 +148,12 @@ class CameraSource(
                 session?.setRepeatingRequest(it, null, null)
             }
         }
-        Log.d("initCamera in CameraSource End","initCamera in CameraSource End")
+        Log.d("CameraSource","initCamera End")
     }
 
     private suspend fun createSession(targets: List<Surface>): CameraCaptureSession =
         suspendCancellableCoroutine { cont ->
+            Log.d("CameraSource","createSession")
             camera?.createCaptureSession(targets, object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(captureSession: CameraCaptureSession) =
                     cont.resume(captureSession)
@@ -161,11 +162,13 @@ class CameraSource(
                     cont.resumeWithException(Exception("Session error"))
                 }
             }, null)
+            Log.d("CameraSource","createSession End")
         }
 
     @SuppressLint("MissingPermission")
     private suspend fun openCamera(manager: CameraManager, cameraId: String): CameraDevice =
         suspendCancellableCoroutine { cont ->
+            Log.d("CameraSource","openCamera")
             manager.openCamera(cameraId, object : CameraDevice.StateCallback() {
                 override fun onOpened(camera: CameraDevice) = cont.resume(camera)
 
@@ -177,9 +180,11 @@ class CameraSource(
                     if (cont.isActive) cont.resumeWithException(Exception("Camera error"))
                 }
             }, imageReaderHandler)
+            Log.d("CameraSource","openCamera End")
         }
 
     fun prepareCamera() {
+        Log.d("CameraSource","prepareCamera")
         for (cameraId in cameraManager.cameraIdList) {
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
@@ -192,9 +197,11 @@ class CameraSource(
             }
             this.cameraId = cameraId
         }
+        Log.d("CameraSource","prepareCamera End")
     }
 
     fun setDetector(detector: PoseDetector) {
+        Log.d("CameraSource","setDetector")
         synchronized(lock) {
             if (this.detector != null) {
                 this.detector?.close()
@@ -203,9 +210,11 @@ class CameraSource(
             }
             this.detector = detector
         }
+        Log.d("CameraSource","setDetector End")
     }
 
     fun setClassifier(classifier: PoseClassifier?) {
+        Log.d("CameraSource","setClassifier")
         synchronized(lock) {
             if (this.classifier != null) {
                 this.classifier?.close()
@@ -213,6 +222,7 @@ class CameraSource(
             }
             this.classifier = classifier
         }
+        Log.d("CameraSource","setClassifier End")
     }
 /*
     /**
@@ -224,7 +234,8 @@ class CameraSource(
     }
 */
     fun resume() {
-        imageReaderThread = HandlerThread("imageReaderThread").apply { start() }
+    Log.d("CameraSource","resume")
+    imageReaderThread = HandlerThread("imageReaderThread").apply { start() }
         imageReaderHandler = Handler(imageReaderThread!!.looper)
         fpsTimer = Timer()
         fpsTimer?.scheduleAtFixedRate(
@@ -237,9 +248,11 @@ class CameraSource(
             0,
             1000
         )
-    }
+    Log.d("CameraSource","resume End")
+}
 
     fun close() {
+        Log.d("CameraSource","close")
         session?.close()
         session = null
         camera?.close()
@@ -255,6 +268,7 @@ class CameraSource(
         fpsTimer = null
         frameProcessedInOneSecondInterval = 0
         framesPerSecond = 0
+        Log.d("CameraSource","close End")
     }
 
     // process image
@@ -288,12 +302,11 @@ class CameraSource(
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
         visualize(persons, bitmap, MainActivity.workoutCounter as SquatCounter)
-
+        Log.d("CameraSource","processImage End")
     }
 
     private fun visualize(persons: List<Person>, bitmap: Bitmap,counter : SquatCounter) {
-
-
+        Log.d("CameraSource","visualize")
         // outputBitmap : camera에서 얻은 bitmap에 BodyKeyPoint를 그린 bitmap
         val outputBitmap = VisualizationUtils.drawBodyKeypoints(
             bitmap,
@@ -357,10 +370,12 @@ class CameraSource(
             // 수정된 surfaceView를 unlock
             surfaceView.holder.unlockCanvasAndPost(canvas)
         }
+        Log.d("CameraSource","visualize End")
     }
 
 
     private fun stopImageReaderThread() {
+        Log.d("CameraSource","stopImageReaderThread")
         imageReaderThread?.quitSafely()
         try {
             imageReaderThread?.join()
@@ -369,6 +384,7 @@ class CameraSource(
         } catch (e: InterruptedException) {
             Log.d(TAG, e.message.toString())
         }
+        Log.d("CameraSource","stopImageReaderThread End")
     }
 
     interface CameraSourceListener {
