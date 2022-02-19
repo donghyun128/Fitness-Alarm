@@ -65,6 +65,7 @@ public class CameraActivity : AppCompatActivity() {
 
     // open camera
     private fun openCamera() {
+        Log.i("CameraSource","openCamera")
         if (isCameraPermissionGranted()) {
             if (cameraSource == null) {
                 cameraSource =
@@ -100,7 +101,7 @@ public class CameraActivity : AppCompatActivity() {
                     if (isFinished == 1)
                     {
                         cancel()
-                        Log.d("cancel","cancel")
+                        Log.d("CameraSource","openCamera Coroutine cancel")
                     }
                 }
 
@@ -117,16 +118,16 @@ public class CameraActivity : AppCompatActivity() {
 
     // check if permission is granted or not.
     private fun isCameraPermissionGranted(): Boolean {
+        Log.i("CameraSource","isCameraPermissionGranted")
         return checkPermission(
             Manifest.permission.CAMERA,
             Process.myPid(),
             Process.myUid()
         ) == PackageManager.PERMISSION_GRANTED
-        Log.i("test_log","isCameraPermissonGranted")
-
     }
 
     private fun requestPermission() {
+        Log.i("CameraSource","requestPermission")
         when (PackageManager.PERMISSION_GRANTED) {
             ContextCompat.checkSelfPermission(
                 this,
@@ -143,7 +144,7 @@ public class CameraActivity : AppCompatActivity() {
                 )
             }
         }
-        Log.i("test_log","requestPermission")
+        Log.i("CameraSource","requestPermission End")
     }
 
 
@@ -160,17 +161,16 @@ public class CameraActivity : AppCompatActivity() {
     }
 
     private fun createPoseEstimator() {
+        Log.i("CameraSource","createPoseEstimator")
         // For MoveNet MultiPose, hide score and disable pose classifier as the model returns
         // multiple Person instances.
         val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
 
         poseDetector?.let { detector ->
+            Log.i("CameraSource","setDetector")
             cameraSource?.setDetector(detector)
-            Log.i("test_log","setDetector")
-
+            Log.i("CameraSource","createPoseEstimator End")
         }
-        Log.i("test_log","createPoseEstimator")
-
     }
 
 
@@ -187,11 +187,6 @@ public class CameraActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
-
     private fun finishActivity()
     {
         if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
@@ -204,12 +199,8 @@ public class CameraActivity : AppCompatActivity() {
         }
     }
 
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("alarm confirm", "alarm confirm")
+        Log.i("CameraActivity","onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.counter)
 
@@ -217,34 +208,31 @@ public class CameraActivity : AppCompatActivity() {
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
-        Log.i("test_log","onCreate")
-
+        Log.i("CameraActivity","onCreate End")
     }
 
     override fun onStart() {
+        Log.i("CameraActivity","onStart")
         super.onStart()
         openCamera()
-        Log.i("test_log","openCamera in onStart")
-        // Counter 액티비티를 종료
+        Log.i("CameraActivity","onStart End")
     }
 
     override fun onResume() {
-        //cameraSource?.resume()
+        Log.i("CameraActivity","onResume")
+        cameraSource?.resume()
         super.onResume()
-        Log.i("test_log","onResume")
+        Log.i("CameraActivity","onResume End")
         finishActivity()
-
     }
 
     override fun onPause() {
-       cameraSource?.close()
-       cameraSource = null
+        Log.i("CameraActivity","onPause")
+        cameraSource?.close()
+        cameraSource = null
         super.onPause()
-        Log.i("test_log","onPause")
-
+        Log.i("CameraActivity","onPause End")
     }
-
-
 
 }
 
