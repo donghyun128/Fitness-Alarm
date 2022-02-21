@@ -20,16 +20,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Test222">
-        android:name="com.example.FitnessAlarm.App"
         <activity
             android:name="com.example.FitnessAlarm.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name="com.example.FitnessAlarm.AlarmSetting">
 
         </activity>

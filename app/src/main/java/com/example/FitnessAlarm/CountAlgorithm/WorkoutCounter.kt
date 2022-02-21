@@ -5,6 +5,7 @@ import android.os.Build
 import android.speech.tts.TextToSpeech
 import com.example.FitnessAlarm.data.BodyPart
 import com.example.FitnessAlarm.data.Person
+import kotlin.properties.Delegates
 
 abstract class WorkoutCounter() {
 

@@ -20,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
-import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
 import com.example.FitnessAlarm.camera.CameraSource
 import com.example.FitnessAlarm.data.Device
 import com.example.FitnessAlarm.data.Person
@@ -33,9 +32,12 @@ public class CameraActivity : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
         var personForCount : MutableList<Person> = mutableListOf()
+
     }
 
-
+    override fun getApplicationContext(): Context {
+        return super.getApplicationContext()
+    }
     private var cameraSource: CameraSource? = null
     private lateinit var surfaceView: SurfaceView
     private var device = Device.GPU
@@ -78,7 +80,7 @@ public class CameraActivity : AppCompatActivity() {
                             poseLabels: List<Pair<String, Float>>?
                         ) {
                         }
-                    }).apply {
+                    },this).apply {
                         prepareCamera()
                     }
 
@@ -86,24 +88,14 @@ public class CameraActivity : AppCompatActivity() {
                 val globalScope = lifecycleScope.launch {
                     var isFinished : Int = 0
                     val visualizeCoroutine = lifecycleScope.launch {
-                        if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
-                            onDestroy()
-                        }
+
                         Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
                         cameraSource?.initCamera(this)
+
                         Log.d("initCamera 종료","initCamera 종료")
                     }
-
-                    val finishCheckCoroutine = CoroutineScope(Dispatchers.Default).async {
-                        if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
-                            isFinished = 1
-                        }
-
-                    }
-                    if (isFinished == 1)
-                    {
-                        cancel()
-                        Log.d("CameraSource","openCamera Coroutine cancel")
+                    if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
+                        visualizeCoroutine.cancel()
                     }
                 }
 
@@ -217,6 +209,7 @@ public class CameraActivity : AppCompatActivity() {
         Log.i("CameraActivity","onStart")
         super.onStart()
         openCamera()
+        finishActivity()
         Log.i("CameraActivity","onStart End")
     }
 

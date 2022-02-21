@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(){
         const val REPETITION_KEY = "repetition"
         const val ONOFF_KEY = "onOff"
         const val ALARM_REQUEST_CODE = 222
-
         var workoutCounter : WorkoutCounter = SquatCounter()
     }
 

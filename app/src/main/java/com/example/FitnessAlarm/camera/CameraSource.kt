@@ -17,6 +17,7 @@ limitations under the License.
 
 package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
@@ -32,25 +33,26 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
 import androidx.core.content.ContextCompat.startActivity
+import com.example.FitnessAlarm.AlarmSetting
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CameraActivity
 import com.example.FitnessAlarm.MainActivity
-import kotlinx.coroutines.suspendCancellableCoroutine
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
 import com.example.FitnessAlarm.Visualization.YuvToRgbConverter
 import com.example.FitnessAlarm.movenet.PoseClassifier
 import com.example.FitnessAlarm.movenet.PoseDetector
 import com.example.FitnessAlarm.data.Person
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.properties.Delegates
 
 class CameraSource(
     private val surfaceView: SurfaceView,
-    private val listener: CameraSourceListener? = null
+    private val listener: CameraSourceListener? = null,
+    val context: Context
 ) {
 
     companion object {
@@ -61,7 +63,6 @@ class CameraSource(
         private const val MIN_CONFIDENCE = .2f
         private const val TAG = "Camera Source"
     }
-
     private val lock = Any()
     private var detector: PoseDetector? = null
     private var classifier: PoseClassifier? = null
@@ -102,55 +103,66 @@ class CameraSource(
         imageReader =
             ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
 
-            imageReader?.setOnImageAvailableListener({ reader ->
-                Log.d("CameraSource","setOnImageAvailableListener")
-                val image = reader.acquireLatestImage()
-                if (image != null) {
-                    if (!::imageBitmap.isInitialized) {
-                        imageBitmap =
-                            Bitmap.createBitmap(
-                                PREVIEW_WIDTH,
-                                PREVIEW_HEIGHT,
-                                Bitmap.Config.ARGB_8888
-                            )
-                    }
-                    yuvConverter.yuvToRgb(image, imageBitmap)
-                    // Create rotated version for portrait display
-                    val rotateMatrix = Matrix()
-                    rotateMatrix.postRotate(90.0f)
+            if (MainActivity.workoutCounter.count != MainActivity.workoutCounter.completeGoal) {
+                imageReader?.setOnImageAvailableListener({ reader ->
 
-                    val rotatedBitmap = Bitmap.createBitmap(
-                        imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
-                        rotateMatrix, false
-                    )
-                    Log.d("CameraSource","Before execute processImage")
-                    processImage(rotatedBitmap)
-                    Log.d("CameraSource","After execute processImage")
-                    image.close()
-                    Log.d("CameraSource","After execute image.close()")
+                    var isFinished = 0
                     if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
-                        Log.d("CameraSource", "Check completeness")
-                        imageReaderHandler!!.removeCallbacksAndMessages(null)
+                        isFinished = 1
+                       // close()
+                        val quitIntent : Intent = Intent(context,MainActivity.javaClass)
+                        context.startActivity(quitIntent)
+                    }
+
+                    if (isFinished == 0) {
+                        Log.d("CameraSource", "setOnImageAvailableListener")
+                        val image = reader.acquireLatestImage()
+                        if (!::imageBitmap.isInitialized) {
+                            imageBitmap =
+                                Bitmap.createBitmap(
+                                    PREVIEW_WIDTH,
+                                    PREVIEW_HEIGHT,
+                                    Bitmap.Config.ARGB_8888
+                                )
+                        }
+                        if (image != null) {
+                            yuvConverter.yuvToRgb(image, imageBitmap)
+                            // Create rotated version for portrait display
+                            val rotateMatrix = Matrix()
+                            rotateMatrix.postRotate(90.0f)
+
+                            val rotatedBitmap = Bitmap.createBitmap(
+                                imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
+                                rotateMatrix, false
+                            )
+                            Log.d("CameraSource", "Before execute processImage")
+                            processImage(rotatedBitmap)
+                            Log.d("CameraSource", "After execute processImage")
+                            image.close()
+                            Log.d("CameraSource", "After execute image.close()")
+
+                        }
+                    }
+                }, imageReaderHandler)
+
+                imageReader?.surface?.let { surface ->
+                    session = createSession(listOf(surface))
+                    val cameraRequest = camera?.createCaptureRequest(
+                        CameraDevice.TEMPLATE_PREVIEW
+                    )?.apply {
+                        addTarget(surface)
+                    }
+                    cameraRequest?.build()?.let {
+                        session?.setRepeatingRequest(it, null, null)
                     }
                 }
-            }, imageReaderHandler)
-
-        Log.d("CameraSource","ImageAvailableListener End")
-
-        imageReader?.surface?.let { surface ->
-            session = createSession(listOf(surface))
-            val cameraRequest = camera?.createCaptureRequest(
-                CameraDevice.TEMPLATE_PREVIEW
-            )?.apply {
-                addTarget(surface)
+                Log.d("CameraSource", "ImageAvailableListener End")
             }
-            cameraRequest?.build()?.let {
-                session?.setRepeatingRequest(it, null, null)
-            }
-        }
+        else
+            return
+
         Log.d("CameraSource","initCamera End")
     }
-
     private suspend fun createSession(targets: List<Surface>): CameraCaptureSession =
         suspendCancellableCoroutine { cont ->
             Log.d("CameraSource","createSession")
@@ -259,6 +271,8 @@ class CameraSource(
         camera = null
         imageReader?.close()
         imageReader = null
+        //imageReaderHandler!!.removeMessages(100)
+        //imageReaderHandler = null
         stopImageReaderThread()
         detector?.close()
         detector = null
