@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test222">
         <activity
-            android:name="com.example.FitnessAlarm.MainActivity"
+            android:name= "com.example.FitnessAlarm.MainActivity"
             android:exported="true"
             >
 

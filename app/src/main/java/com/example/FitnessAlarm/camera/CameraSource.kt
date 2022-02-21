@@ -16,10 +16,12 @@ limitations under the License.
 */
 
 package com.example.FitnessAlarm.camera
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
@@ -49,9 +51,9 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.properties.Delegates
 
-class CameraSource(
+class CameraSource (
     private val surfaceView: SurfaceView,
-    private val listener: CameraSourceListener? = null,
+    private var listener: CameraSourceListener? = null,
     val context: Context
 ) {
 
@@ -97,69 +99,85 @@ class CameraSource(
     private var imageReaderHandler: Handler? = null
     private var cameraId: String = ""
 
-    suspend fun initCamera(coroutine : CoroutineScope) {
+    suspend fun initCamera() {
+
+
         Log.i("CameraSource","initCamera")
-        camera = openCamera(cameraManager, cameraId)
-        imageReader =
-            ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
 
-            if (MainActivity.workoutCounter.count != MainActivity.workoutCounter.completeGoal) {
-                imageReader?.setOnImageAvailableListener({ reader ->
+        var isFinished = 0
 
-                    var isFinished = 0
+            camera = openCamera(cameraManager, cameraId)
+            imageReader =
+                ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
+
+            imageReader?.setOnImageAvailableListener({ reader ->
+                Log.d("CameraSource", "setOnImageAvailableListener")
+
+                if (MainActivity.workoutCounter.count != MainActivity.workoutCounter.completeGoal) {
+                    val image = reader.acquireLatestImage()
+                    if (!::imageBitmap.isInitialized) {
+                        imageBitmap =
+                            Bitmap.createBitmap(
+                                PREVIEW_WIDTH,
+                                PREVIEW_HEIGHT,
+                                Bitmap.Config.ARGB_8888
+                            )
+                    }
+                    if (image != null) {
+                        yuvConverter.yuvToRgb(image, imageBitmap)
+                        // Create rotated version for portrait display
+                        val rotateMatrix = Matrix()
+                        rotateMatrix.postRotate(90.0f)
+
+                        val rotatedBitmap = Bitmap.createBitmap(
+                            imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
+                            rotateMatrix, false
+                        )
+                        Log.d("CameraSource", "Before execute processImage")
+                        processImage(rotatedBitmap)
+                        Log.d("CameraSource", "After execute processImage")
+                        image.close()
+                        Log.d("CameraSource", "After execute image.close()")
+
+                    }
+
+                    /*
                     if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
                         isFinished = 1
-                       // close()
-                        val quitIntent : Intent = Intent(context,MainActivity.javaClass)
-                        context.startActivity(quitIntent)
+                        imageReaderHandler!!.removeCallbacksAndMessages(reader)
+                        imageReader = null
+                        session?.stopRepeating()
+                        listener = null
+                        camera?.close()
+                        imageReaderThread?.quit()
+                        close()
+                        val quitIntent = Intent(context,MainActivity::class.java)
+                        context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
                     }
-
-                    if (isFinished == 0) {
-                        Log.d("CameraSource", "setOnImageAvailableListener")
-                        val image = reader.acquireLatestImage()
-                        if (!::imageBitmap.isInitialized) {
-                            imageBitmap =
-                                Bitmap.createBitmap(
-                                    PREVIEW_WIDTH,
-                                    PREVIEW_HEIGHT,
-                                    Bitmap.Config.ARGB_8888
-                                )
-                        }
-                        if (image != null) {
-                            yuvConverter.yuvToRgb(image, imageBitmap)
-                            // Create rotated version for portrait display
-                            val rotateMatrix = Matrix()
-                            rotateMatrix.postRotate(90.0f)
-
-                            val rotatedBitmap = Bitmap.createBitmap(
-                                imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
-                                rotateMatrix, false
-                            )
-                            Log.d("CameraSource", "Before execute processImage")
-                            processImage(rotatedBitmap)
-                            Log.d("CameraSource", "After execute processImage")
-                            image.close()
-                            Log.d("CameraSource", "After execute image.close()")
-
-                        }
-                    }
-                }, imageReaderHandler)
-
-                imageReader?.surface?.let { surface ->
-                    session = createSession(listOf(surface))
-                    val cameraRequest = camera?.createCaptureRequest(
-                        CameraDevice.TEMPLATE_PREVIEW
-                    )?.apply {
-                        addTarget(surface)
-                    }
-                    cameraRequest?.build()?.let {
-                        session?.setRepeatingRequest(it, null, null)
-                    }
+                    */
                 }
-                Log.d("CameraSource", "ImageAvailableListener End")
+                else
+                {
+                    //val quitIntent = Intent(context,MainActivity::class.java)
+                    //context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
+                    finishAlarm(reader)
+                }
+            }, imageReaderHandler)
+
+
+            imageReader?.surface?.let { surface ->
+                session = createSession(listOf(surface))
+                val cameraRequest = camera?.createCaptureRequest(
+                    CameraDevice.TEMPLATE_PREVIEW
+                )?.apply {
+                    addTarget(surface)
+                }
+                cameraRequest?.build()?.let {
+                    session?.setRepeatingRequest(it, null, null)
+                }
             }
-        else
-            return
+            Log.d("CameraSource", "ImageAvailableListener End")
+
 
         Log.d("CameraSource","initCamera End")
     }
@@ -401,14 +419,24 @@ class CameraSource(
         Log.d("CameraSource","stopImageReaderThread End")
     }
 
+    // 운동을 전부 마쳤으면, 알람 창을 종료한다.
+    private fun finishAlarm(reader : ImageReader)
+    {
+            imageReaderHandler!!.removeCallbacksAndMessages(reader)
+            imageReader = null
+            //session?.stopRepeating()
+            listener = null
+            camera?.close()
+            val quitIntent = Intent(context,MainActivity::class.java)
+            context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
+
+    }
+
     interface CameraSourceListener {
         fun onFPSListener(fps: Int)
 
         fun onDetectedInfo(personScore: Float?, poseLabels: List<Pair<String, Float>>?)
     }
 
-    public fun offAlarm()
-    {
 
-    }
 }

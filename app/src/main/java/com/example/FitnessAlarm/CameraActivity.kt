@@ -80,17 +80,17 @@ public class CameraActivity : AppCompatActivity() {
                             poseLabels: List<Pair<String, Float>>?
                         ) {
                         }
-                    },this).apply {
+                    },applicationContext).apply {
                         prepareCamera()
                     }
 
                 // 코루틴 실행
-                val globalScope = lifecycleScope.launch {
+                val globalScope = lifecycleScope.async {
                     var isFinished : Int = 0
                     val visualizeCoroutine = lifecycleScope.launch {
 
                         Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
-                        cameraSource?.initCamera(this)
+                        cameraSource?.initCamera()
 
                         Log.d("initCamera 종료","initCamera 종료")
                     }
