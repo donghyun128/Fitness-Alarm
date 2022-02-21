@@ -2,14 +2,19 @@
 package com.example.FitnessAlarm
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.FitnessAlarm.MainActivity.Companion
 import com.example.FitnessAlarm.MainActivity.Companion.HOUR_KEY
 import com.example.FitnessAlarm.MainActivity.Companion.MINUTE_KEY
@@ -17,43 +22,27 @@ import com.example.FitnessAlarm.MainActivity.Companion.REPETITION_KEY
 import com.example.FitnessAlarm.MainActivity.Companion.SHARED_PREFERENCE_NAME
 import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
 import com.example.FitnessAlarm.data.AlarmData
+import java.io.File
 
 class AlarmSetting : AppCompatActivity() {
 
     var selectHour : String? = null
     var selectMin : String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.alarm_setting)
-        // 타이틀바 제거
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }*/
-
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        changeAlarmTime()
-        changeAlarmWorkout(this)
-        changeWorkOutRepetition(this)
-        changeAlarmMusic()
-
-    }
-
-    // 레이아웃 내 위젯 관련 설정
-    private fun layoutInitialyze()
+    var alarmMusic : Uri? = null
+    var selectedFileTitle : String? = ""
+    val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     {
+            result ->
+        run{
 
+            if (result.resultCode == RESULT_OK)
+            {
+                alarmMusic = result.data!!.data
+                //selectedFileTitle = result.data!!.dataString
+            }
+        }
     }
+
     // TimePicker를 통해 Alarm 시간 변경
     private fun changeAlarmTime()
     {
@@ -187,44 +176,45 @@ class AlarmSetting : AppCompatActivity() {
         bellLayout.setOnClickListener()
         {
 
-            /*
-            val contentResolver : ContentResolver = getContentResolver()
-            val mProjection = arrayOf(
-                MediaStore.Audio.Media.IS_MUSIC,
-                MediaStore.Audio.Media.IS_ALARM,
-                MediaStore.Audio.Media.ALBUM_ID,
-                MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.ARTIST,
-                MediaStore.Audio.Media._ID
-                )
-
-            val mCursor : Cursor? = contentResolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                mProjection,
-                null,null,
-                MediaStore.Audio.Media.TITLE + "ASC"
-            )
-            */
+            val alarmTitle : TextView = findViewById(R.id.musicTitle)
 
             // 파일탐색기로 음악 불러오기
-
             val musicIntent: Intent = Intent(Intent.ACTION_GET_CONTENT)
             musicIntent.setType("audio/*")
-            /*
-            val resultLauncher = registerForActivityResult(ActivityResultContracts.GetContent())
-            {
-                uri : Uri ->
-                //val mediaPlayer : MediaPlayer
+            musicIntent.putExtra("Title",2)
+
+            Log.d("AlarmSetting","resultLauncher.launch()")
+            resultLauncher.launch(musicIntent)
+            if (alarmMusic != null) {
+                Log.d("AlarmSetting","setText")
+                selectedFileTitle = File(alarmMusic!!.path).absolutePath
+                alarmTitle.setText(selectedFileTitle)
             }
-            */
             //resultLauncher.launch("audio/*")
 
-            startActivity(Intent.createChooser(musicIntent,"Open"))
+            //startActivityForResult(musicIntent,1)
 
         }
+    }
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.alarm_setting)
 
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        changeAlarmTime()
+        changeAlarmWorkout(this)
+        changeWorkOutRepetition(this)
+        changeAlarmMusic()
+
+    }
+
+
 
 
     private fun saveAlarmData(hour : String, min : String, workout : String, repCnt : Int , onOff : Boolean) : AlarmData
