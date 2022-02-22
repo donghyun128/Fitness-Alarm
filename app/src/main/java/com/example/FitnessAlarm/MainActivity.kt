@@ -17,6 +17,7 @@ import android.widget.Switch
 import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
+import com.example.FitnessAlarm.adapter.AlarmRecycleViewAdapter
 import com.example.FitnessAlarm.data.AlarmData
 
 
@@ -36,24 +37,29 @@ class MainActivity : AppCompatActivity(){
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val alarmRecyclerViewAdapter : AlarmRecycleViewAdapter(this,null)
+
+
+
 
     }
 
     override fun onResume() {
         super.onResume()
 
-        val set_btn : Button = findViewById(R.id.alarm_set_btn)
-        val alarm_switch : Switch = findViewById(R.id.alarm_switch)
+        //val set_btn : Button = findViewById(R.id.alarm_set_btn)
+        //val alarm_switch : Switch = findViewById(R.id.alarm_switch)
 
-        var alarmData : AlarmData = fetchSharedPreferences()
+        //var alarmData : AlarmData = fetchSharedPreferences()
 
-        settingAlarm()
+        //settingAlarm()
 
-        changeAlarmSetting(alarmData,set_btn)
-        changeAlarmOnOff(alarmData,alarm_switch)
+        //changeAlarmSetting(alarmData,set_btn)
+        //changeAlarmOnOff(alarmData,alarm_switch)
 
 
     }
@@ -61,7 +67,7 @@ class MainActivity : AppCompatActivity(){
     override fun onPause() {
         super.onPause()
     }
-
+/*
     // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
     private fun setWorkoutCounter(workout : String)
     {
@@ -242,5 +248,7 @@ class MainActivity : AppCompatActivity(){
         )
         pendingIntent?.cancel()
     }
+
+ */
 }
 

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">test222</string>
+    <string name="app_name">Fitness Alarm</string>
+    <String name="arg_alarm_obj">AlarmObject</String>
+    <String name="bundle_alarm_obj">BundleAlarmObject</String>
 </resources>

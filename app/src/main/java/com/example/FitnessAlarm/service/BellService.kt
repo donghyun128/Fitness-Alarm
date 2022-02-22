@@ -1,4 +1,4 @@
-package com.example.FitnessAlarm
+package com.example.FitnessAlarm.service
 
 import android.app.Service
 import android.content.Intent

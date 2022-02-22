@@ -11,6 +11,13 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarms_recycler_view"
+
+        ></androidx.recyclerview.widget.RecyclerView>
+    <!--
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -55,7 +62,7 @@
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
+    -->
 
 
 

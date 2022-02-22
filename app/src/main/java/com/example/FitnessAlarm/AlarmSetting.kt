@@ -217,15 +217,28 @@ class AlarmSetting : AppCompatActivity() {
 
 
 
-    private fun saveAlarmData(hour : String, min : String, workout : String, repCnt : Int , onOff : Boolean) : AlarmData
+    private fun saveAlarmData(alarmId : Int, hour : String, min : String, workout : String,
+                              repCnt : Int , onOff : Boolean,
+                              monday : Boolean, tuesday : Boolean, wednesday : Boolean, thursday : Boolean, friday : Boolean, saturday : Boolean, sunday : Boolean,
+                              title : String, tone : String) : AlarmData
     {
         val sharedPreferences = getSharedPreferences(Companion.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
         val DataModel = AlarmData(
+            alarmId = alarmId,
             hour = hour,
             min = min,
             workout = workout,
             repCnt = repCnt,
-            onOff = onOff
+            onOff = onOff,
+            monday = monday,
+            tuesday = tuesday,
+            wednesday = wednesday,
+            thursday = thursday,
+            friday = friday,
+            saturday = saturday,
+            sunday = sunday,
+            title = title,
+            tone = tone
         )
 
         // 키와 값 전달

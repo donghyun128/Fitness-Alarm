@@ -1,13 +1,28 @@
 package com.example.FitnessAlarm.data
 
+import android.os.Parcel
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class AlarmData(
-    var hour: String,
-    var min: String,
+    var alarmId : Int,
+    var hour: Int,
+    var min: Int,
     var workout: String,
     var repCnt : Int,
-    var onOff: Boolean
+    var onOff: Boolean,
+    var monday : Boolean,
+    var tuesday : Boolean,
+    var wednesday : Boolean,
+    var thursday : Boolean,
+    var friday : Boolean,
+    var saturday : Boolean,
+    var sunday : Boolean,
+    var title : String,
+    var tone : String
 
-) {
+) : Parcelable {
     val timeToText : String
         get()
         {
@@ -26,13 +41,13 @@ data class AlarmData(
             return onOff
         }
 
-    val getHour : String
+    val getHour : Int
         get()
         {
             return hour
         }
 
-    val getMinute : String
+    val getMinute : Int
         get()
         {
             return min
@@ -49,5 +64,55 @@ data class AlarmData(
         {
             return repCnt
         }
+
+    val isMonday : Boolean
+        get()
+        {
+            return monday
+        }
+
+    val isTuesday : Boolean
+        get()
+        {
+            return tuesday
+        }
+
+    val isWednesday : Boolean
+        get()
+        {
+            return wednesday
+        }
+
+    val isThursday : Boolean
+        get()
+        {
+            return thursday
+        }
+
+    val isFriday : Boolean
+        get()
+        {
+            return friday
+        }
+
+    val isSaturday : Boolean
+        get()
+        {
+            return saturday
+        }
+
+    val isSunday : Boolean
+        get()
+        {
+            return sunday
+        }
+
+    val getTone : String
+        get()
+        {
+            return tone
+        }
+
+
 
 }
