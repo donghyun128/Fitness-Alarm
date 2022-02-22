@@ -1,9 +1,7 @@
 package com.example.FitnessAlarm.CountAlgorithm
 
-import android.content.Context
-import android.speech.tts.TextToSpeech
-import com.example.FitnessAlarm.data.BodyPart
-import com.example.FitnessAlarm.data.Person
+import com.example.FitnessAlarm.data.visualizeData.BodyPart
+import com.example.FitnessAlarm.data.visualizeData.Person
 
 class SquatCounter : WorkoutCounter() {
 

@@ -1,26 +1,24 @@
 
-package com.example.FitnessAlarm
+package com.example.FitnessAlarm.activity
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.FitnessAlarm.MainActivity.Companion
-import com.example.FitnessAlarm.MainActivity.Companion.HOUR_KEY
-import com.example.FitnessAlarm.MainActivity.Companion.MINUTE_KEY
-import com.example.FitnessAlarm.MainActivity.Companion.REPETITION_KEY
-import com.example.FitnessAlarm.MainActivity.Companion.SHARED_PREFERENCE_NAME
-import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
+import com.example.FitnessAlarm.R
+import com.example.FitnessAlarm.activity.MainActivity.Companion
+import com.example.FitnessAlarm.activity.MainActivity.Companion.HOUR_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.MINUTE_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.REPETITION_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.SHARED_PREFERENCE_NAME
+import com.example.FitnessAlarm.activity.MainActivity.Companion.WORKOUT_KEY
 import com.example.FitnessAlarm.data.AlarmData
 import java.io.File
 
@@ -97,7 +95,7 @@ class AlarmSetting : AppCompatActivity() {
 
 
         time_set_btn.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         })
 
@@ -200,7 +198,7 @@ class AlarmSetting : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.alarm_setting)
+        setContentView(R.layout.create_alarm_fragment)
 
     }
 
@@ -215,7 +213,7 @@ class AlarmSetting : AppCompatActivity() {
     }
 
 
-
+/*
 
     private fun saveAlarmData(alarmId : Int, hour : String, min : String, workout : String,
                               repCnt : Int , onOff : Boolean,
@@ -256,8 +254,9 @@ class AlarmSetting : AppCompatActivity() {
     }
 
 
-
+*/
 
 
 }
+
 

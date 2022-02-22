@@ -14,7 +14,7 @@ limitations under the License.
 ==============================================================================
 */
 
-package com.example.FitnessAlarm.data
+package com.example.FitnessAlarm.data.visualizeData
 
 import android.graphics.RectF
 

@@ -1,11 +1,6 @@
 package com.example.FitnessAlarm.CountAlgorithm
 
-import android.content.Context
-import android.os.Build
-import android.speech.tts.TextToSpeech
-import com.example.FitnessAlarm.data.BodyPart
-import com.example.FitnessAlarm.data.Person
-import kotlin.properties.Delegates
+import com.example.FitnessAlarm.data.visualizeData.Person
 
 abstract class WorkoutCounter() {
 

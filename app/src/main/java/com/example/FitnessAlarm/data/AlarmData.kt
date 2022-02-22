@@ -2,10 +2,15 @@ package com.example.FitnessAlarm.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
+@Entity(tableName = "alarm_table")
 @Parcelize
-data class AlarmData(
+class AlarmData(
+    @PrimaryKey
     var alarmId : Int,
     var hour: Int,
     var min: Int,
@@ -34,13 +39,11 @@ data class AlarmData(
         {
             return if (hour.toInt() < 12) "AM" else "PM"
         }
-
-    val getOnOff : Boolean
+    val getAlarmId : Int
         get()
         {
-            return onOff
+            return alarmId
         }
-
     val getHour : Int
         get()
         {
@@ -65,48 +68,58 @@ data class AlarmData(
             return repCnt
         }
 
-    val isMonday : Boolean
+    val getOnOff : Boolean
+        get()
+        {
+            return onOff
+        }
+
+    val getMonday : Boolean
         get()
         {
             return monday
         }
 
-    val isTuesday : Boolean
+    val getTuesday : Boolean
         get()
         {
             return tuesday
         }
 
-    val isWednesday : Boolean
+    val getWednesday : Boolean
         get()
         {
             return wednesday
         }
 
-    val isThursday : Boolean
+    val getThursday : Boolean
         get()
         {
             return thursday
         }
 
-    val isFriday : Boolean
+    val getFriday : Boolean
         get()
         {
             return friday
         }
 
-    val isSaturday : Boolean
+    val getSaturday : Boolean
         get()
         {
             return saturday
         }
 
-    val isSunday : Boolean
+    val getSunday : Boolean
         get()
         {
             return sunday
         }
-
+    val getTitle : String
+        get()
+        {
+            return title
+        }
     val getTone : String
         get()
         {

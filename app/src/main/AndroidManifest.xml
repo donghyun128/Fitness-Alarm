@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test222">
         <activity
-            android:name= "com.example.FitnessAlarm.MainActivity"
+            android:name= "com.example.FitnessAlarm.activity.MainActivity"
             android:exported="true"
             >
 
@@ -32,11 +32,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.AlarmSetting">
+        <activity android:name="com.example.FitnessAlarm.activity.AlarmSetting">
 
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.CameraActivity">
+        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity">
 
         </activity>
 

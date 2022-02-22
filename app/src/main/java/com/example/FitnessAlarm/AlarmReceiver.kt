@@ -10,6 +10,7 @@ import android.media.Ringtone
 import android.media.RingtoneManager
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.example.FitnessAlarm.activity.CameraActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -40,7 +41,7 @@ class AlarmReceiver : BroadcastReceiver() {
     // pendingIntent 생성
     private fun createPendingIntent(context : Context) : PendingIntent?
     {
-        val counterIntent = Intent(context,CameraActivity::class.java)
+        val counterIntent = Intent(context, CameraActivity::class.java)
 
         val counterPendingIntent : PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(counterIntent)

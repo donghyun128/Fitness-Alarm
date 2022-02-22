@@ -17,7 +17,7 @@ limitations under the License.
 package com.example.FitnessAlarm.movenet
 
 import android.graphics.Bitmap
-import com.example.FitnessAlarm.data.Person
+import com.example.FitnessAlarm.data.visualizeData.Person
 
 interface PoseDetector : AutoCloseable {
 

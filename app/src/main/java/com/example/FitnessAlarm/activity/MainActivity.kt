@@ -1,27 +1,18 @@
-package com.example.FitnessAlarm
+package com.example.FitnessAlarm.activity
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CompoundButton
-import android.widget.Switch
-import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
+import com.example.FitnessAlarm.R
 import com.example.FitnessAlarm.adapter.AlarmRecycleViewAdapter
-import com.example.FitnessAlarm.data.AlarmData
+import com.example.FitnessAlarm.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : FragmentActivity(){
 
     companion object
     {
@@ -36,15 +27,22 @@ class MainActivity : AppCompatActivity(){
         var workoutCounter : WorkoutCounter = SquatCounter()
     }
 
-
+    private val fragmentManager : FragmentManager = supportFragmentManager
+    private val alarmListFragment : Fragment = AlarmListFragment()
+    private val alarmCreateFragment : Fragment = CreateAlarmFragment()
+    // fragment 전환용
+    private val transaction = fragmentManager.beginTransaction()
+    lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val alarmRecyclerViewAdapter : AlarmRecycleViewAdapter(this,null)
 
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
+        transaction.replace(R.id.alarm_list_fragment,alarmListFragment).commit()
 
     }
 

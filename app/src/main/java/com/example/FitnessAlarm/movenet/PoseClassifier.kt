@@ -18,7 +18,7 @@ package com.example.FitnessAlarm.movenet
 
 import android.content.Context
 import org.tensorflow.lite.Interpreter
-import com.example.FitnessAlarm.data.Person
+import com.example.FitnessAlarm.data.visualizeData.Person
 import org.tensorflow.lite.support.common.FileUtil
 
 class PoseClassifier(
