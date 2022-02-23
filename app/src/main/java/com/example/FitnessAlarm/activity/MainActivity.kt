@@ -1,4 +1,4 @@
-package com.example.FitnessAlarm
+package com.example.FitnessAlarm.activity
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -14,16 +14,20 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
+import com.example.FitnessAlarm.AlarmReceiver
 import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
-import com.example.FitnessAlarm.data.AlarmData
+import com.example.FitnessAlarm.R
+import com.example.FitnessAlarm.fragment.CreateAlarmFragment
+import com.example.FitnessAlarm.model.AlarmData
 
 
 class MainActivity : AppCompatActivity(){
 
     companion object
     {
+        const val CHANNEL_ID = "ALARM_CHANNEL"
         const val Filename = "prefs"
         const val SHARED_PREFERENCE_NAME = "time"
         const val HOUR_KEY = "hour"
@@ -45,15 +49,7 @@ class MainActivity : AppCompatActivity(){
     override fun onResume() {
         super.onResume()
 
-        val set_btn : Button = findViewById(R.id.alarm_set_btn)
-        val alarm_switch : Switch = findViewById(R.id.alarm_switch)
 
-        var alarmData : AlarmData = fetchSharedPreferences()
-
-        settingAlarm()
-
-        changeAlarmSetting(alarmData,set_btn)
-        changeAlarmOnOff(alarmData,alarm_switch)
 
 
     }
@@ -67,22 +63,22 @@ class MainActivity : AppCompatActivity(){
     {
 
         if (workout == "squat") {
-            MainActivity.workoutCounter = SquatCounter()
+            workoutCounter = SquatCounter()
         }
 
         else if (workout == "pushup") {
-            MainActivity.workoutCounter = PushupCounter()
+            workoutCounter = PushupCounter()
         }
         // setWorkoutCounter()를 실행할 경우, workOutCounter의 변수값이 default로 초기화되므로 적절히 값을 바꿔주어야 한다.
-        MainActivity.workoutCounter.completeGoal = getSharedPreferences(SHARED_PREFERENCE_NAME,MODE_PRIVATE).getInt(
+        workoutCounter.completeGoal = getSharedPreferences(SHARED_PREFERENCE_NAME,MODE_PRIVATE).getInt(
             REPETITION_KEY,2)
     }
-
+/*
     // 버튼 누르면 AlarmSetting 변경 Layout으로 이동
     private fun changeAlarmSetting(alarmData : AlarmData, set_btn : Button )
     {
         set_btn.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this, AlarmSetting::class.java)
+            val intent = Intent(this, CreateAlarmFragment::class.java)
             startActivity(intent)
         })
 
@@ -178,7 +174,7 @@ class MainActivity : AppCompatActivity(){
         sharedPreference.edit().putBoolean(ONOFF_KEY,true).apply()
         val newAlarmData = fetchSharedPreferences()
 
-        MainActivity.workoutCounter.completeGoal = newAlarmData.getRepCnt
+        workoutCounter.completeGoal = newAlarmData.getRepCnt
 
         Log.i("Hour test","Hour :" + newAlarmData.getHour)
         Log.i("Minute test","Minute :" + newAlarmData.getMinute)
@@ -237,10 +233,11 @@ class MainActivity : AppCompatActivity(){
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             ALARM_REQUEST_CODE,
-            Intent(this,AlarmReceiver::class.java),
+            Intent(this, AlarmReceiver::class.java),
             PendingIntent.FLAG_NO_CREATE
         )
         pendingIntent?.cancel()
     }
+ */
 }
 

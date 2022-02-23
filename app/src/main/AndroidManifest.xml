@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -21,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test222">
         <activity
-            android:name= "com.example.FitnessAlarm.MainActivity"
+            android:name= "com.example.FitnessAlarm.activity.MainActivity"
             android:exported="true"
             >
 
@@ -32,11 +33,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.AlarmSetting">
+        <activity android:name="com.example.FitnessAlarm.fragment.CreateAlarmFragment">
 
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.CameraActivity">
+        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity">
 
         </activity>
 

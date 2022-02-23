@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">test222</string>
+    <string name="alarm_title">AlarmTitle</string>
+    <string name="arg_alarm_obj">AlarmObject</string>
+    <string name="bundle_alarm_obj">BundleAlarmObject</string>
 </resources>

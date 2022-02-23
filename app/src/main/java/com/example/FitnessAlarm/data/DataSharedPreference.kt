@@ -1,11 +1,12 @@
 package com.example.FitnessAlarm.data
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.FitnessAlarm.MainActivity.Companion.HOUR_KEY
-import com.example.FitnessAlarm.MainActivity.Companion.MINUTE_KEY
-import com.example.FitnessAlarm.MainActivity.Companion.ONOFF_KEY
-import com.example.FitnessAlarm.MainActivity.Companion.SHARED_PREFERENCE_NAME
-import com.example.FitnessAlarm.MainActivity.Companion.WORKOUT_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.HOUR_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.MINUTE_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.ONOFF_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.SHARED_PREFERENCE_NAME
+import com.example.FitnessAlarm.activity.MainActivity.Companion.WORKOUT_KEY
+import com.example.FitnessAlarm.model.AlarmData
 
 
 class dataSharedPreference(context: Context) {
