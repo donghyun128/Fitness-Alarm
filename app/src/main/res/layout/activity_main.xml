@@ -19,7 +19,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/alarm_list_fragment"
+        android:id="@+id/alarm_fragment"
         android:name="com.example.FitnessAlarm.activity.AlarmListFragment"
         ></fragment>
 

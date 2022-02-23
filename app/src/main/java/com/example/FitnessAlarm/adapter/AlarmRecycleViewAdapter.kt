@@ -10,27 +10,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.FitnessAlarm.R
 import com.example.FitnessAlarm.data.AlarmData
 import com.example.FitnessAlarm.data.AlarmReposit
+import com.example.FitnessAlarm.databinding.AlarmItemBinding
 import com.example.FitnessAlarm.utils.OnToggleAlarmListener
 
-class AlarmRecycleViewAdapter(val context : Context,alarms: List<AlarmData>) : RecyclerView.Adapter<AlarmViewHolder>() {
+class AlarmRecycleViewAdapter(listener: OnToggleAlarmListener) : RecyclerView.Adapter<AlarmViewHolder>() {
 
     private lateinit var alarms : List<AlarmData>
     private lateinit var listener : OnToggleAlarmListener
-    private lateinit var alarmReposit : AlarmReposit
+    private lateinit var alarmItemBinding : AlarmItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmViewHolder {
-
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.alarm_item,parent,false)
-        return AlarmViewHolder(view)
+        alarmItemBinding = AlarmItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return AlarmViewHolder(alarmItemBinding)
     }
 
     override fun onBindViewHolder(holder: AlarmViewHolder, position: Int) {
         val alarm : AlarmData = alarms.get(position)
-        holder.bind(alarms[position],context,listener)
+        holder.bind(alarm,listener)
     }
 
     override fun getItemCount(): Int {
-        return alarms.size
+        return 1
+        //return alarms.size
     }
 
     fun setAlarms(alarms : List<AlarmData>)

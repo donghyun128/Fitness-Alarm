@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
 import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
 import com.example.FitnessAlarm.R
@@ -34,6 +35,23 @@ class MainActivity : FragmentActivity(){
     private val transaction = fragmentManager.beginTransaction()
     lateinit var binding : ActivityMainBinding
 
+    fun changeFragment(fragment_state : Int)
+    {
+        when(fragment_state)
+        {
+            1 -> {
+                transaction.add(R.id.alarm_fragment,alarmListFragment)
+                transaction.commit()
+            }
+
+            2 ->
+            {
+                transaction.replace(R.id.alarm_fragment,alarmCreateFragment)
+                transaction.commit()
+            }
+
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +60,6 @@ class MainActivity : FragmentActivity(){
         val view = binding.root
         setContentView(view)
 
-        transaction.replace(R.id.alarm_list_fragment,alarmListFragment).commit()
 
     }
 

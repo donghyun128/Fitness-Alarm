@@ -8,7 +8,7 @@
         <entry key="..\:/Fitness-Alarm/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.44479166666666664" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/drawable/ic_alarm_white_24dp.xml" value="0.20989583333333334" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/drawable/ic_launcher_background.xml" value="0.44479166666666664" />
-        <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/activity_main.xml" value="0.3048973143759874" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_create_fragment.xml" value="0.22" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_detail.xml" value="0.2" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_item.xml" value="0.33" />
@@ -17,6 +17,7 @@
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_setting.xml" value="0.33" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.1234375" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/counter.xml" value="0.1234375" />
+        <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/create_alarm_fragment.xml" value="0.264" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/notification.xml" value="0.4" />
       </map>
     </option>

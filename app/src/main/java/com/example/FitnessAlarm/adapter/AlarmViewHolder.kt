@@ -6,6 +6,7 @@ import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.FitnessAlarm.R
 import com.example.FitnessAlarm.data.AlarmData
@@ -17,18 +18,19 @@ import com.example.FitnessAlarm.utils.OnToggleAlarmListener
 
 // recyclerView의 요소들에 관한 내용을 서술
 
-class AlarmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class AlarmViewHolder(alarmItemBinding: AlarmItemBinding) : RecyclerView.ViewHolder(alarmItemBinding.root) {
 
-    private val alarmTime: TextView = itemView.findViewById<TextView>(R.id.item_alarm_time)
-    private val alarmTitle: TextView = itemView.findViewById<TextView>(R.id.item_alarm_title)
-    private val alarmOnOff: Switch = itemView.findViewById<Switch>(R.id.item_alarm_started)
-    private val alarmDay: TextView = itemView.findViewById<TextView>(R.id.item_alarm_day)
-    private val alarmDeleteButton : ImageButton = itemView.findViewById<ImageButton>(R.id.item_delete_button)
-    fun bind(alarmData : AlarmData, context : Context, listener : OnToggleAlarmListener){
+    private val alarmTime: TextView = alarmItemBinding.itemAlarmTime
+    private val alarmTitle: TextView = alarmItemBinding.itemAlarmTitle
+    private val alarmStarted: Switch = alarmItemBinding.itemAlarmStarted
+    private val alarmDay: TextView = alarmItemBinding.itemAlarmDay
+    private val alarmDeleteButton : ImageButton = alarmItemBinding.itemDeleteButton
+
+    fun bind(alarmData : AlarmData, listener : OnToggleAlarmListener){
         val timeText : String = String.format("%02d:%02d",alarmData.getHour,alarmData.getMinute)
         alarmTime.setText(timeText)
         alarmDay.setText(DayUtil().getDay(alarmData.getHour,alarmData.getMinute))
-        alarmOnOff.isChecked = alarmData.getOnOff
+        alarmStarted.isChecked = alarmData.getOnOff
 
         if (alarmData.getTitle.length != 0)
         {
@@ -39,7 +41,7 @@ class AlarmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             alarmTitle.setText("Alarm")
         }
 
-        alarmOnOff.setOnCheckedChangeListener { buttonView, isChecked ->
+        alarmStarted.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isShown || buttonView.isPressed)
                 listener.onToggle(alarmData)
         }
