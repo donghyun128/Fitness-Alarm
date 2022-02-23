@@ -1,11 +1,18 @@
 package com.example.FitnessAlarm.data
 
-import android.os.Parcel
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.os.Parcelable
-import androidx.annotation.NonNull
+import android.widget.Toast
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.FitnessAlarm.broadcastReceiver.AlarmReceiver
+import com.example.FitnessAlarm.R
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 @Entity(tableName = "alarm_table")
 @Parcelize
@@ -127,5 +134,46 @@ class AlarmData(
         }
 
 
+    public fun setAlarm(context : Context)
+    {
+        val alarmManager : AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent : Intent = Intent(context, AlarmReceiver::class.java)
+        val bundle : Bundle = Bundle()
+        bundle.putParcelable(context.getString(R.string.bundle_alarm_obj),bundle)
+        val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0)
+
+        val calendar : Calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY,hour)
+        calendar.set(Calendar.MINUTE,min)
+        calendar.set(Calendar.SECOND,0)
+        calendar.set(Calendar.MILLISECOND,0)
+
+        if (calendar.timeInMillis <= System.currentTimeMillis()) {
+            calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1)
+        }
+
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            alarmPendingIntent
+        )
+
+        val toastText : String = String.format("%02d:%02d 알람이 설정되었습니다.",hour,min)
+        Toast.makeText(context,toastText,Toast.LENGTH_SHORT).show()
+    }
+
+    public fun cancelAlarm(context :Context){
+
+        val alarmManager : AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent : Intent = Intent(context, AlarmReceiver::class.java)
+        val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0)
+        alarmManager.cancel(alarmPendingIntent)
+        this.onOff = false
+        val toastText : String = String.format("%02d:%02d 알람이 취소되었습니다.",hour,min)
+        Toast.makeText(context,toastText,Toast.LENGTH_SHORT).show()
+
+    }
 
 }

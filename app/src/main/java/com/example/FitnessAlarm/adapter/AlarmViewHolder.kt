@@ -20,6 +20,7 @@ import com.example.FitnessAlarm.utils.OnToggleAlarmListener
 
 class AlarmViewHolder(alarmItemBinding: AlarmItemBinding) : RecyclerView.ViewHolder(alarmItemBinding.root) {
 
+
     private val alarmTime: TextView = alarmItemBinding.itemAlarmTime
     private val alarmTitle: TextView = alarmItemBinding.itemAlarmTitle
     private val alarmStarted: Switch = alarmItemBinding.itemAlarmStarted

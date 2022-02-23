@@ -17,6 +17,7 @@ class MainActivity : FragmentActivity(){
 
     companion object
     {
+        const val CHANNEL_ID = "ALARM_CHANNEL"
         const val Filename = "prefs"
         const val SHARED_PREFERENCE_NAME = "time"
         const val HOUR_KEY = "hour"
@@ -28,30 +29,11 @@ class MainActivity : FragmentActivity(){
         var workoutCounter : WorkoutCounter = SquatCounter()
     }
 
-    private val fragmentManager : FragmentManager = supportFragmentManager
-    private val alarmListFragment : Fragment = AlarmListFragment()
-    private val alarmCreateFragment : Fragment = CreateAlarmFragment()
+
     // fragment 전환용
-    private val transaction = fragmentManager.beginTransaction()
     lateinit var binding : ActivityMainBinding
 
-    fun changeFragment(fragment_state : Int)
-    {
-        when(fragment_state)
-        {
-            1 -> {
-                transaction.add(R.id.alarm_fragment,alarmListFragment)
-                transaction.commit()
-            }
 
-            2 ->
-            {
-                transaction.replace(R.id.alarm_fragment,alarmCreateFragment)
-                transaction.commit()
-            }
-
-        }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

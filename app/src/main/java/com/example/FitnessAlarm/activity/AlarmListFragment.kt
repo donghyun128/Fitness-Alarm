@@ -27,11 +27,12 @@ import com.google.android.material.internal.NavigationMenu
 
 class AlarmListFragment : Fragment(), OnToggleAlarmListener {
 
-    lateinit var alarmRecyclerViewAdapter : AlarmRecycleViewAdapter
-    lateinit var alarmListViewModel : AlarmListViewModel
-    lateinit var alarmRecyclerView : RecyclerView
-    lateinit var addAlarmButton : FloatingActionButton
-    private val mainActivity = activity
+
+
+    private lateinit var alarmRecyclerViewAdapter : AlarmRecycleViewAdapter
+    private lateinit var alarmListViewModel : AlarmListViewModel
+    private lateinit var alarmRecyclerView : RecyclerView
+    private lateinit var addAlarmButton : FloatingActionButton
     lateinit var alarmListFragmentBinding: AlarmListFragmentBinding
     // 데이터 로드해오기
     override fun onCreate(savedInstanceState: Bundle?)
@@ -41,16 +42,15 @@ class AlarmListFragment : Fragment(), OnToggleAlarmListener {
         alarmListViewModel.getAlarmLiveData().observe(this, Observer
         {
             alarms ->
-            fun onChanged(alarm : List<AlarmData>)
-            {
+
                 if (alarms != null)
                 {
                     alarmRecyclerViewAdapter.setAlarms(alarms)
                 }
-            }
+
         }
         )
-        alarmRecyclerViewAdapter = AlarmRecycleViewAdapter(requireActivity())
+        alarmRecyclerViewAdapter = AlarmRecycleViewAdapter(this)
 
     }
     override fun onCreateView(

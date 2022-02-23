@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,13 @@ class AlarmRecycleViewAdapter(listener: OnToggleAlarmListener) : RecyclerView.Ad
     private lateinit var listener : OnToggleAlarmListener
     private lateinit var alarmItemBinding : AlarmItemBinding
 
+    init {
+        this.alarms = ArrayList<AlarmData>()
+        this.listener = listener
+    }
+    @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmViewHolder {
+
         alarmItemBinding = AlarmItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return AlarmViewHolder(alarmItemBinding)
     }
