@@ -1,6 +1,7 @@
 package com.example.FitnessAlarm.service
 
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -13,6 +14,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.FitnessAlarm.App
 import com.example.FitnessAlarm.App.Companion.CHANNEL_ID
 import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.data.AlarmData
@@ -95,7 +97,8 @@ class AlarmService : Service() {
             vibrator.vibrate(vibrationEffect)
 
             startForeground(1,notification)
-
+            val notificationManager : NotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(0,notification)
             return START_STICKY
 
         }
