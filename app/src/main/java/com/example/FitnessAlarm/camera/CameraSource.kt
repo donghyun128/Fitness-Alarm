@@ -18,7 +18,6 @@ limitations under the License.
 package com.example.FitnessAlarm.camera
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
@@ -34,11 +33,9 @@ import android.text.TextPaint
 import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
-import androidx.core.content.ContextCompat.startActivity
-import com.example.FitnessAlarm.AlarmSetting
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
-import com.example.FitnessAlarm.CameraActivity
-import com.example.FitnessAlarm.MainActivity
+import com.example.FitnessAlarm.activity.CameraActivity
+import com.example.FitnessAlarm.activity.MainActivity
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
 import com.example.FitnessAlarm.Visualization.YuvToRgbConverter
 import com.example.FitnessAlarm.movenet.PoseClassifier
@@ -46,10 +43,8 @@ import com.example.FitnessAlarm.movenet.PoseDetector
 import com.example.FitnessAlarm.data.Person
 import kotlinx.coroutines.*
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.properties.Delegates
 
 class CameraSource (
     private val surfaceView: SurfaceView,
@@ -218,10 +213,9 @@ class CameraSource (
         for (cameraId in cameraManager.cameraIdList) {
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
-            // We don't use a front facing camera in this sample.
-            val cameraDirection = characteristics.get(CameraCharacteristics.LENS_FACING)
+            val cameraDirection = CameraCharacteristics.LENS_FACING_FRONT
             if (cameraDirection != null &&
-                cameraDirection == CameraCharacteristics.LENS_FACING_FRONT
+                cameraDirection == characteristics.get(CameraCharacteristics.LENS_FACING)
             ) {
                 continue
             }
@@ -320,9 +314,10 @@ class CameraSource (
             }
         }
         CameraActivity.personForCount = persons
-        Log.d("nose coordinate_x",CameraActivity.personForCount[0].keyPoints[0].coordinate.x.toString())
+        Log.d("nose coordinate_x", CameraActivity.personForCount[0].keyPoints[0].coordinate.x.toString())
         //Counter.workoutCounter.countAlgorithm(Counter.personForCount[0])
-        Log.d("rep : ",MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0]).toString())
+        Log.d("rep : ",
+            MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0]).toString())
         frameProcessedInOneSecondInterval++
         if (frameProcessedInOneSecondInterval == 1) {
             // send fps to view
@@ -427,7 +422,7 @@ class CameraSource (
             //session?.stopRepeating()
             listener = null
             camera?.close()
-            val quitIntent = Intent(context,MainActivity::class.java)
+            val quitIntent = Intent(context, MainActivity::class.java)
             context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
 
     }

@@ -1,10 +1,9 @@
 
-package com.example.FitnessAlarm
+package com.example.FitnessAlarm.activity
 
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Process
@@ -14,15 +13,13 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.FitnessAlarm.CountAlgorithm.PushupCounter
-import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
-import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
+import com.example.FitnessAlarm.R
 import com.example.FitnessAlarm.camera.CameraSource
 import com.example.FitnessAlarm.data.Device
 import com.example.FitnessAlarm.data.Person
+import com.example.FitnessAlarm.data.SharedPreferenceUtils
 import com.example.FitnessAlarm.movenet.*
 import kotlinx.coroutines.*
 
@@ -30,15 +27,15 @@ import kotlinx.coroutines.*
 public class CameraActivity : AppCompatActivity() {
 
     companion object {
-        private const val FRAGMENT_DIALOG = "dialog"
         var personForCount : MutableList<Person> = mutableListOf()
-
     }
+
 
     override fun getApplicationContext(): Context {
         return super.getApplicationContext()
     }
     private var cameraSource: CameraSource? = null
+    lateinit var sharedPreferenceUtils: SharedPreferenceUtils
     private lateinit var surfaceView: SurfaceView
     private var device = Device.GPU
     private var isClassifyPose = false
@@ -186,9 +183,9 @@ public class CameraActivity : AppCompatActivity() {
         if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
         {
             Log.d("finish","finish")
-            Log.d("completeGoal",MainActivity.workoutCounter.completeGoal.toString())
+            Log.d("completeGoal", MainActivity.workoutCounter.completeGoal.toString())
             finish()
-            val quitIntent : Intent = Intent(this,MainActivity::class.java)
+            val quitIntent : Intent = Intent(this, MainActivity::class.java)
             startActivity(quitIntent)
         }
     }

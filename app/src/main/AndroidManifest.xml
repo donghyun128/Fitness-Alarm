@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.FitnessAlarm">
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
     <application
-
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test222">
         <activity
-            android:name= "com.example.FitnessAlarm.MainActivity"
+            android:name= "com.example.FitnessAlarm.activity.MainActivity"
             android:exported="true"
             >
 
@@ -32,16 +36,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.AlarmSetting">
-
-        </activity>
-
-        <activity android:name="com.example.FitnessAlarm.CameraActivity">
+        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity">
 
         </activity>
 
 
-        <receiver android:name="com.example.FitnessAlarm.AlarmReceiver"
+        <receiver android:name="com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver"
             android:exported="false"
             >
             <intent-filter>
@@ -50,7 +50,8 @@
 
         </receiver>
 
-
+        <service android:name=".service.AlarmService" />
+        <service android:name=".service.RescheduleAlarmService" />
 
     </application>
 

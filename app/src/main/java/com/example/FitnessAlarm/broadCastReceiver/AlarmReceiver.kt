@@ -1,4 +1,4 @@
-package com.example.FitnessAlarm
+package com.example.FitnessAlarm.broadCastReceiver
 
 import android.app.*
 import android.content.BroadcastReceiver
@@ -8,8 +8,15 @@ import android.os.Build
 import android.util.Log
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import com.example.FitnessAlarm.R
+import com.example.FitnessAlarm.activity.CameraActivity
+import com.example.FitnessAlarm.data.AlarmData
+import com.example.FitnessAlarm.data.SharedPreferenceUtils
+import com.example.FitnessAlarm.service.AlarmService
+import com.example.FitnessAlarm.service.RescheduleAlarmService
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -21,26 +28,53 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-
+        val sharedPreferenceUtils : SharedPreferenceUtils = SharedPreferenceUtils(context)
         Log.i("test","test activity")
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.action)){
+            startResheduleAlarmService(context)
+        }
+        else{
+            Log.d("onReceive","startAlarmService")
+            val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+            startAlarmService(context,alarmData)
+        }
 
-        //
 
-        //val ringtone = createRingtone(context)
 
-        //ringtone.play()
 
-        executeNotification(context)
 
-        //ringtone.stop()
 
 
     }
 
+    fun startAlarmService(context: Context, alarmData : AlarmData)
+    {
+        Log.d("startAlarmService","startAlarmService")
+
+        val intentService : Intent = Intent(context, AlarmService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intentService);
+        } else {
+            context.startService(intentService);
+        }
+    }
+
+    fun startResheduleAlarmService(context: Context)
+    {
+        val intentService : Intent = Intent(context, RescheduleAlarmService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intentService);
+        } else {
+            context.startService(intentService);
+        }
+    }
+
+
+/*
     // pendingIntent 생성
     private fun createPendingIntent(context : Context) : PendingIntent?
     {
-        val counterIntent = Intent(context,CameraActivity::class.java)
+        val counterIntent = Intent(context, CameraActivity::class.java)
 
         val counterPendingIntent : PendingIntent? = TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(counterIntent)
@@ -90,5 +124,6 @@ class AlarmReceiver : BroadcastReceiver() {
         val ringtone = RingtoneManager.getRingtone(context,ringtoneUri)
         return ringtone
     }
+    */
 }
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".AlarmSetting">
+    tools:context=".fragments.AlarmSettingFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -26,6 +26,96 @@
             android:layout_width="match_parent"
             android:layout_height="3px"
             ></View>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/mon_button"
+                android:textOn="월"
+                android:textOff="월"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+                />
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tue_button"
+                android:textOn="화"
+                android:textOff="화"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+
+                />
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/wed_button"
+                android:textOn="수"
+                android:textOff="수"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+
+                />
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/thu_button"
+                android:textOn="목"
+                android:textOff="목"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+
+                />
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/fri_button"
+                android:textOn="금"
+                android:textOff="금"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+
+                />
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sat_button"
+                android:textOn="토"
+                android:textOff="토"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+
+                />
+            <ToggleButton
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sun_button"
+                android:textOn="일"
+                android:textOff="일"
+                android:background="@color/light_sky"
+                android:layout_marginRight="3dp"
+
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:background="#D3D3D3"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            ></View>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_alarm_title"
+            android:text="알람 제목"
+            android:textSize = "25dp"
+            android:textColor="@color/black"
+            />
         <TextView
             android:id="@+id/workout_banner"
             android:layout_marginTop="30dp"
