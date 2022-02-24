@@ -80,7 +80,7 @@ class AlarmService : Service() {
                 .setSound(null)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setFullScreenIntent(pendingIntent,true)
                 .build()
 
@@ -95,10 +95,9 @@ class AlarmService : Service() {
             val vibrateAmplitude = intArrayOf(0,20,0,40,0)
             val vibrationEffect = VibrationEffect.createWaveform(vibratePattern,vibrateAmplitude,0)
             vibrator.vibrate(vibrationEffect)
+        Log.d("AlarmService : ","startService")
 
             startForeground(1,notification)
-            val notificationManager : NotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(0,notification)
             return START_STICKY
 
         }
