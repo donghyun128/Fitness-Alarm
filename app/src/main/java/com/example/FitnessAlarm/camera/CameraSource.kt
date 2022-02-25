@@ -41,6 +41,7 @@ import com.example.FitnessAlarm.Visualization.YuvToRgbConverter
 import com.example.FitnessAlarm.movenet.PoseClassifier
 import com.example.FitnessAlarm.movenet.PoseDetector
 import com.example.FitnessAlarm.data.Person
+import com.example.FitnessAlarm.service.AlarmService
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.coroutines.resume
@@ -213,9 +214,10 @@ class CameraSource (
         for (cameraId in cameraManager.cameraIdList) {
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
-            val cameraDirection = CameraCharacteristics.LENS_FACING_FRONT
+            val cameraDirection = characteristics.get(CameraCharacteristics.LENS_FACING)
+
             if (cameraDirection != null &&
-                cameraDirection == characteristics.get(CameraCharacteristics.LENS_FACING)
+                cameraDirection == CameraCharacteristics.LENS_FACING_FRONT
             ) {
                 continue
             }
@@ -422,6 +424,12 @@ class CameraSource (
             //session?.stopRepeating()
             listener = null
             camera?.close()
+
+            // 알람음, 진동음 서비스 종료
+            val serviceIntent = Intent(context,AlarmService::class.java)
+            context.stopService(serviceIntent)
+
+            // 메인화면으로 이동
             val quitIntent = Intent(context, MainActivity::class.java)
             context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
 

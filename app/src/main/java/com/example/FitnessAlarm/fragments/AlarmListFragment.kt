@@ -1,11 +1,14 @@
 package com.example.FitnessAlarm.fragments
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.FitnessAlarm.R
@@ -28,7 +31,7 @@ class AlarmListFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        checkPermission()
         sharedPreferenceUtils = SharedPreferenceUtils(context)
         alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
         alarmListFragmentBinding = AlarmListFragmentBinding.inflate(inflater,container,false)
@@ -66,5 +69,24 @@ class AlarmListFragment : Fragment(){
         val alarmData : AlarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
         alarmListFragmentBinding.createAlarmButton.text = String.format("%s %02d : %02d",alarmData.getAMPM,alarmData.getHour,alarmData.getMinute)
 
+    }
+
+    //권한 확인
+    fun checkPermission() {
+
+        // 1. 위험권한(Camera) 권한 승인상태 가져오기
+        val cameraPermission = ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
+        if (cameraPermission == PackageManager.PERMISSION_GRANTED) {
+            // 카메라 권한이 승인된 상태일 경우
+
+        } else {
+            // 카메라 권한이 승인되지 않았을 경우
+            requestPermission()
+        }
+    }
+
+    // 2. 권한 요청
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CAMERA), 99)
     }
 }

@@ -82,7 +82,7 @@ public class CameraActivity : AppCompatActivity() {
                     }
 
                 // 코루틴 실행
-                val globalScope = lifecycleScope.async {
+
                     var isFinished : Int = 0
                     val visualizeCoroutine = lifecycleScope.launch {
 
@@ -91,10 +91,8 @@ public class CameraActivity : AppCompatActivity() {
 
                         Log.d("initCamera 종료","initCamera 종료")
                     }
-                    if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
-                        visualizeCoroutine.cancel()
-                    }
-                }
+
+
 
                 // count와 complete 값이 같아지면 initCamera를 종료
                 Log.d("Out of Launch Block","Out of Launch Block")
@@ -206,7 +204,7 @@ public class CameraActivity : AppCompatActivity() {
         Log.i("CameraActivity","onStart")
         super.onStart()
         openCamera()
-        finishActivity()
+        //finishActivity()
         Log.i("CameraActivity","onStart End")
     }
 
@@ -215,7 +213,7 @@ public class CameraActivity : AppCompatActivity() {
         cameraSource?.resume()
         super.onResume()
         Log.i("CameraActivity","onResume End")
-        finishActivity()
+        //finishActivity()
     }
 
     override fun onPause() {

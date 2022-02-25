@@ -12,6 +12,11 @@
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"
+        android:protectionLevel="signature|privileged|vendorPrivileged|oem|verifier" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -36,10 +41,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity">
+        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity"
+            >
 
         </activity>
+        <activity android:name=".activity.RingActivity"
+            >
 
+        </activity>
 
         <receiver android:name="com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver"
             android:exported="false"
@@ -50,7 +59,9 @@
 
         </receiver>
 
-        <service android:name=".service.AlarmService" />
+        <service android:name=".service.AlarmService"
+            android:foregroundServiceType="location|camera"
+            />
         <service android:name=".service.RescheduleAlarmService" />
 
     </application>

@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver
 import java.util.*
 

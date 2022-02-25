@@ -1,9 +1,11 @@
 package com.example.FitnessAlarm.activity
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,8 @@ import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver
 import com.example.FitnessAlarm.fragments.AlarmSettingFragment
@@ -34,6 +38,7 @@ class MainActivity : AppCompatActivity(){
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
     }
 
     override fun onResume() {
@@ -61,6 +66,10 @@ class MainActivity : AppCompatActivity(){
             REPETITION_KEY,2)
     }
 
+
+
+
+
     companion object
     {
         const val Filename = "prefs"
@@ -82,5 +91,6 @@ class MainActivity : AppCompatActivity(){
         const val RINGTITLE_KEY = "RING"
         var workoutCounter : WorkoutCounter = SquatCounter()
     }
+
 }
 
