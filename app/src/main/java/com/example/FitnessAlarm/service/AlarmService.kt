@@ -33,12 +33,10 @@ class AlarmService : Service() {
     lateinit var ringtone : Uri
     lateinit var  sharedPreferenceUtils: SharedPreferenceUtils
 
-    // Service와 Activity 사이의 통신 메서드
     override fun onBind(p0: Intent?): IBinder1? {
 
         return null
     }
-
 
     override fun onCreate() {
         super.onCreate()
@@ -72,7 +70,7 @@ class AlarmService : Service() {
             this, 0, notificationIntent,
             0
         )
-        val remoteViews : RemoteViews = RemoteViews(packageName,R.layout.activity_ring)
+
 
         alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
 
@@ -82,13 +80,19 @@ class AlarmService : Service() {
             alarmTitle = alarmData.getTitle
             try {
                 mediaPlayer.setDataSource(this.baseContext, Uri.parse(alarmData.getTone))
+                mediaPlayer.setVolume(alarmData.volume.toFloat(),alarmData.volume.toFloat())
                 mediaPlayer.prepareAsync()
             } catch (ex: IOException) {
                 ex.printStackTrace()
             }
         }
 
-            val notification : Notification = NotificationCompat.Builder(this,CHANNEL_ID)
+        val remoteViews : RemoteViews = RemoteViews(packageName,R.layout.activity_ring)
+
+        remoteViews.setTextViewText(R.id.notification_alarm_time,alarmData.timeToText)
+        remoteViews.setTextViewText(R.id.notification_rep_count,alarmData.getWorkOut + " " +  alarmData.getRepCnt + "회")
+
+        val notification : Notification = NotificationCompat.Builder(this,CHANNEL_ID)
                 .setContentTitle("Ringing")
                 .setContentText(alarmTitle)
                 .setSound(null)
@@ -101,18 +105,18 @@ class AlarmService : Service() {
                 .setSmallIcon(R.drawable.clock_image)
                 .build()
 
-            Log.d("AlarmService : ","mediaPlayer 재생")
-            mediaPlayer.setOnPreparedListener { mediaPlayer ->
+        Log.d("AlarmService : ","mediaPlayer 재생")
+        mediaPlayer.setOnPreparedListener { mediaPlayer ->
 
                 mediaPlayer.start()
 
             }
 
-            val vibratePattern = longArrayOf(1,100,1000,10,100)
-            val vibrateAmplitude = intArrayOf(50,80,70,80,90)
-            val vibrationEffect = VibrationEffect.createWaveform(vibratePattern,vibrateAmplitude,0)
-            vibrator.vibrate(vibrationEffect)
-            Log.d("AlarmService : ","startService")
+        val vibratePattern = longArrayOf(1,100,1000,10,100)
+        val vibrateAmplitude = intArrayOf(50,80,70,80,90)
+        val vibrationEffect = VibrationEffect.createWaveform(vibratePattern,vibrateAmplitude,0)
+        vibrator.vibrate(vibrationEffect)
+        Log.d("AlarmService : ","startService")
 
             /*
 
@@ -138,12 +142,7 @@ class AlarmService : Service() {
         mediaPlayer.stop()
         vibrator.cancel()
     }
-
-
-
-
-
-    }
+}
 
 
 

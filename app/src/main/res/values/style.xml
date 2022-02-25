@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name ="timepicker_color"
+        >
+        <item name="android:textColorPrimary">#006400</item>
+
+        <item name="android:textColor">#006400</item>
+
+    </style>
+    </resources>

@@ -15,6 +15,7 @@ import com.example.FitnessAlarm.activity.MainActivity.Companion.THU_KEY
 import com.example.FitnessAlarm.activity.MainActivity.Companion.TITLE_KEY
 import com.example.FitnessAlarm.activity.MainActivity.Companion.TONE_KEY
 import com.example.FitnessAlarm.activity.MainActivity.Companion.TUE_KEY
+import com.example.FitnessAlarm.activity.MainActivity.Companion.VOLUME_KEY
 import com.example.FitnessAlarm.activity.MainActivity.Companion.WED_KEY
 import com.example.FitnessAlarm.activity.MainActivity.Companion.WORKOUT_KEY
 
@@ -44,6 +45,7 @@ class SharedPreferenceUtils(context: Context?) {
             putBoolean(SAT_KEY,alarmData.getSaturday)
             putBoolean(SUN_KEY,alarmData.getSunday)
             putString(RINGTITLE_KEY,alarmData.getRingTitle)
+            putInt(VOLUME_KEY,alarmData.getVolume)
             commit()
         }
 
@@ -53,8 +55,8 @@ class SharedPreferenceUtils(context: Context?) {
     {
         val hour = sharedpreferences.getInt(HOUR_KEY,12)
         val minute = sharedpreferences.getInt(MINUTE_KEY,0)
-        val workout = sharedpreferences.getString(WORKOUT_KEY,"squat")!!
-        val repetition = sharedpreferences.getInt(REPETITION_KEY,5)
+        val workout = sharedpreferences.getString(WORKOUT_KEY,"스쿼트")!!
+        val repetition = sharedpreferences.getInt(REPETITION_KEY,0)
         val title = sharedpreferences.getString(TITLE_KEY,"Alarm")!!
         val tone = sharedpreferences.getString(TONE_KEY,"default")!!
         val onOff = sharedpreferences.getBoolean(ONOFF_KEY,true)
@@ -66,8 +68,9 @@ class SharedPreferenceUtils(context: Context?) {
         val sat = sharedpreferences.getBoolean(SAT_KEY,true)
         val sun = sharedpreferences.getBoolean(SUN_KEY,true)
         val ringTitle = sharedpreferences.getString(RINGTITLE_KEY,"")!!
+        val volume = sharedpreferences.getInt(VOLUME_KEY,10)
 
-        val alarmData :AlarmData = AlarmData(1,hour,minute,workout,repetition,onOff,mon,tue,wed,thu,fri,sat,sun,title,tone,ringTitle)
+        val alarmData :AlarmData = AlarmData(1,hour,minute,workout,repetition,onOff,mon,tue,wed,thu,fri,sat,sun,title,tone,ringTitle,volume)
 
         return alarmData
     }

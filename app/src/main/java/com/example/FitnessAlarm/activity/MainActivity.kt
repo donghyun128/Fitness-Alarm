@@ -32,13 +32,14 @@ import com.example.FitnessAlarm.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(){
 
     lateinit var binding : ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
+        val sharedPreferenceUtils : SharedPreferenceUtils = SharedPreferenceUtils(this)
+        val alarmData : AlarmData =  sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+        setWorkoutCounter(alarmData.workout)
     }
 
     override fun onResume() {
@@ -53,22 +54,14 @@ class MainActivity : AppCompatActivity(){
     // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
     private fun setWorkoutCounter(workout : String)
     {
-
-        if (workout == "squat") {
+        if (workout == "스쿼트") {
             workoutCounter = SquatCounter()
         }
 
-        else if (workout == "pushup") {
+        else if (workout == "팔굽혀펴기") {
             workoutCounter = PushupCounter()
         }
-        // setWorkoutCounter()를 실행할 경우, workOutCounter의 변수값이 default로 초기화되므로 적절히 값을 바꿔주어야 한다.
-        workoutCounter.completeGoal = getSharedPreferences(SHARED_PREFERENCE_NAME,MODE_PRIVATE).getInt(
-            REPETITION_KEY,2)
     }
-
-
-
-
 
     companion object
     {
@@ -88,7 +81,8 @@ class MainActivity : AppCompatActivity(){
         const val FRI_KEY = "fri"
         const val SAT_KEY = "sat"
         const val SUN_KEY = "sun"
-        const val RINGTITLE_KEY = "RING"
+        const val RINGTITLE_KEY = "ring"
+        const val VOLUME_KEY = "volume"
         var workoutCounter : WorkoutCounter = SquatCounter()
     }
 

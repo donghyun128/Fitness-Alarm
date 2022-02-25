@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".fragments.AlarmSettingFragment">
+    tools:context=".fragments.AlarmSettingFragment"
+    android:background="#2c2c2c"
+    >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -18,8 +20,11 @@
             android:id="@+id/picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:theme="@style/timepicker_color"
             android:timePickerMode="spinner"
             android:layout_gravity="center"
+            android:amPmTextColor="@color/white"
+            android:numbersTextColor="@color/white"
             />
         <View
             android:background="#D3D3D3"
@@ -32,6 +37,7 @@
             android:layout_height="40dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
+            android:visibility="gone"
             >
             <ToggleButton
                 android:layout_width="55dp"
@@ -39,7 +45,7 @@
                 android:id="@+id/mon_button"
                 android:textOn="월"
                 android:textOff="월"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
                 />
             <ToggleButton
@@ -48,7 +54,7 @@
                 android:id="@+id/tue_button"
                 android:textOn="화"
                 android:textOff="화"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
 
                 />
@@ -58,7 +64,7 @@
                 android:id="@+id/wed_button"
                 android:textOn="수"
                 android:textOff="수"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
 
                 />
@@ -68,7 +74,7 @@
                 android:id="@+id/thu_button"
                 android:textOn="목"
                 android:textOff="목"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
 
                 />
@@ -78,7 +84,7 @@
                 android:id="@+id/fri_button"
                 android:textOn="금"
                 android:textOff="금"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
 
                 />
@@ -88,7 +94,7 @@
                 android:id="@+id/sat_button"
                 android:textOn="토"
                 android:textOff="토"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
 
                 />
@@ -98,11 +104,13 @@
                 android:id="@+id/sun_button"
                 android:textOn="일"
                 android:textOff="일"
-                android:background="@color/light_sky"
+                android:textColor="@drawable/toggle_color"
                 android:layout_marginRight="3dp"
 
                 />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <View
             android:background="#D3D3D3"
             android:layout_width="match_parent"
@@ -114,7 +122,7 @@
             android:id="@+id/create_alarm_title"
             android:text="알람 제목"
             android:textSize = "25dp"
-            android:textColor="@color/black"
+            android:textColor="#006400"
             />
         <TextView
             android:id="@+id/workout_banner"
@@ -123,7 +131,7 @@
             android:layout_height="50dp"
             android:text="운동"
             android:textSize="25dp"
-            android:textColor="@color/black"
+            android:textColor="#006400"
             android:textAlignment="viewStart"
             ></TextView>
         <LinearLayout
@@ -159,7 +167,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             >
             <LinearLayout
@@ -178,7 +186,7 @@
                     android:textAlignment="viewStart"
                     android:text="벨소리"
                     android:textSize="25dp"
-                    android:textColor="@color/black"
+                    android:textColor="#006400"
                     ></TextView>
                 <TextView
                     android:id="@+id/musicTitle"
@@ -186,13 +194,29 @@
                     android:layout_height="20dp"
                     android:textAlignment="viewStart"
                     android:text="default"
-                    android:textColor="#99CCFF"
+                    android:textColor="#006400"
                     ></TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="볼륨"
+                    android:textColor="#006400"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    ></TextView>
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:max ="15"
+                    android:id="@+id/volume_controller"
+                    >
+                </SeekBar>
                 <View
                     android:background="#D3D3D3"
                     android:layout_width="match_parent"
                     android:layout_height="3px">
                 </View>
+
 
             </LinearLayout>
 
@@ -202,18 +226,15 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-
-
-
     <Button
         android:id="@+id/time_set_btn"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:background= "#99CCFF"
-        android:text="Set"
+        android:layout_marginTop="100dp"
+        android:background= "#006400"
+        android:text="알람 설정"
+        android:textStyle="bold"
         />
 </androidx.appcompat.widget.LinearLayoutCompat>
 

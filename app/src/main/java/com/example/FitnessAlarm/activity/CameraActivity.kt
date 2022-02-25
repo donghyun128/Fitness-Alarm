@@ -151,10 +151,9 @@ public class CameraActivity : AppCompatActivity() {
 
     private fun createPoseEstimator() {
         Log.i("CameraActivity","createPoseEstimator")
-        // For MoveNet MultiPose, hide score and disable pose classifier as the model returns
-        // multiple Person instances.
-        val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
 
+        val poseDetector = MoveNet.create(this, device, ModelType.Lightning)
+        //val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
         poseDetector?.let { detector ->
             Log.i("CameraActivity","setDetector")
             cameraSource?.setDetector(detector)
@@ -194,6 +193,8 @@ public class CameraActivity : AppCompatActivity() {
         setContentView(R.layout.counter)
 
         surfaceView = findViewById(R.id.surfaceView)
+
+
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
@@ -224,6 +225,9 @@ public class CameraActivity : AppCompatActivity() {
         Log.i("CameraActivity","onPause End")
     }
 
+    override fun onBackPressed() {
+
+    }
 
 }
 

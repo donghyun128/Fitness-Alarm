@@ -2,8 +2,8 @@
 
 <resources>
     <string-array name="workout_array">
-        <item>squat</item>
-        <item>pushup</item>
+        <item>스쿼트</item>
+        <!--<item>팔굽혀펴기</item>-->
     </string-array>
 
 

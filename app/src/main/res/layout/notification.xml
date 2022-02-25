@@ -4,7 +4,9 @@
     android:layout_height="130dp"
     android:orientation="vertical"
     >
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -13,24 +15,34 @@
     </ImageView>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:id="@+id/notification_alarm_time"
         android:text = "알람"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        style = "@style/TextAppearance.Compat.Notification.Title"
-    ></TextView>
 
-    <TextView
-        style="@style/TextAppearance.Compat.Notification.Info"
+        style = "@style/TextAppearance.Compat.Notification.Title"
+        ></TextView>
+
+        <TextView
+            android:id="@+id/notification_rep_count"
+            style="@style/TextAppearance.Compat.Notification.Info"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="운동 횟수"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:text="운동 횟수"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        >
-    </TextView>
+        android:layout_height="28dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
 
 
 </LinearLayout>

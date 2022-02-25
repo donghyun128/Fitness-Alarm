@@ -6,67 +6,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.AlarmListFragment">
-
-
+    tools:context=".fragments.AlarmListFragment"
+    android:background="#2c2c2c"
+    >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#99CCFF"
         >
-        <ImageView
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/title_image"
-            ></ImageView>
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="Squat Alarm"
+            android:textSize="40dp"
+            android:layout_marginTop="12dp"
+            android:textAlignment="center">
+
+        </TextView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <TextView
+        android:id="@+id/time_text"
+        android:layout_width="340dip"
+        android:layout_height="340dip"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dip"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/time_circle"
+        android:text="Time"
+        android:gravity="center"
+        android:textColor="#006400"
+        android:textSize="50sp"
+    />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/repetition_text"
+        android:layout_marginTop="15dp"
+        android:text="스쿼트 n 회"
+        android:textStyle="bold"
+        android:textColor="#006400"
+        android:textSize = "35sp"
+        android:textAlignment="center"
         >
 
-        <Button
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
-            android:background="#99CCFF"
-            android:id="@+id/create_alarm_button"
-            android:text="alarm_time_button"
-            >
+    </TextView>
+        <View
+            android:background="#242424"
+            android:layout_width="match_parent"
+            android:layout_height="7px"
+            ></View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/set_alarm_layout"
+        >
 
-        </Button>
-
-        <Switch
-            android:layout_width="50dp"
+        <ToggleButton
+            android:id="@+id/alarm_switch"
+            android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
-            android:id="@+id/alarm_switch"
-            >
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="60dp"
+            android:textOff="알람 OFF"
+            android:textOn="알람 ON"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="#006400"
 
-        </Switch>
+            ></ToggleButton>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_listAlarms_addAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#006400"
+            android:src="@drawable/ic_alarm_white_24dp"
+            app:borderWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fragment_listAlarms_addAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="480dp"
-        android:layout_marginLeft="340dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        app:borderWidth="0dp"
-        android:backgroundTint="@color/light_sky"
-        android:src="@drawable/ic_alarm_white_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        ></LinearLayout>
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

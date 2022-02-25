@@ -25,13 +25,14 @@ data class AlarmData(
     var sunday : Boolean,
     var title : String,
     var tone : String,
-    var ringTitle : String
+    var ringTitle : String,
+    var volume : Int
 ) {
     val timeToText : String
         get()
         {
-            val h = if (hour.toInt() > 12 ) (hour.toInt() - 12).toString() else hour
-            return "$h : $min "
+            val h = if (hour.toInt() > 12 ) (hour.toInt() - 12) else hour
+            return String.format("%s %02d : %02d",getAMPM,h,min)
         }
     val getAMPM : String
         get()
@@ -126,6 +127,12 @@ data class AlarmData(
     get()
     {
         return ringTitle
+    }
+
+    val getVolume : Int
+    get()
+    {
+        return volume
     }
 
     // 알람 설정

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
+import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -31,16 +32,30 @@ class AlarmListFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        checkPermission()
+
         sharedPreferenceUtils = SharedPreferenceUtils(context)
         alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+
+        // 뷰바인딩
         alarmListFragmentBinding = AlarmListFragmentBinding.inflate(inflater,container,false)
         val rootView =  alarmListFragmentBinding.root
+
+        // 알람 시각
+        alarmListFragmentBinding.timeText.setText(alarmData.timeToText)
+
+        // 알람 운동 횟수 보여주기
+        if (alarmData.getRepCnt == 0)
+        {
+            alarmListFragmentBinding.repetitionText.setText(" ")
+        }
+        else
+        {
+            //var repText : String = getString(R.string.repetition_notify,alarmData.getWorkOut,alarmData.getRepCnt)
+            alarmListFragmentBinding.repetitionText.setText("스쿼트 " + alarmData.repCnt.toString() + "회 예정")
+        }
+
+        // 알람 설정 버튼 이벤트
         val addAlarmButton = alarmListFragmentBinding.fragmentListAlarmsAddAlarm
-
-        alarmListFragmentBinding.alarmSwitch.isChecked = alarmData.getOnOff
-
-        alarmListFragmentBinding.createAlarmButton.setText("test")
         addAlarmButton.setOnClickListener {
             view ->
 
@@ -49,7 +64,9 @@ class AlarmListFragment : Fragment(){
 
         }
 
-        val onOffSwitch : Switch = alarmListFragmentBinding.alarmSwitch
+        // 알람 on/off 토글버튼
+        alarmListFragmentBinding.alarmSwitch.isChecked = alarmData.getOnOff
+        val onOffSwitch : ToggleButton = alarmListFragmentBinding.alarmSwitch
         onOffSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked == true)
             {
@@ -66,8 +83,6 @@ class AlarmListFragment : Fragment(){
 
     override fun onResume() {
         super.onResume()
-        val alarmData : AlarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
-        alarmListFragmentBinding.createAlarmButton.text = String.format("%s %02d : %02d",alarmData.getAMPM,alarmData.getHour,alarmData.getMinute)
 
     }
 

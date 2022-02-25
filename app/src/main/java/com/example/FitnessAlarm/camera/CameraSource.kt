@@ -57,6 +57,8 @@ class CameraSource (
 ) {
 
     companion object {
+        //private const val PREVIEW_WIDTH = 1280
+        //private const val PREVIEW_HEIGHT = 720
         private const val PREVIEW_WIDTH = 640
         private const val PREVIEW_HEIGHT = 480
         /** Threshold for confidence score. */
@@ -109,6 +111,7 @@ class CameraSource (
 
 
             camera = openCamera(cameraManager, cameraId)
+
             imageReader =
                 ImageReader.newInstance(PREVIEW_WIDTH, PREVIEW_HEIGHT, ImageFormat.YUV_420_888, 3)
 
@@ -125,22 +128,22 @@ class CameraSource (
                                 Bitmap.Config.ARGB_8888
                             )
                     }
+                        if (image!= null) {
+                            yuvConverter.yuvToRgb(image, imageBitmap)
+                            // Create rotated version for portrait display
+                            val rotateMatrix = Matrix()
+                            rotateMatrix.postRotate(270.0f)
 
-                        yuvConverter.yuvToRgb(image, imageBitmap)
-                        // Create rotated version for portrait display
-                        val rotateMatrix = Matrix()
-                        rotateMatrix.postRotate(90.0f)
-
-                        val rotatedBitmap = Bitmap.createBitmap(
-                            imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
-                            rotateMatrix, false
-                        )
-                        Log.d("CameraSource", "Before execute processImage")
-                        processImage(rotatedBitmap)
-                        Log.d("CameraSource", "After execute processImage")
-                        image.close()
-                        Log.d("CameraSource", "After execute image.close()")
-
+                            val rotatedBitmap = Bitmap.createBitmap(
+                                imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
+                                rotateMatrix, false
+                            )
+                            Log.d("CameraSource", "Before execute processImage")
+                            processImage(rotatedBitmap)
+                            Log.d("CameraSource", "After execute processImage")
+                            image.close()
+                            Log.d("CameraSource", "After execute image.close()")
+                        }
                     if (MainActivity.workoutCounter.count == repetitionGoal )
                         finishAlarm(reader)
 
@@ -216,10 +219,10 @@ class CameraSource (
         for (cameraId in cameraManager.cameraIdList) {
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
-            val cameraDirection = characteristics.get(CameraCharacteristics.LENS_FACING)
-
+            val cameraDirection = CameraCharacteristics.LENS_FACING_FRONT
             if (cameraDirection != null &&
-                cameraDirection == CameraCharacteristics.LENS_FACING_FRONT
+                cameraDirection != characteristics.get(CameraCharacteristics.LENS_FACING)
+
             ) {
                 continue
             }
@@ -434,7 +437,6 @@ class CameraSource (
             val quitIntent = Intent(context, MainActivity::class.java)
             //quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(quitIntent)
-
     }
 
     interface CameraSourceListener {
