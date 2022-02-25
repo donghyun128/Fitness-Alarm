@@ -48,7 +48,6 @@ class AlarmService : Service() {
         ringtone = RingtoneManager.getActualDefaultRingtoneUri(this.baseContext, RingtoneManager.TYPE_ALARM)
         sharedPreferenceUtils = SharedPreferenceUtils(this)
 
-
     }
 
     // 서비스가 실행될 때 실행
@@ -97,8 +96,9 @@ class AlarmService : Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setFullScreenIntent(pendingIntent,true)
-                //.setContent(remoteViews)
-                //.setSmallIcon(R.drawable.clock_image)
+                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(remoteViews)
+                .setSmallIcon(R.drawable.clock_image)
                 .build()
 
             Log.d("AlarmService : ","mediaPlayer 재생")
@@ -126,8 +126,8 @@ class AlarmService : Service() {
             }
             */
 
-            //val notificationManager : NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            //notificationManager.notify(1,notification)
+            val notificationManager : NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(1,notification)
             startForeground(1,notification)
             return START_REDELIVER_INTENT
 

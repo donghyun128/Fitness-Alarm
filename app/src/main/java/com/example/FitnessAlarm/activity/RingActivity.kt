@@ -15,17 +15,10 @@ class RingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ring)
 
-        val btn : Button = findViewById(R.id.start_camera_button)
-        btn.setOnClickListener{
-            view ->
-            val intent = Intent(this,CameraActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onStart() {
         super.onStart()
-
     }
 
 

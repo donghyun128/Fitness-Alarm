@@ -9,13 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="알람"
-        ></TextView>
+        style="@style/TextAppearance.Compat.Notification.Title">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/start_camera_button"
-        android:text="cameraStart"
-        tools:ignore="MissingConstraints"></Button>
+    </TextView>
 
+   \
 </LinearLayout>

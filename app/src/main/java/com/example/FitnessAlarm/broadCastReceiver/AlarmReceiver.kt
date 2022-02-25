@@ -43,12 +43,21 @@ class AlarmReceiver : BroadcastReceiver() {
     fun startAlarmService(context: Context, alarmData: AlarmData) {
         Log.d("startAlarmService", "startAlarmService")
 
+        /*
+        val intentCamera : Intent = Intent(context,CameraActivity::class.java)
+        intentCamera.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intentCamera)
+        */
+
+
         val intentService: Intent = Intent(context, AlarmService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intentService);
         } else {
             context.startService(intentService);
         }
+
+
     }
 
     fun startResheduleAlarmService(context: Context) {

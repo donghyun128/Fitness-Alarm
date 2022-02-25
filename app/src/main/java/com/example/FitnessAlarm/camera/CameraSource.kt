@@ -34,13 +34,16 @@ import android.util.Log
 import android.view.Surface
 import android.view.SurfaceView
 import com.example.FitnessAlarm.CountAlgorithm.SquatCounter
+import com.example.FitnessAlarm.CountAlgorithm.WorkoutCounter
 import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.activity.MainActivity
 import com.example.FitnessAlarm.Visualization.VisualizationUtils
 import com.example.FitnessAlarm.Visualization.YuvToRgbConverter
+import com.example.FitnessAlarm.data.AlarmData
 import com.example.FitnessAlarm.movenet.PoseClassifier
 import com.example.FitnessAlarm.movenet.PoseDetector
 import com.example.FitnessAlarm.data.Person
+import com.example.FitnessAlarm.data.SharedPreferenceUtils
 import com.example.FitnessAlarm.service.AlarmService
 import kotlinx.coroutines.*
 import java.util.*
@@ -56,11 +59,15 @@ class CameraSource (
     companion object {
         private const val PREVIEW_WIDTH = 640
         private const val PREVIEW_HEIGHT = 480
-
         /** Threshold for confidence score. */
         private const val MIN_CONFIDENCE = .2f
         private const val TAG = "Camera Source"
     }
+
+    private var sharedPreferenceUtils : SharedPreferenceUtils = SharedPreferenceUtils(context)
+    private val alarmData : AlarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+    private val repetitionGoal : Int = alarmData.getRepCnt
+
     private val lock = Any()
     private var detector: PoseDetector? = null
     private var classifier: PoseClassifier? = null
@@ -100,7 +107,6 @@ class CameraSource (
 
         Log.i("CameraSource","initCamera")
 
-        var isFinished = 0
 
             camera = openCamera(cameraManager, cameraId)
             imageReader =
@@ -109,7 +115,7 @@ class CameraSource (
             imageReader?.setOnImageAvailableListener({ reader ->
                 Log.d("CameraSource", "setOnImageAvailableListener")
 
-                if (MainActivity.workoutCounter.count != MainActivity.workoutCounter.completeGoal) {
+
                     val image = reader.acquireLatestImage()
                     if (!::imageBitmap.isInitialized) {
                         imageBitmap =
@@ -119,7 +125,7 @@ class CameraSource (
                                 Bitmap.Config.ARGB_8888
                             )
                     }
-                    if (image != null) {
+
                         yuvConverter.yuvToRgb(image, imageBitmap)
                         // Create rotated version for portrait display
                         val rotateMatrix = Matrix()
@@ -135,7 +141,9 @@ class CameraSource (
                         image.close()
                         Log.d("CameraSource", "After execute image.close()")
 
-                    }
+                    if (MainActivity.workoutCounter.count == repetitionGoal )
+                        finishAlarm(reader)
+
 
                     /*
                     if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal) {
@@ -151,13 +159,7 @@ class CameraSource (
                         context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
                     }
                     */
-                }
-                else
-                {
-                    //val quitIntent = Intent(context,MainActivity::class.java)
-                    //context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
-                    finishAlarm(reader)
-                }
+
             }, imageReaderHandler)
 
 
@@ -373,8 +375,9 @@ class CameraSource (
                 Rect(left, top, right, bottom), null
             )
 
-            val textPaint = TextPaint()
 
+
+            val textPaint = TextPaint()
             //textPaint.setARGB(100,50,30,20)
             // text 크기 설정
             textPaint.textSize = 80F
@@ -386,12 +389,10 @@ class CameraSource (
 
             textPaint.isAntiAlias = true
 
-
-
             val xPos = (canvas.width / 8).toFloat()
             val yPos = (bottom - canvas.height / 8).toFloat()
             Log.i("draw_text","Count : " + counter.count.toString())
-            canvas.drawText("Count : " + MainActivity.workoutCounter.count.toString() + " / " + MainActivity.workoutCounter.completeGoal.toString(),
+            canvas.drawText("Count : " + MainActivity.workoutCounter.count.toString() + " / " + repetitionGoal,
                 xPos,
                 yPos,
                 textPaint)
@@ -431,7 +432,8 @@ class CameraSource (
 
             // 메인화면으로 이동
             val quitIntent = Intent(context, MainActivity::class.java)
-            context.startActivity(quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK))
+            //quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(quitIntent)
 
     }
 
