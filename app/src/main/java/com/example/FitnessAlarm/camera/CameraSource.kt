@@ -241,11 +241,9 @@ class CameraSource (
             }
             this.detector = detector
         }
-        Log.d("CameraSource","setDetector End")
     }
 
     fun setClassifier(classifier: PoseClassifier?) {
-        Log.d("CameraSource","setClassifier")
         synchronized(lock) {
             if (this.classifier != null) {
                 this.classifier?.close()
@@ -253,7 +251,6 @@ class CameraSource (
             }
             this.classifier = classifier
         }
-        Log.d("CameraSource","setClassifier End")
     }
 /*
     /**
@@ -265,7 +262,6 @@ class CameraSource (
     }
 */
     fun resume() {
-    Log.d("CameraSource","resume")
     imageReaderThread = HandlerThread("imageReaderThread").apply { start() }
         imageReaderHandler = Handler(imageReaderThread!!.looper)
         fpsTimer = Timer()
@@ -279,11 +275,9 @@ class CameraSource (
             0,
             1000
         )
-    Log.d("CameraSource","resume End")
 }
 
     fun close() {
-        Log.d("CameraSource","close")
         session?.close()
         session = null
         camera?.close()
@@ -301,19 +295,16 @@ class CameraSource (
         fpsTimer = null
         frameProcessedInOneSecondInterval = 0
         framesPerSecond = 0
-        Log.d("CameraSource","close End")
     }
 
     // process image
     private fun processImage(bitmap: Bitmap) {
-        Log.d("CameraSource","processImage")
         CameraActivity.personForCount = mutableListOf<Person>()
 
         val persons = mutableListOf<Person>()
         var classificationResult: List<Pair<String, Float>>? = null
 
         synchronized(lock) {
-            Log.d("CameraSource : ", "estimatePoses")
             detector?.estimatePoses(bitmap)?.let {
 
                 persons.addAll(it)
@@ -321,7 +312,6 @@ class CameraSource (
             }
         }
         CameraActivity.personForCount = persons
-        Log.d("nose coordinate_x", CameraActivity.personForCount[0].keyPoints[0].coordinate.x.toString())
         //Counter.workoutCounter.countAlgorithm(Counter.personForCount[0])
         Log.d("rep : ",
             MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0]).toString())
@@ -335,12 +325,11 @@ class CameraSource (
         if (persons.isNotEmpty()) {
             listener?.onDetectedInfo(persons[0].score, classificationResult)
         }
-        visualize(persons, bitmap, MainActivity.workoutCounter as SquatCounter)
-        Log.d("CameraSource","processImage End")
+        visualize(persons, bitmap)
     }
 
-    private fun visualize(persons: List<Person>, bitmap: Bitmap,counter : SquatCounter) {
-        Log.d("CameraSource","visualize")
+    private fun visualize(persons: List<Person>, bitmap: Bitmap) {
+
         // outputBitmap : camera에서 얻은 bitmap에 BodyKeyPoint를 그린 bitmap
         val outputBitmap = VisualizationUtils.drawBodyKeypoints(
             bitmap,
@@ -381,21 +370,19 @@ class CameraSource (
 
 
             val textPaint = TextPaint()
-            //textPaint.setARGB(100,50,30,20)
             // text 크기 설정
             textPaint.textSize = 80F
             //textPaint.textAlign = Paint.Align.CENTER
             // text 색 설정
-            textPaint.color = Color.rgb(153,204,255)
+            textPaint.color = Color.RED
             // text 굵기 설정
             textPaint.strokeWidth = 20.toFloat()
 
             textPaint.isAntiAlias = true
 
-            val xPos = (canvas.width / 8).toFloat()
-            val yPos = (bottom - canvas.height / 8).toFloat()
-            Log.i("draw_text","Count : " + counter.count.toString())
-            canvas.drawText("Count : " + MainActivity.workoutCounter.count.toString() + " / " + repetitionGoal,
+            val xPos = (canvas.width / 20).toFloat()
+            val yPos = (bottom - canvas.height / 30).toFloat()
+            canvas.drawText("횟수 : " + MainActivity.workoutCounter.count.toString() + " / " + repetitionGoal,
                 xPos,
                 yPos,
                 textPaint)
@@ -403,12 +390,10 @@ class CameraSource (
             // 수정된 surfaceView를 unlock
             surfaceView.holder.unlockCanvasAndPost(canvas)
         }
-        Log.d("CameraSource","visualize End")
     }
 
 
     private fun stopImageReaderThread() {
-        Log.d("CameraSource","stopImageReaderThread")
         imageReaderThread?.quitSafely()
         try {
             imageReaderThread?.join()
@@ -417,7 +402,6 @@ class CameraSource (
         } catch (e: InterruptedException) {
             Log.d(TAG, e.message.toString())
         }
-        Log.d("CameraSource","stopImageReaderThread End")
     }
 
     // 운동을 전부 마쳤으면, 알람 창을 종료한다.

@@ -15,12 +15,14 @@
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/activity_ring.xml" value="0.17617753623188406" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_detail.xml" value="0.2" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_list_fragment.xml" value="0.22" />
-        <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_receiver.xml" value="0.1" />
+        <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_receiver.xml" value="0.22" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_setting.xml" value="0.33" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/alarm_setting_fragment.xml" value="0.33" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.1234375" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/counter.xml" value="0.1234375" />
+        <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/notication_0dp.xml" value="0.11778115501519756" />
         <entry key="..\:/Fitness-Alarm/app/src/main/res/layout/notification.xml" value="0.4" />
+        <entry key="..\:/Fitness-Alarm/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.22" />
       </map>
     </option>
   </component>

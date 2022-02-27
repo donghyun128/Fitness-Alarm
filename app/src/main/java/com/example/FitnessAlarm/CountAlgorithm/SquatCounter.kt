@@ -5,23 +5,8 @@ import android.speech.tts.TextToSpeech
 import com.example.FitnessAlarm.data.BodyPart
 import com.example.FitnessAlarm.data.Person
 
+// 스쿼트 count algorithm
 class SquatCounter : WorkoutCounter() {
-
-    /*
-    val MIN_AMPLITUDE = 40
-    val REP_THRESHOLD = 0.8
-    val MIN_CONFIDENCE = 0.5
-
-    var count = 0
-
-    var first = true
-    var goal = 1
-    var prev_y = 0
-    var prev_dy = 0
-    var top = 0
-    var bottom = 0
-    */
-
 
     override fun countAlgorithm(person : Person) : Int
     {
@@ -34,7 +19,6 @@ class SquatCounter : WorkoutCounter() {
                         if (top - bottom > MIN_AMPLITUDE) {
                             count++
                             goal = -1
-                            //speakRep()
                         }
                     }
                     else if (goal == -1 && dy < 0 && (top - y) > (top - bottom) * REP_THRESHOLD) {

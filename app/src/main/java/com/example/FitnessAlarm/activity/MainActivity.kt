@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(){
         setContentView(view)
         val sharedPreferenceUtils : SharedPreferenceUtils = SharedPreferenceUtils(this)
         val alarmData : AlarmData =  sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+        Log.d("alarmData.workout",alarmData.getWorkOut)
         setWorkoutCounter(alarmData.workout)
     }
 
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity(){
     // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
     private fun setWorkoutCounter(workout : String)
     {
+        Log.d("setWorkoutCounter(MainActivity)",workout)
         if (workout == "스쿼트") {
             workoutCounter = SquatCounter()
         }
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(){
 
     companion object
     {
+
         const val Filename = "prefs"
         const val SHARED_PREFERENCE_NAME = "time"
         const val HOUR_KEY = "hour"

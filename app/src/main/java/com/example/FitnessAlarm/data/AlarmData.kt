@@ -2,8 +2,11 @@ package com.example.FitnessAlarm.data
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_NO_CREATE
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver
@@ -141,8 +144,7 @@ data class AlarmData(
         val alarmManager : AlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent : Intent = Intent(context, AlarmReceiver::class.java)
-        val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0)
-
+        val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,1,intent,PendingIntent.FLAG_UPDATE_CURRENT)
         val calendar : Calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
         calendar.set(Calendar.HOUR_OF_DAY,hour)
@@ -154,22 +156,25 @@ data class AlarmData(
             calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1)
         }
 
-        alarmManager.setExact(
+        alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             alarmPendingIntent
         )
+        this.onOff = true
 
         val toastText : String = String.format("%02d:%02d 알람이 설정되었습니다.",hour,min)
         Toast.makeText(context,toastText, Toast.LENGTH_SHORT).show()
     }
 
     public fun cancelAlarm(context: Context?){
-
+        Log.d("BroadCaster : ","Cancel Alarm")
         val alarmManager : AlarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent : Intent = Intent(context, AlarmReceiver::class.java)
-        val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,alarmId,intent,0)
+        val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,1,intent,
+            PendingIntent.FLAG_CANCEL_CURRENT)
         alarmManager.cancel(alarmPendingIntent)
+        alarmPendingIntent.cancel()
         this.onOff = false
         val toastText : String = String.format("%02d:%02d 알람이 취소되었습니다.",hour,min)
         Toast.makeText(context,toastText, Toast.LENGTH_SHORT).show()

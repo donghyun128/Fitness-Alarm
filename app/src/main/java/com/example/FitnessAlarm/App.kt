@@ -1,14 +1,19 @@
 package com.example.FitnessAlarm
 
+import android.app.AlarmManager
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.os.Build
+import com.example.FitnessAlarm.activity.CameraActivity
 
 class App :Application(){
     companion object
     {
         const val CHANNEL_ID = "ALARM_CHANNEL"
+
     }
 
     override fun onCreate() {
@@ -25,8 +30,10 @@ class App :Application(){
                 NotificationManager.IMPORTANCE_HIGH
             )
 
-            val manager : NotificationManager = getSystemService(NotificationManager::class.java);
-            manager.createNotificationChannel(serviceChannel);
+            val manager : NotificationManager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(serviceChannel)
         }
     }
+
+
  }

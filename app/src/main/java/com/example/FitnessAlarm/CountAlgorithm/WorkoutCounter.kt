@@ -9,9 +9,9 @@ import kotlin.properties.Delegates
 
 abstract class WorkoutCounter() {
 
-    val MIN_AMPLITUDE = 40
-    val REP_THRESHOLD = 0.8
-    val MIN_CONFIDENCE = 0.5
+    open var MIN_AMPLITUDE = 40
+    open var REP_THRESHOLD = 0.8
+    open var MIN_CONFIDENCE = 0.5
 
     var count = 0
 
@@ -21,7 +21,6 @@ abstract class WorkoutCounter() {
     var prev_dy = 0
     var top = 0
     var bottom = 0
-    var completeGoal = 0
     /*
     val tts : TextToSpeech
 

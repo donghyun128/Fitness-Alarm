@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:text="Squat Alarm"
+            android:text="운동 알람"
             android:textSize="40dp"
             android:layout_marginTop="12dp"
             android:textAlignment="center">
@@ -80,8 +80,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="60dp"
-            android:textOff="알람 OFF"
-            android:textOn="알람 ON"
+
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="#006400"

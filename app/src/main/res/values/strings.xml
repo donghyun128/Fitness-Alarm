@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Fitness Alarm</string>
-    <string name = "repetition_notify">%s %d회</string>
+    <string name="app_name">운동 알람</string>
+    <string name="repetition_notify">%1$s %2$d회 예정</string>
+    <string name = "alarm_time">%s</string>
 </resources>

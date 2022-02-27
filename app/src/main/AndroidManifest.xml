@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"
         android:protectionLevel="signature|privileged|vendorPrivileged|oem|verifier" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 
     <uses-feature
@@ -41,20 +42,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity"
-            >
+        <activity android:name="com.example.FitnessAlarm.activity.CameraActivity">
 
         </activity>
-        <activity android:name=".activity.RingActivity"
-            >
 
-        </activity>
 
         <receiver android:name="com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver"
-            android:exported="false"
+            android:exported="true"
+            android:directBootAware="true"
             >
             <intent-filter>
                 <action android:name="com.example.test222.AlarmReceiver.ALARM_START"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+
             </intent-filter>
 
         </receiver>

@@ -2,8 +2,10 @@
 package com.example.FitnessAlarm.activity
 
 import android.Manifest
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Process
@@ -30,17 +32,13 @@ public class CameraActivity : AppCompatActivity() {
         var personForCount : MutableList<Person> = mutableListOf()
     }
 
-
     override fun getApplicationContext(): Context {
         return super.getApplicationContext()
     }
     private var cameraSource: CameraSource? = null
-    lateinit var sharedPreferenceUtils: SharedPreferenceUtils
     private lateinit var surfaceView: SurfaceView
     private var device = Device.GPU
-    private var isClassifyPose = false
-    private lateinit var spnTracker: Spinner
-    private lateinit var vTrackerOption: View
+    lateinit var sharedPreferenceUtils: SharedPreferenceUtils
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -62,9 +60,7 @@ public class CameraActivity : AppCompatActivity() {
 
     private var modelPos = 1
 
-    // open camera
     private fun openCamera() {
-        Log.i("CameraActivity","openCamera")
         if (isCameraPermissionGranted()) {
             if (cameraSource == null) {
                 cameraSource =
@@ -81,21 +77,12 @@ public class CameraActivity : AppCompatActivity() {
                         prepareCamera()
                     }
 
-                // 코루틴 실행
-
-                    var isFinished : Int = 0
                     val visualizeCoroutine = lifecycleScope.launch {
-
-                        Log.i("test_log","initCamera in lifecycleScope.launch in Counter")
                         cameraSource?.initCamera()
-
-                        Log.d("initCamera 종료","initCamera 종료")
                     }
 
 
 
-                // count와 complete 값이 같아지면 initCamera를 종료
-                Log.d("Out of Launch Block","Out of Launch Block")
             }
             createPoseEstimator()
 
@@ -133,100 +120,51 @@ public class CameraActivity : AppCompatActivity() {
                 )
             }
         }
-        Log.i("CameraActivity","requestPermission End")
-    }
-
-
-    // Show/hide the pose classification option.
-    private fun showPoseClassifier(isVisible: Boolean) {
-       //vClassificationOption.visibility = if (isVisible) View.VISIBLE else View.GONE
-        if (!isVisible) {
-            //swClassification.isChecked = false
-        }
-    }
-
-    private fun isPoseClassifier() {
-        cameraSource?.setClassifier(if (isClassifyPose) PoseClassifier.create(this) else null)
     }
 
     private fun createPoseEstimator() {
         Log.i("CameraActivity","createPoseEstimator")
 
-        val poseDetector = MoveNet.create(this, device, ModelType.Lightning)
-        //val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
+        //val poseDetector = MoveNet.create(this, device, ModelType.Lightning)
+        val poseDetector = MoveNet.create(this, device, ModelType.Thunder)
         poseDetector?.let { detector ->
-            Log.i("CameraActivity","setDetector")
             cameraSource?.setDetector(detector)
-            Log.i("CameraActivity","createPoseEstimator End")
         }
     }
 
 
-    // Show/hide the tracking options.
-    private fun showTracker(isVisible: Boolean) {
-        if (isVisible) {
-            // Show tracker options and enable Bounding Box tracker.
-            vTrackerOption.visibility = View.VISIBLE
-            spnTracker.setSelection(1)
-        } else {
-            // Set tracker type to off and hide tracker option.
-            vTrackerOption.visibility = View.GONE
-            spnTracker.setSelection(0)
-        }
-    }
-
-    private fun finishActivity()
-    {
-        if (MainActivity.workoutCounter.count == MainActivity.workoutCounter.completeGoal)
-        {
-            Log.d("finish","finish")
-            Log.d("completeGoal", MainActivity.workoutCounter.completeGoal.toString())
-            finish()
-            val quitIntent : Intent = Intent(this, MainActivity::class.java)
-            startActivity(quitIntent)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("CameraActivity","onCreate")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.counter)
+        setContentView(R.layout.activity_camera)
 
         surfaceView = findViewById(R.id.surfaceView)
-
 
         if (!isCameraPermissionGranted()) {
             requestPermission()
         }
-        Log.i("CameraActivity","onCreate End")
     }
 
     override fun onStart() {
-        Log.i("CameraActivity","onStart")
         super.onStart()
         openCamera()
-        //finishActivity()
-        Log.i("CameraActivity","onStart End")
     }
 
     override fun onResume() {
-        Log.i("CameraActivity","onResume")
         cameraSource?.resume()
         super.onResume()
-        Log.i("CameraActivity","onResume End")
-        //finishActivity()
+
+        val notificationManager : NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(1)
     }
 
     override fun onPause() {
-        Log.i("CameraActivity","onPause")
         cameraSource?.close()
         cameraSource = null
         super.onPause()
-        Log.i("CameraActivity","onPause End")
     }
 
     override fun onBackPressed() {
-
     }
 
 }

@@ -78,7 +78,7 @@ object VisualizationUtils {
 
         val paintText = Paint().apply {
             textSize = PERSON_ID_TEXT_SIZE
-            color = Color.BLUE
+            color = Color.RED
             textAlign = Paint.Align.LEFT
         }
 

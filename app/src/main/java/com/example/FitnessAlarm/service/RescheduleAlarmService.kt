@@ -18,8 +18,10 @@ class RescheduleAlarmService : Service() {
 
         sharedPreferenceUtils = SharedPreferenceUtils(this)
         val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
-        alarmData.setAlarm(this)
-
+        if (alarmData.getOnOff)
+            alarmData.setAlarm(applicationContext)
+        else
+            alarmData.cancelAlarm(applicationContext)
         return START_STICKY
     }
 

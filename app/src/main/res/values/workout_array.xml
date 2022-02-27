@@ -3,7 +3,7 @@
 <resources>
     <string-array name="workout_array">
         <item>스쿼트</item>
-        <!--<item>팔굽혀펴기</item>-->
+        <item>팔굽혀펴기</item>
     </string-array>
 
 
