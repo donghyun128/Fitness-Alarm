@@ -24,19 +24,12 @@ import com.example.FitnessAlarm.service.RescheduleAlarmService
 
 class AlarmReceiver : BroadcastReceiver(){
 
-
-    companion object {
-        const val NOTIFICATION_CHANNEL_ID = "222"
-        const val NOTIFICATION_ID = 222
-    }
-
     override fun onReceive(context: Context, intent: Intent) {
 
         val powerManager  = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wakeLock=
             powerManager.newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,"Myapp:wakeLock")
         val sharedPreferenceUtils: SharedPreferenceUtils = SharedPreferenceUtils(context)
-        Log.i("test", "test activity")
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.action)) {
             startResheduleAlarmService(context)
         } else {

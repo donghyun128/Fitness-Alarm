@@ -16,13 +16,13 @@ class RescheduleAlarmService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
-        sharedPreferenceUtils = SharedPreferenceUtils(this)
+        sharedPreferenceUtils = SharedPreferenceUtils(applicationContext)
         val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
         if (alarmData.getOnOff)
             alarmData.setAlarm(applicationContext)
         else
             alarmData.cancelAlarm(applicationContext)
-        return START_STICKY
+        return START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
