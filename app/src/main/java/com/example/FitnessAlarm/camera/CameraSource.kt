@@ -419,7 +419,7 @@ class CameraSource (
 
             // 메인화면으로 이동
             val quitIntent = Intent(context, MainActivity::class.java)
-            //quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(quitIntent)
     }
 

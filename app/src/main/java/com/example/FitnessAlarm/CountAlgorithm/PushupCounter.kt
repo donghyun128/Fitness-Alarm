@@ -10,12 +10,10 @@ class PushupCounter : WorkoutCounter() {
 
     override var MIN_AMPLITUDE = 20
 
-    var goal_right = 1
     var prev_y_right = 0
     var prev_dy_right = 0
     var top_right = 0
     var bottom_right = 0
-    var goal_left = 1
     var prev_y_left = 0
     var prev_dy_left = 0
     var top_left = 0
@@ -24,17 +22,23 @@ class PushupCounter : WorkoutCounter() {
     override fun countAlgorithm(person: Person): Int {
 
             Log.d("PushUpCounter","PushUp Algorithm")
+
+
             if (person.keyPoints[BodyPart.LEFT_SHOULDER.ordinal].score >= MIN_CONFIDENCE && person.keyPoints[BodyPart.RIGHT_SHOULDER.ordinal].score >= MIN_CONFIDENCE) {
+
                 var yRight = 1000 - person.keyPoints[BodyPart.RIGHT_SHOULDER.ordinal].coordinate.y
-                var dyRight = yRight - prev_y
+                var dyRight = yRight - prev_y_right
                 var yLeft = 1000 - person.keyPoints[BodyPart.LEFT_SHOULDER.ordinal].coordinate.y
-                var dyLeft = yRight - prev_y
+                var dyLeft = yLeft - prev_y_left
+
+                Log.d("Right Shoulder",person.keyPoints[BodyPart.RIGHT_SHOULDER.ordinal].coordinate.y.toString())
+                Log.d("Left Shoulder",person.keyPoints[BodyPart.LEFT_SHOULDER.ordinal].coordinate.y.toString())
 
                 if (!first) {
                     if (bottom_right != 0 && top_right != 0) {
-                        if (goal_right == 1 && dyRight > 0 && (yRight - bottom_right) > (top_right - bottom_right) * REP_THRESHOLD) {
+                        if (goal == 1 && dyRight > 0 && (yRight - bottom_right) > (top_right - bottom_right) * REP_THRESHOLD) {
 
-                            if (goal_left == 1 && dyRight > 0 && (yRight - bottom_left) > (top_left - bottom_left) * REP_THRESHOLD) {
+                            if (dyLeft > 0 && (yLeft - bottom_left) > (top_left - bottom_left) * REP_THRESHOLD) {
                                 if (top_right - bottom_right > MIN_AMPLITUDE && top_left - bottom_left > MIN_AMPLITUDE) {
                                     count++
                                     goal = -1
@@ -42,7 +46,7 @@ class PushupCounter : WorkoutCounter() {
                             }
                         }
                         else if (goal == -1 && dyRight < 0 && (top_right - yRight) > (top_right - bottom_right) * REP_THRESHOLD) {
-                            if (goal == -1 && dyLeft < 0 && (top_left - yRight) > (top_left - bottom_left) * REP_THRESHOLD) {
+                            if (dyLeft < 0 && (top_left - yLeft) > (top_left - bottom_left) * REP_THRESHOLD) {
                                 goal = 1
                             }
                         }
