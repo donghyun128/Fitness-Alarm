@@ -53,20 +53,21 @@ class MainActivity : AppCompatActivity(){
     }
 
     // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
-    private fun setWorkoutCounter(workout : String)
-    {
-        Log.d("setWorkoutCounter(MainActivity)",workout)
-        if (workout == "스쿼트") {
-            workoutCounter = SquatCounter()
-        }
 
-        else if (workout == "팔굽혀펴기") {
-            workoutCounter = PushupCounter()
-        }
-    }
 
     companion object
     {
+        fun setWorkoutCounter(workout : String)
+        {
+            Log.d("setWorkoutCounter(MainActivity)",workout)
+            if (workout == "스쿼트") {
+                workoutCounter = SquatCounter()
+            }
+
+            else if (workout == "팔굽혀펴기") {
+                workoutCounter = PushupCounter()
+            }
+        }
 
         const val Filename = "prefs"
         const val SHARED_PREFERENCE_NAME = "time"

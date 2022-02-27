@@ -164,7 +164,7 @@ class AlarmSettingFragment : Fragment() {
         sharedPreferenceUtils.setDataPreference(alarm)
         Log.d("setWorkoutCounter(AlarmSettingFragment)",alarmData.getWorkOut)
 
-        setWorkoutCounter(alarmData.getWorkOut)
+        MainActivity.setWorkoutCounter(alarmData.getWorkOut)
         alarm.setAlarm(activity?.applicationContext)
     }
     // 알람 데이터 정보 가져오기
@@ -204,7 +204,7 @@ class AlarmSettingFragment : Fragment() {
 
     }
 
-
+    /*
     // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
     private fun setWorkoutCounter(workout : String)
     {
@@ -216,7 +216,7 @@ class AlarmSettingFragment : Fragment() {
             MainActivity.workoutCounter = PushupCounter()
         }
     }
-
+    */
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -3,6 +3,7 @@ package com.example.FitnessAlarm.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.example.FitnessAlarm.activity.MainActivity
 import com.example.FitnessAlarm.data.SharedPreferenceUtils
 
 class RescheduleAlarmService : Service() {
@@ -18,8 +19,11 @@ class RescheduleAlarmService : Service() {
 
         sharedPreferenceUtils = SharedPreferenceUtils(applicationContext)
         val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+        MainActivity.setWorkoutCounter(alarmData.getWorkOut)
+
         if (alarmData.getOnOff)
             alarmData.setAlarm(applicationContext)
+
         else
             alarmData.cancelAlarm(applicationContext)
         return START_REDELIVER_INTENT
