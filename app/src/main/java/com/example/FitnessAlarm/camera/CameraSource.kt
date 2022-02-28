@@ -20,7 +20,7 @@ package com.example.FitnessAlarm.camera
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.content.Intent.*
 import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
@@ -420,6 +420,7 @@ class CameraSource (
             // 메인화면으로 이동
             val quitIntent = Intent(context, MainActivity::class.java)
             quitIntent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+            quitIntent.addFlags(FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(quitIntent)
     }
 

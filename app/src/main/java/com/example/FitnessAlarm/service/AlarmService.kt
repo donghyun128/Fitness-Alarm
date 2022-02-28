@@ -65,7 +65,7 @@ class AlarmService : Service() {
             alarmTitle = alarmData.getTitle
             try {
                 mediaPlayer.setDataSource(this.baseContext, Uri.parse(alarmData.getTone))
-                mediaPlayer.setVolume(alarmData.volume.toFloat(),alarmData.volume.toFloat())
+                mediaPlayer.setVolume(((alarmData.volume * 0.15).toFloat()) ,(alarmData.volume * 0.15).toFloat())
                 mediaPlayer.setAudioAttributes(audioAttributes)
                 mediaPlayer.prepareAsync()
             } catch (ex: IOException) {
@@ -146,7 +146,7 @@ class AlarmService : Service() {
         // intent 위에 다른 화면이 있으면 제거한다.
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         // 만들어져 있는 화면을 재활용
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         // notification PendingIntent 생성
         val pendingIntent: PendingIntent = PendingIntent.getActivity(

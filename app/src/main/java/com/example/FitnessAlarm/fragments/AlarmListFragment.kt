@@ -43,13 +43,15 @@ class AlarmListFragment : Fragment(){
     override fun onResume() {
         super.onResume()
 
-        Log.d("ListFragment","onCreateView")
         sharedPreferenceUtils = SharedPreferenceUtils(activity?.applicationContext)
-        Log.d("ListFragment","getAlarmData")
         alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
 
+        loadView()
 
+    }
 
+    private fun loadView()
+    {
         // 알람 시각
         alarmListFragmentBinding.timeText.setText(alarmData.timeToText)
 
@@ -61,7 +63,6 @@ class AlarmListFragment : Fragment(){
         else
         {
             var repText : String = getString(R.string.repetition_notify,alarmData.getWorkOut,alarmData.getRepCnt)
-            Log.d("repetitionText String",repText)
             alarmListFragmentBinding.repetitionText.setText(repText)
         }
 
@@ -70,18 +71,14 @@ class AlarmListFragment : Fragment(){
         addAlarmButton.setOnClickListener {
                 view ->
 
-            Log.d("Navigation","Navigation")
             Navigation.findNavController(view).navigate(R.id.action_alarmsListFragment_to_createAlarmFragment)
 
         }
 
         // 알람 on/off 토글버튼
-        Log.d("ListFragment","set alarmSwitch Onoff")
-        Log.d("ListFragment",alarmData.getOnOff.toString())
         val onOffSwitch : ToggleButton = alarmListFragmentBinding.alarmSwitch
         if(onOffSwitch.isChecked != alarmData.onOff)
             onOffSwitch.toggle()
-        Log.d("onCreateView",onOffSwitch.isChecked.toString() + "/ " + alarmData.getOnOff)
 
         onOffSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked)
@@ -95,12 +92,5 @@ class AlarmListFragment : Fragment(){
                 sharedPreferenceUtils.setDataPreference(alarmData)
             }
         }
-
-    }
-
-
-    // 2. 권한 요청
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CAMERA), 99)
     }
 }

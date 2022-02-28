@@ -48,60 +48,15 @@ class AlarmSettingFragment : Fragment() {
     ): View? {
 
         alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
-
         // 뷰바인딩
         alarmSettingFragmentBinding = AlarmSettingFragmentBinding.inflate(inflater,container,false)
         val rootView = alarmSettingFragmentBinding.root
 
-
-        return rootView
-    }
-
-    override fun onResume() {
-        super.onResume()
-
         // 알람 정보 가져오기
         loadView(alarmSettingFragmentBinding,alarmData)
 
-        // Ringtone 관련 설정
-        tone = alarmData.getTone
-        if (tone == "default")
-            tone  = RingtoneManager.getActualDefaultRingtoneUri(this.activity?.applicationContext,RingtoneManager.TYPE_ALARM).toString()
-
-        ringTone = RingtoneManager.getRingtone(activity?.applicationContext, Uri.parse(tone.toString()))
-        ringTitle = alarmData.getRingTitle
-
-        // timepicker 이벤트
-        alarmSettingFragmentBinding.picker.setOnTimeChangedListener{ view, hourOfDay, minute ->
-        }
-
-        // spinner에서 운동 종류 고르기
-        val workoutSpinner = alarmSettingFragmentBinding.workoutSpinner
-        workoutSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener
-        {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                alarmData.workout = workoutSpinner.getItemAtPosition(position) as String
-
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-        }
-
-        // 벨소리 선택 버튼
-        alarmSettingFragmentBinding.bellLayout.setOnClickListener {
-                view ->
-            val intent : Intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE,RingtoneManager.TYPE_ALARM)
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE,"벨 소리 선택")
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,Uri.parse(tone) as Uri)
-            startActivityForResult(intent,5)
-        }
+        setRingtone()
+        setWorkout()
 
         // 버튼으로 알람 설정
         alarmSettingFragmentBinding.timeSetBtn.setOnClickListener(){
@@ -118,6 +73,14 @@ class AlarmSettingFragment : Fragment() {
             }
         }
 
+        return rootView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("onResume","onResume")
+
+
     }
 
 
@@ -129,10 +92,13 @@ class AlarmSettingFragment : Fragment() {
             ringTitle  = ringTone.getTitle(activity?.applicationContext)
             if (uri != null){
                 tone = uri.toString()
-                if (ringTitle !=null && !ringTitle.isEmpty())
-                    alarmSettingFragmentBinding.musicTitle.setText(ringTitle)
-                else{
-                    alarmSettingFragmentBinding.musicTitle.setText("")
+                Log.d("ring title : ",ringTitle.toString())
+                if (ringTitle !=null && ringTitle.isNotEmpty()) {
+                    alarmSettingFragmentBinding.musicTitle.text = ringTitle
+                    Log.d("ring title set","ring title set")
+                }
+                    else{
+                    alarmSettingFragmentBinding.musicTitle.text = "default"
                 }
             }
         }
@@ -143,8 +109,8 @@ class AlarmSettingFragment : Fragment() {
     {
         val alarm : AlarmData = AlarmData(
             1,
-            alarmSettingFragmentBinding.picker.hour.toInt(),
-            alarmSettingFragmentBinding.picker.minute.toInt(),
+            alarmSettingFragmentBinding.picker.hour,
+            alarmSettingFragmentBinding.picker.minute,
             alarmSettingFragmentBinding.workoutSpinner.selectedItem.toString(),
             alarmSettingFragmentBinding.repetitionBanner.text.toString().toInt(),
             true,
@@ -163,24 +129,26 @@ class AlarmSettingFragment : Fragment() {
 
         sharedPreferenceUtils.setDataPreference(alarm)
         Log.d("setWorkoutCounter(AlarmSettingFragment)",alarmData.getWorkOut)
-
+        Log.d("alarm time",alarmSettingFragmentBinding.picker.hour.toString() + " " + alarmSettingFragmentBinding.picker.minute.toString())
         MainActivity.setWorkoutCounter(alarmData.getWorkOut)
-        alarm.setAlarm(activity?.applicationContext)
+        alarm.setAlarm(requireActivity())
     }
     // 알람 데이터 정보 가져오기
-    fun loadView(alarmSettingFragmentBinding: AlarmSettingFragmentBinding,alarmData : AlarmData)
+    private fun loadView(alarmSettingFragmentBinding: AlarmSettingFragmentBinding,alarmData : AlarmData)
     {
+        Log.d("loadView",alarmSettingFragmentBinding.musicTitle.text.toString())
+
         alarmSettingFragmentBinding.picker.hour = alarmData.getHour
         alarmSettingFragmentBinding.picker.minute = alarmData.getMinute
         loadWorkoutSpinner()
         alarmSettingFragmentBinding.repetitionBanner.setText(alarmData.getRepCnt.toString())
-        alarmSettingFragmentBinding.musicTitle.setText(alarmData.getRingTitle)
-        alarmSettingFragmentBinding.createAlarmTitle.setText(alarmData.getTitle)
+        alarmSettingFragmentBinding.musicTitle.text = alarmData.getRingTitle
         alarmSettingFragmentBinding.createAlarmTitle.setText(alarmData.getTitle)
         alarmSettingFragmentBinding.volumeController.progress = alarmData.getVolume
+
     }
 
-    fun loadWorkoutSpinner()
+    private fun loadWorkoutSpinner()
     {
         val adapter = activity?.let{
             ArrayAdapter<String>(it,
@@ -204,19 +172,47 @@ class AlarmSettingFragment : Fragment() {
 
     }
 
-    /*
-    // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
-    private fun setWorkoutCounter(workout : String)
+    private fun setRingtone()
     {
-        if (workout == "스쿼트") {
-            MainActivity.workoutCounter = SquatCounter()
+        // Ringtone 관련 설정
+        tone = alarmData.getTone
+        if (tone == "default")
+            tone  = RingtoneManager.getActualDefaultRingtoneUri(this.activity?.applicationContext,RingtoneManager.TYPE_ALARM).toString()
+
+        ringTone = RingtoneManager.getRingtone(activity?.applicationContext, Uri.parse(tone.toString()))
+        ringTitle = alarmData.getRingTitle
+
+        // 벨소리 선택 버튼
+        alarmSettingFragmentBinding.bellLayout.setOnClickListener {
+                view ->
+            val intent : Intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE,RingtoneManager.TYPE_ALARM)
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE,"벨 소리 선택")
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI,Uri.parse(tone) as Uri)
+            startActivityForResult(intent,5)
         }
 
-        else if (workout == "팔굽혀펴기") {
-            MainActivity.workoutCounter = PushupCounter()
+    }
+
+    private fun setWorkout(){
+        // spinner에서 운동 종류 고르기
+        val workoutSpinner = alarmSettingFragmentBinding.workoutSpinner
+        workoutSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener
+        {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                alarmData.workout = workoutSpinner.getItemAtPosition(position) as String
+
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
         }
     }
-    */
 
     override fun onDestroyView() {
         super.onDestroyView()

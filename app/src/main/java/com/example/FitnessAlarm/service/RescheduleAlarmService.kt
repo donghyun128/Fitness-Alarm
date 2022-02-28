@@ -21,11 +21,12 @@ class RescheduleAlarmService : Service() {
         val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
         MainActivity.setWorkoutCounter(alarmData.getWorkOut)
 
-        if (alarmData.getOnOff)
-            alarmData.setAlarm(applicationContext)
-
-        else
+        if (alarmData.getOnOff) {
             alarmData.cancelAlarm(applicationContext)
+            alarmData.setAlarm(applicationContext)
+        }
+        //else
+        //    alarmData.cancelAlarm(applicationContext)
         return START_REDELIVER_INTENT
     }
 

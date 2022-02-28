@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.view.WindowManager
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.legacy.content.WakefulBroadcastReceiver
 import com.example.FitnessAlarm.R
@@ -21,38 +22,49 @@ import com.example.FitnessAlarm.data.AlarmData
 import com.example.FitnessAlarm.data.SharedPreferenceUtils
 import com.example.FitnessAlarm.service.AlarmService
 import com.example.FitnessAlarm.service.RescheduleAlarmService
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AlarmReceiver : BroadcastReceiver(){
 
     override fun onReceive(context: Context, intent: Intent) {
 
+        val now = System.currentTimeMillis()
+        val currentHour = SimpleDateFormat("hh").format(now).toInt()
+        val currentMinute = SimpleDateFormat("mm").format(now).toInt()
+
+        Log.d("current",currentHour.toString() + " "  + currentMinute.toString())
         val powerManager  = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+
         val wakeLock=
             powerManager.newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,"Myapp:wakeLock")
+
+
         val sharedPreferenceUtils: SharedPreferenceUtils = SharedPreferenceUtils(context)
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.action)) {
-            startResheduleAlarmService(context)
-        } else {
-            Log.d("onReceive", "startAlarmService")
-            wakeLock.acquire()
-            val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
-            startAlarmService(context, alarmData)
-            wakeLock.release()
+        val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()
+
+        if (intent.action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+            val toastText : String = String.format("Alarm reboot")
+            Toast.makeText(context,toastText,Toast.LENGTH_LONG).show()
+            startRescheduleAlarmService(context)
+        }
+
+        else {
+            // 알람데이터의 시 / 분 과 현재의 시 / 분이 일치할 때만 알람 서비스를 시작한다.
+            if (alarmData.getHour == currentHour && alarmData.getMinute == currentMinute)
+            {
+                wakeLock.acquire()
+                startAlarmService(context, alarmData)
+                wakeLock.release()
+            }
+
         }
 
 
     }
 
-    fun startAlarmService(context: Context, alarmData: AlarmData) {
+    private fun startAlarmService(context: Context, alarmData: AlarmData) {
         Log.d("startAlarmService", "startAlarmService")
-
-        /*
-        val intentCamera : Intent = Intent(context,CameraActivity::class.java)
-        intentCamera.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intentCamera)
-        */
-
-
         val intentService: Intent = Intent(context, AlarmService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intentService);
@@ -63,7 +75,7 @@ class AlarmReceiver : BroadcastReceiver(){
 
     }
 
-    fun startResheduleAlarmService(context: Context) {
+    private fun startRescheduleAlarmService(context: Context) {
         val intentService: Intent = Intent(context, RescheduleAlarmService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intentService);

@@ -1,5 +1,6 @@
 package com.example.FitnessAlarm.data
 
+import android.Manifest.permission_group.CALENDAR
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_NO_CREATE
@@ -10,6 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver
+import com.example.FitnessAlarm.service.AlarmService
 import java.util.*
 
 data class AlarmData(
@@ -145,13 +147,14 @@ data class AlarmData(
 
         val intent : Intent = Intent(context, AlarmReceiver::class.java)
         val alarmPendingIntent : PendingIntent = PendingIntent.getBroadcast(context,1,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-        val calendar : Calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar.set(Calendar.HOUR_OF_DAY,hour)
-        calendar.set(Calendar.MINUTE,min)
-        calendar.set(Calendar.SECOND,0)
-        calendar.set(Calendar.MILLISECOND,0)
+        val calendar : Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY,hour)
+            set(Calendar.MINUTE,min)
+            set(Calendar.SECOND,0)
+            set(Calendar.MILLISECOND,0)
 
+        }
         if (calendar.timeInMillis <= System.currentTimeMillis()) {
             calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1)
         }
@@ -161,8 +164,9 @@ data class AlarmData(
             calendar.timeInMillis,
             alarmPendingIntent
         )
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,AlarmManager.INTERVAL_DAY,alarmPendingIntent)
         this.onOff = true
-
+        Log.d("set Alarm",".")
         val toastText : String = String.format("%02d:%02d 알람이 설정되었습니다.",hour,min)
         Toast.makeText(context,toastText, Toast.LENGTH_SHORT).show()
     }
@@ -176,8 +180,8 @@ data class AlarmData(
         alarmManager.cancel(alarmPendingIntent)
         alarmPendingIntent.cancel()
         this.onOff = false
-        val toastText : String = String.format("%02d:%02d 알람이 취소되었습니다.",hour,min)
-        Toast.makeText(context,toastText, Toast.LENGTH_SHORT).show()
+        //val toastText : String = String.format("%02d:%02d 알람이 취소되었습니다.",hour,min)
+        //Toast.makeText(context,toastText, Toast.LENGTH_SHORT).show()
 
     }
 }

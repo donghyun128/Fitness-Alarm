@@ -16,6 +16,7 @@
         android:protectionLevel="signature|privileged|vendorPrivileged|oem|verifier" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <uses-feature
@@ -29,7 +30,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Test222">
+        android:theme="@style/AppTheme">
         <activity
             android:name= "com.example.FitnessAlarm.activity.MainActivity"
             android:exported="true"
@@ -48,8 +49,9 @@
 
 
         <receiver android:name="com.example.FitnessAlarm.broadCastReceiver.AlarmReceiver"
-            android:exported="true"
+            android:exported="false"
             android:directBootAware="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
             >
             <intent-filter>
                 <action android:name="com.example.test222.AlarmReceiver.ALARM_START"/>

@@ -191,7 +191,7 @@
                 <TextView
                     android:id="@+id/musicTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="30dp"
                     android:textAlignment="viewStart"
                     android:text="default"
                     android:textColor="#006400"
@@ -207,7 +207,7 @@
                 <SeekBar
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:max ="15"
+                    android:max = "100"
                     android:id="@+id/volume_controller"
                     >
                 </SeekBar>

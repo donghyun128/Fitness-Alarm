@@ -13,7 +13,6 @@ class App :Application(){
     companion object
     {
         const val CHANNEL_ID = "ALARM_CHANNEL"
-
     }
 
     override fun onCreate() {

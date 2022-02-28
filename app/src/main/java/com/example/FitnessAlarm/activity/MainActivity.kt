@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Switch
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(){
     lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -53,8 +55,6 @@ class MainActivity : AppCompatActivity(){
     }
 
     // 설정된 운동 종류에 따라 운동 카운트 알고리즘을 생성
-
-
     companion object
     {
         fun setWorkoutCounter(workout : String)
@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(){
                 workoutCounter = PushupCounter()
             }
         }
-
         const val Filename = "prefs"
         const val SHARED_PREFERENCE_NAME = "time"
         const val HOUR_KEY = "hour"
