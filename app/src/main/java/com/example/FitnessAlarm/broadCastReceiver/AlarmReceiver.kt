@@ -30,7 +30,7 @@ class AlarmReceiver : BroadcastReceiver(){
     override fun onReceive(context: Context, intent: Intent) {
 
         val now = System.currentTimeMillis()
-        val currentHour = SimpleDateFormat("hh").format(now).toInt()
+        val currentHour = SimpleDateFormat("HH").format(now).toInt()
         val currentMinute = SimpleDateFormat("mm").format(now).toInt()
 
         Log.d("current",currentHour.toString() + " "  + currentMinute.toString())
@@ -50,9 +50,11 @@ class AlarmReceiver : BroadcastReceiver(){
         }
 
         else {
+            Log.d("current",alarmData.getHour.toString() + " "  + alarmData.getMinute.toString())
             // 알람데이터의 시 / 분 과 현재의 시 / 분이 일치할 때만 알람 서비스를 시작한다.
             if (alarmData.getHour == currentHour && alarmData.getMinute == currentMinute)
             {
+                Log.d("current",alarmData.getHour.toString() + " "  + alarmData.getMinute.toString())
                 wakeLock.acquire()
                 startAlarmService(context, alarmData)
                 wakeLock.release()

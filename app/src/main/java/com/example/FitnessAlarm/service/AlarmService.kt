@@ -19,6 +19,7 @@ import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.data.AlarmData
 import com.example.FitnessAlarm.data.SharedPreferenceUtils
 import java.io.IOException
+import kotlin.math.ln
 import android.os.IBinder as IBinder1
 
 class AlarmService : Service() {
@@ -62,10 +63,13 @@ class AlarmService : Service() {
             .build()
 
         if (alarmData != null) {
-            alarmTitle = alarmData.getTitle
             try {
+
+                var volume = (1-((ln(100.0-alarmData.getVolume)) / ln(100.0)))
+                Log.d("progress",alarmData.getVolume.toString())
+                Log.d("volume",volume.toString())
                 mediaPlayer.setDataSource(this.baseContext, Uri.parse(alarmData.getTone))
-                mediaPlayer.setVolume(((alarmData.volume * 0.15).toFloat()) ,(alarmData.volume * 0.15).toFloat())
+                mediaPlayer.setVolume(volume.toFloat() ,volume.toFloat())
                 mediaPlayer.setAudioAttributes(audioAttributes)
                 mediaPlayer.prepareAsync()
             } catch (ex: IOException) {
@@ -74,7 +78,7 @@ class AlarmService : Service() {
         }
 
         val notification = createNotification(pendingIntent)
-        val foreGroundNotification = createForegroundNotification(pendingIntent)
+        //val foreGroundNotification = createForegroundNotification(pendingIntent)
 
         mediaPlayer.setOnPreparedListener { mediaPlayer ->
                 mediaPlayer.start()
@@ -87,7 +91,8 @@ class AlarmService : Service() {
         vibrator.vibrate(vibrationEffect)
 
         val notificationManager : NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        startForeground(1,foreGroundNotification)
+        startForeground(1,notification)
+        //startForeground(1,foreGroundNotification)
         notificationManager.notify(1,notification)
 
         return START_REDELIVER_INTENT
@@ -122,6 +127,7 @@ class AlarmService : Service() {
         return notification
     }
 
+    /*
     fun createForegroundNotification(pendingIntent : PendingIntent) : Notification
     {
         val remoteViews : RemoteViews = RemoteViews(packageName,R.layout.notication_0dp)
@@ -133,7 +139,7 @@ class AlarmService : Service() {
 
         return notification
     }
-
+     */
     fun createNotificationIntent() : PendingIntent
     {
         // 서비스가 실행되면 CameraActivity로 이동

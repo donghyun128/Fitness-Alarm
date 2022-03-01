@@ -23,6 +23,7 @@ import com.example.FitnessAlarm.data.AlarmData
 import com.example.FitnessAlarm.data.SharedPreferenceUtils
 import com.example.FitnessAlarm.databinding.AlarmListFragmentBinding
 import com.example.FitnessAlarm.databinding.AlarmSettingFragmentBinding
+import kotlin.math.ln
 
 class AlarmSettingFragment : Fragment() {
 
@@ -128,8 +129,6 @@ class AlarmSettingFragment : Fragment() {
         )
 
         sharedPreferenceUtils.setDataPreference(alarm)
-        Log.d("setWorkoutCounter(AlarmSettingFragment)",alarmData.getWorkOut)
-        Log.d("alarm time",alarmSettingFragmentBinding.picker.hour.toString() + " " + alarmSettingFragmentBinding.picker.minute.toString())
         MainActivity.setWorkoutCounter(alarmData.getWorkOut)
         alarm.setAlarm(requireActivity())
     }

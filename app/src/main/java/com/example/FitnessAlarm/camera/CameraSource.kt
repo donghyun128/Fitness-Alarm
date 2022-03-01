@@ -311,10 +311,11 @@ class CameraSource (
 
             }
         }
-        CameraActivity.personForCount = persons
-        //Counter.workoutCounter.countAlgorithm(Counter.personForCount[0])
-        Log.d("rep : ",
-            MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0]).toString())
+
+        // 운동 count 알고리즘 실행행
+       CameraActivity.personForCount = persons
+        MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0])
+
         frameProcessedInOneSecondInterval++
         if (frameProcessedInOneSecondInterval == 1) {
             // send fps to view
@@ -330,7 +331,7 @@ class CameraSource (
 
     private fun visualize(persons: List<Person>, bitmap: Bitmap) {
 
-        // outputBitmap : camera에서 얻은 bitmap에 BodyKeyPoint를 그린 bitmap
+        // outputBitmap : Bodykeypoint를 그려놓은 bitmap
         val outputBitmap = VisualizationUtils.drawBodyKeypoints(
             bitmap,
             persons.filter { it.score > MIN_CONFIDENCE }, isTrackerEnabled

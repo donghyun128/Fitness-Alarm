@@ -164,7 +164,7 @@ data class AlarmData(
             calendar.timeInMillis,
             alarmPendingIntent
         )
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,AlarmManager.INTERVAL_DAY,alarmPendingIntent)
+
         this.onOff = true
         Log.d("set Alarm",".")
         val toastText : String = String.format("%02d:%02d 알람이 설정되었습니다.",hour,min)
