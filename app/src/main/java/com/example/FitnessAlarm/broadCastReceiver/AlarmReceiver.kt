@@ -9,13 +9,14 @@ import android.os.Build
 import android.util.Log
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
+import android.provider.Settings
 import android.view.WindowManager
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import androidx.legacy.content.WakefulBroadcastReceiver
 import com.example.FitnessAlarm.R
 import com.example.FitnessAlarm.activity.CameraActivity
 import com.example.FitnessAlarm.data.AlarmData
@@ -35,10 +36,8 @@ class AlarmReceiver : BroadcastReceiver(){
 
         Log.d("current",currentHour.toString() + " "  + currentMinute.toString())
         val powerManager  = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-
         val wakeLock=
             powerManager.newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,"Myapp:wakeLock")
-
 
         val sharedPreferenceUtils: SharedPreferenceUtils = SharedPreferenceUtils(context)
         val alarmData = sharedPreferenceUtils.getAlarmDataFromSharedPreference()

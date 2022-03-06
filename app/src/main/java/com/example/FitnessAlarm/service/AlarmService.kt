@@ -78,7 +78,7 @@ class AlarmService : Service() {
         }
 
         val notification = createNotification(pendingIntent)
-        //val foreGroundNotification = createForegroundNotification(pendingIntent)
+        val foreGroundNotification = createForegroundNotification(pendingIntent)
 
         mediaPlayer.setOnPreparedListener { mediaPlayer ->
                 mediaPlayer.start()
@@ -91,8 +91,8 @@ class AlarmService : Service() {
         vibrator.vibrate(vibrationEffect)
 
         val notificationManager : NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        startForeground(1,notification)
-        //startForeground(1,foreGroundNotification)
+        //startForeground(1,notification)
+        startForeground(1,foreGroundNotification)
         notificationManager.notify(1,notification)
 
         return START_REDELIVER_INTENT
@@ -127,7 +127,7 @@ class AlarmService : Service() {
         return notification
     }
 
-    /*
+
     fun createForegroundNotification(pendingIntent : PendingIntent) : Notification
     {
         val remoteViews : RemoteViews = RemoteViews(packageName,R.layout.notication_0dp)
@@ -139,7 +139,7 @@ class AlarmService : Service() {
 
         return notification
     }
-     */
+
     fun createNotificationIntent() : PendingIntent
     {
         // 서비스가 실행되면 CameraActivity로 이동
