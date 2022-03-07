@@ -138,11 +138,8 @@ class CameraSource (
                                 imageBitmap, 0, 0, PREVIEW_WIDTH, PREVIEW_HEIGHT,
                                 rotateMatrix, false
                             )
-                            Log.d("CameraSource", "Before execute processImage")
                             processImage(rotatedBitmap)
-                            Log.d("CameraSource", "After execute processImage")
                             image.close()
-                            Log.d("CameraSource", "After execute image.close()")
                         }
                     if (MainActivity.workoutCounter.count == repetitionGoal )
                         finishAlarm(reader)
@@ -312,20 +309,12 @@ class CameraSource (
             }
         }
 
-        // 운동 count 알고리즘 실행행
-       CameraActivity.personForCount = persons
-        MainActivity.workoutCounter.countAlgorithm(CameraActivity.personForCount[0])
-
-        frameProcessedInOneSecondInterval++
-        if (frameProcessedInOneSecondInterval == 1) {
-            // send fps to view
-            listener?.onFPSListener(framesPerSecond)
-        }
-
-        // if the model returns only one item, show that item's score.
+        // 운동 count 알고리즘 실행
         if (persons.isNotEmpty()) {
-            listener?.onDetectedInfo(persons[0].score, classificationResult)
+            CameraActivity.personForCount = persons
+            MainActivity.workoutCounter.countAlgorithm(persons[0])
         }
+
         visualize(persons, bitmap)
     }
 
