@@ -6,6 +6,8 @@
 
 APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master/app/release/FitnessAlarm.apk
 
+----------------------------------------------
+
 ## 사용 방법
 <img src="https://github.com/donghyun128/Fitness-Alarm/blob/21de6f8f90547795d2349f5f12b09d7cceffaa4f/screenshots/%EB%A9%94%EC%9D%B8%ED%99%94%EB%A9%B4.jpg" width="360" height="740">|<img src="https://github.com/donghyun128/Fitness-Alarm/blob/21de6f8f90547795d2349f5f12b09d7cceffaa4f/screenshots/%EC%95%8C%EB%9E%8C%20%EC%84%A4%EC%A0%95%20%ED%99%94%EB%A9%B4.jpg" width="360" height="740">
 
