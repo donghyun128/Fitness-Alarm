@@ -13,14 +13,16 @@ APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master
 오른쪽 하단의 '+' 버튼을 눌러 알람 설정 화면에 들어갈 수 있습니다.
 
 알람 설정 화면에서 알람 시간, 운동의 종류, 운동 횟수, 벨소리를 설정하고 알람 설정 버튼을 누르면 알람이 설정됩니다.
-
+-----------------------------------------
 <img src="https://github.com/donghyun128/Fitness-Alarm/blob/ecae451dedbcec7d477686d34d1cb3acf1d848d8/screenshots/Notification.jpg" width="50%" height="50%">
 
 알람 시간이 되면 notification이 발생합니다. 클릭하면 전면 카메라가 켜집니다.
+------------------------------------
 
 <img src="https://github.com/donghyun128/Fitness-Alarm/blob/b221aef38de15e105004e907253926a3a34f578c/screenshots/%EC%8A%A4%EC%BF%BC%ED%8A%B8.jpg" width="360" height="740">|<img src="https://github.com/donghyun128/Fitness-Alarm/blob/b221aef38de15e105004e907253926a3a34f578c/screenshots/%ED%8C%94%EA%B5%BD%ED%98%80%ED%8E%B4%EA%B8%B0.jpg" width="360" height="740">
 
 적당한 위치에 휴대폰을 두신 후 운동을 진행해주세요. 되도록 몸이 휴대폰과 정면을 향하도록 해주시면 좋습니다.
+
 (스쿼트는 몸 전체가, 팔굽혀펴기는 어꺠가 화면에 나오도록 하면 더 정확한 Counting이 가능합니다.)
 
 
