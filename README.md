@@ -14,6 +14,12 @@ APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master
 
 알람 설정 화면에서 알람 시간, 운동의 종류, 운동 횟수, 벨소리를 설정하고 알람 설정 버튼을 누르면 알람이 설정된다.
 
+<img src="https://github.com/donghyun128/Fitness-Alarm/blob/ecae451dedbcec7d477686d34d1cb3acf1d848d8/screenshots/Notification.jpg" width="50%" height="50%">
+
+알람 시간이 되면 notification이 발생한다. 클릭하면 전면 카메라가 켜진다.
+
+
+
 ## 알람 동작 영상
 
 ## 개발 동기
