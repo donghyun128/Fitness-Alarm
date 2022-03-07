@@ -7,9 +7,10 @@
 ## 사용 방법
 <img src="https://github.com/donghyun128/Fitness-Alarm/blob/8516b9a35f43ea87f3a74ce85f970f30b25e44d4/screenshots/%EB%A9%94%EC%9D%B8%ED%99%94%EB%A9%B4.jpg" width="360" height="740">|<img src="https://github.com/donghyun128/Fitness-Alarm/blob/8516b9a35f43ea87f3a74ce85f970f30b25e44d4/screenshots/%EC%95%8C%EB%9E%8C%20%EC%84%A4%EC%A0%95%20%ED%99%94%EB%A9%B4.jpg" width="360" height="740">
 
-메인 화면에서 정해진 알람 시간을 확인할 수 있고, 왼쪽 하단 버튼을 통해 알람 ON/OFF 를 설정할 수 있다. 오른쪽 하단의 '+' 버튼을 눌러 알람 설정 화면에 들어갈 수 있다.
+메인 화면에서 정해진 알람 시간을 확인할 수 있고, 왼쪽 하단 버튼 (알람 끄기/켜기)를 통해 알람 ON/OFF 설정이 가능하다.
+오른쪽 하단의 '+' 버튼을 눌러 알람 설정 화면에 들어갈 수 있다.
 
-알람 설정 화면에서 알람 시간, 운동의 종류, 운동 횟수, 벨소리를 설정할 수 있다. 
+알람 설정 화면에서 알람 시간, 운동의 종류, 운동 횟수, 벨소리를 설정하고 알람 설정 버튼을 누르면 알람이 설정된다.
 
 ## 알람 동작 영상
 
@@ -28,7 +29,5 @@ MoveNet의 기능을 활용하면 그 알람을 구현할 수 있을거라 생�
 
 ## 사용한 기술  
 TensorFlow Lite
-
-sharedPreference
 
 ## REFERENCE
