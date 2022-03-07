@@ -4,6 +4,8 @@
 ## 어플리케이션 소개
 설정 화면에서 운동의 종류와 횟수를 미리 설정해두면 정해진 시간에 알람이 울린다. 주어진 운동을 모두 수행하면 알람 음악과 진동이 꺼지게 된다.
 
+APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master/app/release/FitnessAlarm.apk
+
 ## 사용 방법
 <img src="https://github.com/donghyun128/Fitness-Alarm/blob/8516b9a35f43ea87f3a74ce85f970f30b25e44d4/screenshots/%EB%A9%94%EC%9D%B8%ED%99%94%EB%A9%B4.jpg" width="360" height="740">|<img src="https://github.com/donghyun128/Fitness-Alarm/blob/8516b9a35f43ea87f3a74ce85f970f30b25e44d4/screenshots/%EC%95%8C%EB%9E%8C%20%EC%84%A4%EC%A0%95%20%ED%99%94%EB%A9%B4.jpg" width="360" height="740">
 
