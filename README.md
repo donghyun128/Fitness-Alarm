@@ -26,8 +26,7 @@ APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master
 
 ## 알람 동작 영상
 
-<iframe width="100%" height="600" src="https://www.youtube.com/watch?v=78pfW7qhDBs" frameborder="0" allowfullscreen></iframe>
-
+[![운동알람영상](https://img.youtube.com/vi/78pfW7qhDBs/0.jpg)](https://www.youtube.com/watch?v=78pfW7qhDBs")
 
 
 ## 개발 동기
