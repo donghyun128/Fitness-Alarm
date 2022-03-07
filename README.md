@@ -24,10 +24,15 @@
 MoveNet의 기능을 활용하면 그 알람을 구현할 수 있을거라 생각하여 개발에 착수하게 되었다.
 
 ## 개발 환경
+Android Studio Arctic Fox | 2020.3.1
 
 ## Application Version
+minSdkVersion : 28
+targetSdkVersion 30
 
 ## 사용한 기술  
-TensorFlow Lite
+TensorFlow Lite 2.5.0
 
 ## REFERENCE
+https://github.com/tensorflow/examples/tree/master/lite/examples/pose_estimation/android (TensorFlow Lite MoveNet Android Example)
+https://github.com/miguelrochefort/fitness-camera/tree/master/android/app (Counting 알고리즘 관련)
