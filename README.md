@@ -30,9 +30,11 @@ APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master
 (스쿼트는 몸 전체가, 팔굽혀펴기는 어꺠가 화면에 나오도록 하면 더 정확한 Counting이 가능합니다.)
 
 
+
 ## 알람 동작 영상
 
 [![운동알람영상](https://img.youtube.com/vi/78pfW7qhDBs/0.jpg)](https://www.youtube.com/watch?v=78pfW7qhDBs")
+
 
 
 ## 개발 동기
@@ -43,16 +45,20 @@ APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master
 실제로 자세를 인식하는 방법이 있을지 조사해보았습니다. 그러던 중 실시간으로 17개의 신체 좌표 위치를 추론하는 딥러닝 모델 MoveNet을 발견하였습니다.
 MoveNet의 기능을 활용하면 그 알람을 구현할 수 있을거라 생각하여 개발에 착수하게 되었습니다.
 
+
 ## 개발 환경
 Android Studio Arctic Fox | 2020.3.1
+
 
 ## Application Version
 minSdkVersion : 28
 
 targetSdkVersion 30
 
+
 ## 사용한 기술  
 TensorFlow Lite 2.5.0
+
 
 ## REFERENCE
 https://github.com/tensorflow/examples/tree/master/lite/examples/pose_estimation/android (TensorFlow Lite MoveNet Android Example)
