@@ -30,9 +30,6 @@ APK 다운로드 링크: https://github.com/donghyun128/Fitness-Alarm/raw/master
 
 
 
-[![알람동작영상](https://img.youtube.com/vi/78pfW7qhDBs/0.jpg)](https://www.youtube.com/watch?v=78pfW7qhDBs)
-
-
 ## 개발 동기
 유튜브에서 팔굽혀펴기(푸쉬업) 갯수를 늘리는 방법에 대한 영상을 본 적이 있다. 그 중 하나는 아침에 기상하자마자 최대 횟수로 진행하는 것이다.
 
