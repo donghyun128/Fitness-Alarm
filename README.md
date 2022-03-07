@@ -28,6 +28,7 @@ Android Studio Arctic Fox | 2020.3.1
 
 ## Application Version
 minSdkVersion : 28
+
 targetSdkVersion 30
 
 ## 사용한 기술  
