@@ -14,6 +14,7 @@
 
 ## 사용한 기술  
 TensorFlow Lite
+
 sharedPreference
 
 
